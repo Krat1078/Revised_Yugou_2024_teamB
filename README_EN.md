@@ -14,6 +14,9 @@ Revised_Yugou_2024_teamB/
 │   │   ├── wsgi.py
 │   │
 │   ├── top/
+│   │   ├──media/
+│   │   │   ├──images/
+│   │   │
 │   │   ├── migrations/
 │   │   │   ├── 0001_initial.py
 │   │   │   ├── __init__.py
@@ -31,7 +34,7 @@ Revised_Yugou_2024_teamB/
 │   ├── db.sqlite3
 │   ├── manage.py
 │
-├── static/
+├── assets/
 │   ├── images/
 │   │   ├── DatabaseStructure.png
 │   │
@@ -49,7 +52,7 @@ Revised_Yugou_2024_teamB/
 
 # Database Structure Documentation for the LostItemProject
 
-![DatabaseStructure.png](/static/images/DatabaseStructure.png)
+![DatabaseStructure.png](/assets/images/DatabaseStructure.png)
 
 ## Overview
 

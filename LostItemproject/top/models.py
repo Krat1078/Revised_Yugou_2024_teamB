@@ -51,7 +51,8 @@ class Item(models.Model):
 class ItemImage(models.Model):
     id = models.AutoField(primary_key=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, verbose_name="Item")
-    image_path = models.CharField(max_length=225, verbose_name="Image Path")
+    image_path = models.ImageField(upload_to='item_images/', max_length=255, blank=True, null=True,
+                                   verbose_name='Item Images')
     uploaded_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
     def __str__(self):
