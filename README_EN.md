@@ -1,4 +1,23 @@
 
+# How to start 
+```bash
+conda create -n django python=3.8
+
+conda activate django
+
+pip install -r requirements.txt
+
+cd LostItemproject
+
+python manage.py runserver 8000
+
+```
+### Backend management address
+http://127.0.0.1:8000/admin
+
+username: admin
+passwd: admin123456
+
 
 # Project Directory Structure
 
