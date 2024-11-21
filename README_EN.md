@@ -150,7 +150,7 @@ This model stores images related to items.
 | --- | --- | --- |
 | `id` | AutoField (Primary Key) | Unique identifier for each image. |
 | `item` | ForeignKey (to `Item`) | References the item associated with the image. |
-| `image_path` | CharField (max_length=225) | File path of the image. |
+| `image_path` | ImageField (max_length=225) | File path of the image. |
 | `uploaded_at` | DateTimeField (optional) | Timestamp when the image was uploaded. |
 
 ---
