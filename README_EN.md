@@ -18,6 +18,9 @@ http://127.0.0.1:8000/admin
 username: admin
 passwd: admin123456
 
+### student login
+username: student1
+passwd: !Stu123456
 
 # Project Directory Structure
 

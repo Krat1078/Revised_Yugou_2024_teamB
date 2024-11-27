@@ -28,6 +28,6 @@ class CustomLoginView(auth_views.LoginView):
 
 class SignUpView(SuccessMessageMixin, CreateView):
     form_class = UserRegisterForm
-    success_url = reverse_lazy('login')
+    success_url = reverse_lazy('lostitem:login')
     template_name = 'users/signup.html'
     success_message = "Now you are registered, try to log in!"
