@@ -28,17 +28,25 @@ passwd: !Stu123456
 Revised_Yugou_2024_teamB/
 │
 ├── LostItemproject/
-│   ├── LostItemproject/
+│   ├── LostItemproject/ (Django Project Setup)
 │   │   ├── __init__.py
 │   │   ├── asgi.py
 │   │   ├── settings.py
 │   │   ├── urls.py
 │   │   ├── wsgi.py
 │   │
+│   ├── lostitem/ (lostitem app)
+│   │   ├── templates/ (html files)
+│   │   │   
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── forms.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│   │
 │   ├── top/
-│   │   ├──media/
-│   │   │   ├──images/
-│   │   │
 │   │   ├── migrations/
 │   │   │   ├── 0001_initial.py
 │   │   │   ├── __init__.py
@@ -52,6 +60,15 @@ Revised_Yugou_2024_teamB/
 │   │   ├── tests.py
 │   │   ├── urls.py
 │   │   ├── views.py
+│   │
+│   ├──media/ (Project image storage directory)
+│   │   ├──item_images/
+│   │
+│   ├──static/ (Project static file directory such as css, js filesy)
+│   │   ├──css/
+│   │   ├──css/
+│   │
+│   ├──templates/ (Basic HTML file storage directory, such as base.html, footer.html)
 │   │
 │   ├── db.sqlite3
 │   ├── manage.py
