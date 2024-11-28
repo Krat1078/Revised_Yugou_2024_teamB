@@ -48,8 +48,6 @@ Revised_Yugou_2024_teamB/
 │   │
 │   ├── top/
 │   │   ├── migrations/
-│   │   │   ├── 0001_initial.py
-│   │   │   ├── __init__.py
 │   │   │
 │   │   ├── templates/
 │   │   │   ├──index.html
@@ -66,7 +64,7 @@ Revised_Yugou_2024_teamB/
 │   │
 │   ├──static/ (Project static file directory such as css, js filesy)
 │   │   ├──css/
-│   │   ├──css/
+│   │   ├──js/
 │   │
 │   ├──templates/ (Basic HTML file storage directory, such as base.html, footer.html)
 │   │
