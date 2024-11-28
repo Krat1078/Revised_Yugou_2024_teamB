@@ -12,6 +12,9 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'lostitem:logout' %}">Logout</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'lostitem:tolostitemregister' %}">LostitemRegister</a>
+                </li>
             {% else %}
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'lostitem:login' %}">Login</a>
