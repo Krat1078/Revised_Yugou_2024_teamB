@@ -2,7 +2,7 @@ from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
 
-app_name = 'lostitem'  # 定义命名空间
+app_name = 'lostitem'  # 名前空間の定義
 
 urlpatterns = [
     path('', views.index, name='index'),

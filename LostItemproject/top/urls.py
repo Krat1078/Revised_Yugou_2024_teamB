@@ -1,7 +1,7 @@
 from django.urls import path
 from . import views
 
-app_name = 'top'  # 定义命名空间
+app_name = 'top'  # 名前空間の定義
 
 urlpatterns = [
     path('', views.index, name='index'),
