@@ -1,5 +1,6 @@
 import imghdr
 import hashlib
+from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
@@ -10,6 +11,7 @@ from django.contrib.auth import views as auth_views
 from django.apps import apps
 from django.core.files.images import get_image_dimensions
 from django.utils import timezone
+from django.utils.dateparse import parse_date
 
 from .forms import (
     UserRegisterForm,
@@ -74,6 +76,10 @@ def register_item(request):
         print(post_data)
 
         errors = []
+        data = parse_date(data)
+        if not data:
+            errors.append("error': 'Invalid date format")
+        data = timezone.make_aware(datetime.combine(data, datetime.min.time()))
         if not category:
             errors.append("item category is required.")
         if not location:
@@ -118,7 +124,7 @@ def register_item(request):
             storage_location=get_object_or_404(apps.get_model('top', 'StorageLocationsTag'), pk=location),
             item_type=1,
             status=0,
-            created_at=timezone.now(),
+            created_at=data,
             updated_at=timezone.now(),
             contact_email=user_email,
             contact_phone=post_data.get('contact_phone'),
