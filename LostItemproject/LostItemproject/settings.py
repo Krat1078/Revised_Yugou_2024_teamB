@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'top',
     'lostitem',
+    'founditem',
     'crispy_forms',
     'crispy_bootstrap5',
 ]
