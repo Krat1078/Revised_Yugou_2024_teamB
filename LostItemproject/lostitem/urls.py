@@ -11,6 +11,8 @@ urlpatterns = [
     path('login/', views.CustomLoginView.as_view(), name='login'),
     path('logout/', auth_views.LogoutView.as_view(), name='logout'),
     path('signup/', views.SignUpView.as_view(), name='signup'),
+    path('register/', views.register, name='register'),
+    path('activate/<uidb64>/<token>/', views.activate, name='activate'),
     path('tolostitemregister/', views.tolostitemregister, name='tolostitemregister'),
     path('registeritem/', views.register_item, name='register_item'),
 ]
