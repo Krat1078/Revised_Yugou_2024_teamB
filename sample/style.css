@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+
+/* @media (min-width: 992px) {
+  .rounded-lg-3 { border-radius: .3rem; }
+} */
+:root{
+  --primary: #67CAD6;
+  --body:#cef1f7;
+  --background:#fcf7ef;
+}
+
+
+body{
+  font-family: "Noto Sans JP", sans-serif;
+  /* font-optical-sizing: auto;
+  font-weight: <weight>;
+  font-style: normal; */
+  /* color:var(--body); */
+  /* background-image: url("imgs/haikei2.png"); */
+  background-size: cover;
+  background-attachment: fixed;/*背景固定*/
+  background-color:var(--background);
+  
+}
+
+.navbar .navbar-brand{
+  color: var(--primary) !important;
+  font-size: 20px;
+  font-weight: 700;
+}
+/* .navbar .nav-link{
+  color: rgb(88, 88, 107) !important;
+} */
+.hero{
+  background-image: url("imgs/haikei2.png");
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  position: relative;
+  z-index: 2;
+}
+.hero::after{
+  content:"";
+  position:absolute;
+  width:100%;
+  height:100%;
+  top:0;
+  left:0;
+  background-color:rgba(13, 49, 71, 0.199);
+  z-index: -1;
+}
