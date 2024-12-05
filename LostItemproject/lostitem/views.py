@@ -1,20 +1,32 @@
 import imghdr
+import os.path
+
+from PIL import Image, UnidentifiedImageError
 import hashlib
 from datetime import datetime
 
 from django.contrib.auth.decorators import login_required
 from django.contrib.messages.views import SuccessMessageMixin
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.contrib.auth import views as auth_views
 from django.apps import apps
 from django.core.files.images import get_image_dimensions
 from django.utils import timezone
+from django.contrib.auth.models import User
 from django.utils.dateparse import parse_date
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.utils.encoding import force_bytes
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.sites.shortcuts import get_current_site
+from django.template.loader import render_to_string
+from django.core.mail import send_mail
+from django.contrib import messages
 
 from .forms import (
     UserRegisterForm,
+    UserRegistrationForm,
 )
 
 # Create your views here.
@@ -38,6 +50,50 @@ class SignUpView(SuccessMessageMixin, CreateView):
     success_url = reverse_lazy('lostitem:login')
     template_name = 'users/signup.html'
     success_message = "Now you are registered, try to log in!"
+
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegistrationForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.is_active = False  # 用户暂时不可用，等待激活
+            user.set_password(form.cleaned_data['password'])
+            user.save()
+
+            # 发送激活邮件
+            current_site = get_current_site(request)
+            subject = "Activate Your Account"
+            message = render_to_string('email/account_activation_email.html', {
+                'user': user,
+                'domain': current_site.domain,
+                'uidb64': urlsafe_base64_encode(force_bytes(user.pk)),
+                'token': default_token_generator.make_token(user),
+            })
+            # print(urlsafe_base64_encode(force_bytes(user.pk)))
+            send_mail(subject, message, '1528392308@qq.com', [user.email])
+
+            return render(request, 'email/check_email.html')
+    else:
+        form = UserRegistrationForm()
+    return render(request, 'users/signup.html', {'form': form})
+
+
+# activate user
+def activate(request, uidb64, token):
+    try:
+        uid = urlsafe_base64_decode(uidb64).decode()
+        user = get_object_or_404(User, pk=uid)
+    except (TypeError, ValueError, OverflowError, User.DoesNotExist):
+        user = None
+
+    if user is not None and default_token_generator.check_token(user, token):
+        user.is_active = True
+        user.save()
+        messages.success(request, 'Your account has been activated successfully! You can now log in.')
+        return redirect('lostitem:login')  # redirect to 'login'
+    else:
+        return HttpResponse('Activation link is invalid!')
 
 
 # from home page to lostitemregiste
@@ -93,23 +149,27 @@ def register_item(request):
         # Used to store the hash value of the image and check for duplication
         image_hashes = set()
         for image in images:
-            # check image is '.jpg'...
-            if imghdr.what(image) not in ['jpeg', 'png', 'gif']:
-                errors.append(f'{image.name} is not a valid image format (JPEG, PNG, GIF only).')
-            else:
-                # check size of image
-                width, height = get_image_dimensions(image)
-                if width > 1920 or height > 1080:
-                    errors.append(f"{image.name} exceeds maximum dimensions (1920x1080).")
+            try:
+                img = Image.open(image)
+                img_format = img.format.lower()
+                if img_format not in ['jpg', 'jpeg', 'png', 'gif']:
+                    errors.append(f'{image.name} is not a valid image format (JPG, JPEG, PNG, GIF only).')
+                else:
+                    # 检查尺寸
+                    width, height = img.size
+                    if width > 1920 or height > 1080:
+                        errors.append(f"{image.name} exceeds maximum dimensions (1920x1080).")
 
-            # Calculate the hash value of the image and check whether it is repeated
-            image.seek(0)
-            image_hash = hashlib.md5(image.read()).hexdigest()
-            if image_hash in image_hashes:
-                errors.append(f"Duplicate image detected: {image.name}")
-            else:
-                image_hashes.add(image)
-            image.seek(0)
+                    # 检查重复
+                    image.seek(0)
+                    image_hash = hashlib.md5(image.read()).hexdigest()
+                    if image_hash in image_hashes:
+                        errors.append(f"Duplicate image detected: {image.name}")
+                    else:
+                        image_hashes.add(image_hash)
+                image.seek(0)
+            except UnidentifiedImageError:
+                errors.append(f'{image.name} is not a valid image format.')
 
         if errors:
             return JsonResponse({'status': 'error', 'errors': errors}, status=400)
