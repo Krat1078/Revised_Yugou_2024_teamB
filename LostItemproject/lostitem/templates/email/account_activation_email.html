@@ -1,0 +1,4 @@
+<p>Hi {{ user.username }},</p>
+<p>Thanks for signing up. Please click the link below to activate your account:</p>
+
+<a href="http://{{ domain }}{% url 'lostitem:activate' uidb64=uidb64 token=token %}">Activate Account</a>
