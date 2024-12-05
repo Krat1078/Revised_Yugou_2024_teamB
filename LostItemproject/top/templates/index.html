@@ -27,10 +27,56 @@
         </div>
     </nav>
 
+
     <!-- Page Content -->
     <div class="container mt-5">
         <h1>Lost Item Project</h1>
     </div>
+
+
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">検索</button>
+</form>
+
+{% comment %} 
+bootstrapで画像のタイル表示が実装できる 
+データベースにある画像を動的に表示する場合、{% %}の中でdivタグで囲む
+{{ image.item.item_name.item_name }}: ItemImage -> Item -> ItemsNameTag の item_name フィールドを参照しているイメージ
+{% endcomment %}
+{% if images %}
+    <div class="container my-4">
+        <div class="row g-3">
+            {% for image in images %}
+                <div class="col-6 col-md-4 col-lg-3">
+                    <a href="#" data-bs-toggle="modal" data-bs-target="#modal{{ image.id }}">
+                        <img src="{{ image.image_path.url }}" class="img-fluid rounded" alt="Item Image">
+                        <h5 class="mt-2 text-center">{{ image.item.item_name.item_name }}</h5>
+                    </a>
+                </div>
+
+                <div class="modal fade" id="modal{{ image.id }}" tabindex="-1" aria-labelledby="modalLabel{{ image.id }}" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="modalLabel{{ image.id }}">{{ image.item.item_name.item_name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <img src="{{ image.image_path.url }}" class="img-fluid" alt="Item Image">
+                                <p class="mt-3">{{ image.item.item_name.description }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>    
+            {% endfor %}
+        </div>
+    </div>
+{% else %}
+    <p>選択されたタグを持つ落とし物情報は見つかりませんでした</p>
+{% endif %}
 
 
 {% endblock content %}
