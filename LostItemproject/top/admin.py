@@ -1,7 +1,7 @@
 from django.contrib import admin
 from .models import ItemsNameTag, PickedOrDroppedLocationsTag, StorageLocationsTag, Item, ItemImage
 
-# 注册模型到后台管理
+# バックエンド管理への登録モデル
 admin.site.register(ItemsNameTag)
 admin.site.register(PickedOrDroppedLocationsTag)
 admin.site.register(StorageLocationsTag)
