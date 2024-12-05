@@ -2,12 +2,11 @@
 {% load crispy_forms_tags %}
 {% block content %}
     <body class="bg-light">
-
-
     <div class="container mt-5">
         <div class="mx-auto" style="max-width: 600px;">
-            <h3 class="text-center mb-4 fw-bold">遺失物登録</h3>
-            <form method="post" action="{% url 'lostitem:register_item' %}" enctype="multipart/form-data" class="dropzone" id="itemsRegister">
+            <h3 class="text-center mb-4 fw-bold">拾得物登録</h3>
+            <form method="post" action="{% url 'founditem:register_item' %}" enctype="multipart/form-data"
+                  class="dropzone" id="itemsRegister">
                 {% csrf_token %}
                 <!-- 日時 -->
                 <div class="row align-items-center mb-3">
@@ -17,9 +16,22 @@
                     </div>
                 </div>
 
-                <!-- 落とした場所 -->
+                <!--拾った場所 -->
                 <div class="row align-items-center mb-3">
-                    <label for="location" class="col-4 col-form-label">落とした場所</label>
+                    <label for="location" class="col-4 col-form-label">拾った場所</label>
+                    <div class="col-8">
+                        <select id="location" name="location" class="form-select">
+
+                            {% for pickedOrDroppedLocationsTag in pickedOrDroppedLocationsTags %}
+                                <option value="{{ pickedOrDroppedLocationsTag.PorD_location_id }}">{{ pickedOrDroppedLocationsTag.picked_or_dropped_location_name }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                </div>
+
+                <!--届けた場所 -->
+                <div class="row align-items-center mb-3">
+                    <label for="location" class="col-4 col-form-label">届けた場所</label>
                     <div class="col-8">
                         <select id="location" name="location" class="form-select">
 
@@ -124,7 +136,7 @@
                 if (fileInputsContainer.children.length >= 5) {
                     alert("最大アップロード数は5です");
                     return;
-}
+                }
                 // 将新文件输入框添加到容器中
                 fileInputsContainer.appendChild(newFileInput);
             });
