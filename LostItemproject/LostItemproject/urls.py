@@ -22,7 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('top.urls')),
     path('lostitem/', include('lostitem.urls')),
-    path('founditem', include('founditem.urls')),
+    path('founditem/', include('founditem.urls')),
 ]
 
 if settings.DEBUG:
