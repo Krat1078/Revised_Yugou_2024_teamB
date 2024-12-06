@@ -9,7 +9,7 @@ import os
 
 class ImageUploadTestCase(TestCase):
     def setUp(self):
-        # 清理媒体目录中的文件，确保每次测试都从干净的状态开始
+        # すべてのテストがクリーンな状態から始まるように、メディアディレクトリのファイルをクリーンアップする。
         media_path = settings.MEDIA_ROOT
         if os.path.exists(media_path):
             for f in os.listdir(media_path):
@@ -24,9 +24,9 @@ class ImageUploadTestCase(TestCase):
 
         with open('E:\Pictures\infinity-4878311.jpg', 'rb') as f:
             image = SimpleUploadedFile(f.name, f.read(), content_type='image/jpeg')
-            # 查询item表中的第一条记录
+            # アイテムテーブルの最初の行を照会する
             # item = Item.objects.filter(item_id=2).first()  # Look for item_id = 2
-            # 创建标签
+            # ラベルの作成
         item_name_tag = ItemsNameTag.objects.create(
             item_name="Laptop",
             description="An electronic device used for computing"
@@ -42,31 +42,31 @@ class ImageUploadTestCase(TestCase):
             description="The place where lost items are stored"
         )
 
-        # 创建物品
+        # アイテムを作成する
         Item.objects.create(
             item_name=item_name_tag,
             PorD_location=picked_or_dropped_location_tag,
             storage_location=storage_location_tag,
-            item_type=0,  # 捡到物品
-            status=0,  # 待处理
+            item_type=0,  # 拾ったもの
+            status=0,  # 保留
             contact_email="user@example.com",
             contact_phone="1234567890"
         )
         item = Item.objects.first()
         print(item)
-        # 然后插入 item_image 记录
+        # 次にitem_imageレコードを挿入する
         item_image = ItemImage.objects.create(
-            item_id=item.item_id,  # 确保 item_id 已经有对应的 item
+            item_id=item.item_id,  # item_idがすでに対応するアイテムを持っていることを確認する
             image_path=image,
             uploaded_at="2024-11-20 10:30:00"
         )
 
-        # 确保图片字段已保存
+        # 画像フィールドが保存されていることを確認する
         self.assertTrue(os.path.exists(item_image.image_path.path))
 
 
     def tearDown(self):
-        # 清理测试后留下的文件
+        # テスト後に残されたファイルのクリーンアップ
         media_path = settings.MEDIA_ROOT
         if os.path.exists(media_path):
             for f in os.listdir(media_path):
