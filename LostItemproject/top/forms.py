@@ -17,5 +17,5 @@ class DateFilterForm(forms.Form):
     date = forms.DateField(
         required=False,
         widget=forms.DateInput(attrs={"type": "date"}),
-        label="落とした日"
+        label="落とした日（選択した月日以降を表示）"
     )
