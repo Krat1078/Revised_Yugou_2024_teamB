@@ -1,39 +1,31 @@
 {% extends "base.html" %}
+{% load static %}
 {% block content %}
 
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">Lost Item Project</a>
-        <div class="collapse navbar-collapse  justify-content-end">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'founditem:tofounditemregister' %}">LostitemRegister</a>
-                </li>
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <span class="navbar-text">Welcome, {{ user.username }}!</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'lostitem:logout' %}">Logout</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'lostitem:tolostitemregister' %}">LostitemRegister</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'lostitem:login' %}">Login</a>
-                    </li>
-                {% endif %}
-            </ul>
+    <!--  hero  -->
+    <div class="hero Polka">
+        <div class="container col-xxl-8 px-4 py-5">
+          <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
+            <div class="col-10 col-sm-8 col-lg-6">
+              <img  class="d-block mx-lg-auto img-fluid" src= "{% static "imgs/illustrations/HomePage-L.png" %}"alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+            </div>
+            <div class="col-lg-6">
+              <h1 class="display-5 fw-bold lh-1 mb-3">岩手大学の落とし物</h1>
+              <p class="lead mt-4">学内の落とし物と拾得物はここで簡単に登録できます．</p>
+              <!-- <div class="d-grid gap-2 d-md-flex justify-content-md-start">
+                <button type="button" class="btn btn-primary btn-lg px-4 me-md-2">Primary</button>
+                <button type="button" class="btn btn-outline-secondary btn-lg px-4">Default</button>
+              </div> -->
+              <div class="container-fluid">
+                <form class="d-flex">
+                  <input class="form-control me-2" type="search" placeholder="タグ検索" aria-label="Search">
+                  {% comment %} <button class="btn btn-outline-success" type="submit">タグ検索</button> {% endcomment %}
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
-    </nav>
-
-
-    <!-- Page Content -->
-    <div class="container mt-5">
-        <h1>Lost Item Project</h1>
-    </div>
-
-
+      </div>
 
 <form method="post">
     {% csrf_token %}
@@ -77,6 +69,7 @@ bootstrapで画像のタイル表示が実装できる
 {% else %}
     <p>選択されたタグを持つ落とし物情報は見つかりませんでした</p>
 {% endif %}
+
 
 
 {% endblock content %}

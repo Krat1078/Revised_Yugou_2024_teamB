@@ -1,6 +1,6 @@
 
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 
 
@@ -11,7 +11,7 @@
       <div class="container col-xxl-8 px-4 py-5">
         <div class="row flex-lg-row-reverse align-items-center g-5 py-5">
           <div class="col-10 col-sm-8 col-lg-6">
-            <img src="static/imgs/illustrations/HomePage-L.png" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
+            <img src="{% static "imgs/illustrations/HomePage-L.png" %}" class="d-block mx-lg-auto img-fluid" alt="Bootstrap Themes" width="700" height="500" loading="lazy">
           </div>
           <div class="col-lg-6">
             <h1 class="display-5 fw-bold lh-1 mb-3">岩手大学の落とし物</h1>
@@ -30,10 +30,16 @@
         </div>
       </div>
     </div>
-    
+
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">検索</button>
+  </form>
 
   <!--  card  -->
     <section id="cardlists">
+      {% if images %}
       <div class="container">
         {% comment %} <div class="row mt-5">
           <div class ="col-md-8 mx-auto text-center">
@@ -43,28 +49,26 @@
         </div> {% endcomment %}
 
         <div class="row g-8 py-5">
-          {% for itemimage in itemimages %}
-          <div class="col-lg-3 col-sm-6">
-            <div class="card card-effect">
+          {% comment %} {% for itemimage in itemimages %} {% endcomment %}
+          {% for image in images %}
+          <div class="col-lg-3 col-sm-6 g-5">
+            <a class="card card-effect" href="#" data-bs-toggle="modal" data-bs-target="#modal{{ image.id }}">
               <div class="card-img-area">
-                <img src="media/{{itemimage.image_path}}" class="card-img-top object-fit: contain" alt="...">
+                <img src="{{ image.image_path.url }}" class="card-img-top object-fit: contain" alt="Item Image">
               </div>
                 
                 
               <div class="card-body">
-                <p class="card-text"><img class="card-icons" src="static/imgs/icons/CALENDAR I.png">{{itemimage.item.created_at}}</p>
-                <p class="card-text"><img class="card-icons" src="static/imgs/icons/CATEGORY I.png">{{itemimage.item.item_name}}</p>
-                <p class="card-text"><img class="card-icons" src="static/imgs/icons/Component 1.png">{{itemimage.item.PorD_location}}</p>
-                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">詳細情報</button>
+                <p class="card-text"><img class="card-icons" src="{% static "imgs/icons/CALENDAR I.png" %}">{{image.item.created_at}}</p>
+                <p class="card-text"><img class="card-icons" src="{% static "imgs/icons/CATEGORY I.png" %}">{{ image.item.item_name.item_name }}</p>
+                <p class="card-text"><img class="card-icons" src="{% static 'imgs/icons/Component 1.png'%}">{{image.item.PorD_location}}</p>
+                {% comment %} <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">詳細情報</button> {% endcomment %}
               </div>
-            </div>
+            </a>
           </div>
-          {%empty%}
-          <div>落とし物はありません</div>
-          {%endfor%}
 
           <!--  modal  -->
-          <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+          <div class="modal fade" id="modal{{ image.id }}" tabindex="-1" aria-labelledby="modalLabel{{ image.id }}" aria-hidden="true">
             <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
               <div class="modal-content">
                 <div class="modal-header">
@@ -75,8 +79,8 @@
                   <div class="row">
                     <div class="col-7">
                       {% comment %} <img src="static/imgs/くるま.jpg" class="detail-img-top img-fluid" alt="..."> {% endcomment %}
-
-                      <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
+                      <img src="{{ image.image_path.url }}" class="img-fluid" alt="Item Image">
+                      {% comment %} <div id="carouselIndicators" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-indicators">
                           <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
                           <button type="button" data-bs-target="#carouselIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
@@ -101,32 +105,32 @@
                           <span class="carousel-control-next-icon" aria-hidden="true"></span>
                           <span class="visually-hidden">Next</span>
                         </button>
-                      </div>
+                      </div> {% endcomment %}
 
 
                     </div>
                     <div class="col-5">
                       <ul class="detail">
-                        <li class="detail-tag"><img class="detail-icons" src="static/imgs/icons/CALENDAR I.png">日時</li>
+                        <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">日時</li>
                         <ul class="detail-content">
-                          <li class ="detail-content">2024/11/21</li>
+                          <li class ="detail-content">{{image.item.created_at}}</li>
                         </ul>
-                        <li class="detail-tag"><img class="detail-icons" src="static/imgs/icons/Component 1.png">拾った場所</li>
+                        <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/Component 1.png'%}">拾った場所</li>
                         <ul class="detail-content">
-                          <li class ="detail-content">図書館</li>
+                          <li class ="detail-content">{{ image.item.PorD_location }}</li>
                         </ul>
-                        <li class="detail-tag"><img class="detail-icons" src="static/imgs/icons/SENT.png">届けた場所</li>
+                        <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/SENT.png'%}">届けた場所</li>
                         <ul class="detail-content">
-                          <li class ="detail-content">学生センターA</li>
+                          <li class ="detail-content">{{ image.item.storage_location }}</li>
                         </ul>
-                        <li class="detail-tag"><img class="detail-icons" src="static/imgs/icons/CATEGORY I.png">物品カテゴリー</li>
+                        <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CATEGORY I.png'%}">物品カテゴリー</li>
                         <ul class="detail-content">
-                          <li class ="detail-content">貴重品</li>
+                          <li class ="detail-content">{{ image.item.item_name.item_name }}</li>
                         </ul>
-                        <li class="detail-tag"><img class="detail-icons" src="static/imgs/icons/CALENDAR I.png">色*</li>
+                        {% comment %} <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">色*</li>
                         <ul class="detail-content">
                           <li class ="detail-content">赤</li>
-                        </ul>
+                        </ul> {% endcomment %}
                       </ul>
                     </div>
                   </div>
@@ -134,7 +138,7 @@
                     <div class="col-12">
                       <ul class="detail detail-content">
                       <li class="detail">コメント</li>
-                      <li class ="detail-content">あああaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaあ</li>
+                      <li class ="detail-content">{{ image.item.item_name.description }}</li>
                       </ul>
                     </div>
                   </div>
@@ -146,7 +150,7 @@
               </div>
             </div>
           </div>
-
+          {% endfor %}
             {% comment %} 
 
           <div class="col-lg-3 col-sm-6">
@@ -203,6 +207,10 @@
         
 
       </div>
+      {% else %}
+        <p>選択されたタグを持つ落とし物情報は見つかりませんでした</p>
+      {% endif %}
+
       <div class="d-flex justify-content-center">
         <nav aria-label="Page navigation example">
           <ul class="pagination">

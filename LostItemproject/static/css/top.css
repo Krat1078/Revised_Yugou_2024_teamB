@@ -15,7 +15,7 @@
     color: rgb(88, 88, 107) !important;
 } */
 .hero{
-    background-image: url("../imgs/haikei2.png");
+    /* background-image: url("../imgs/haikei2.png"); */
     background-position: center;
     background-size: cover;
     background-attachment: fixed;

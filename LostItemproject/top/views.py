@@ -26,4 +26,7 @@ def index(request):
             
     else:
         form = TagFilterForm()
-    return render(request, 'index.html', {"images": images, "form": form })
+    return render(request, 'index_yamamichi.html', {"images": images, "form": form })
+
+
+
