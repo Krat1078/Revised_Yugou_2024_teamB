@@ -1,0 +1,5 @@
+*.pyc
+__pycache__/
+LostItemproject/founditem/__pycache__/
+LostItemproject/lostitem/__pycache__/
+LostItemproject/top/__pycache__/
