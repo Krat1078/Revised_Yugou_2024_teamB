@@ -1,0 +1,98 @@
+
+:root{
+    --primary: #67CAD6;
+    --body:#cef1f7;
+    --background:#F7FBF4;
+    --box-shadow:0 8px 22px rgba(77, 77, 77, 0.204);
+  }
+
+.hero{
+    background-image:radial-gradient(#67cbd63b 3px, #F7FBF4 2px);
+    background-size:30px 30px;
+    background-repeat:repeat;
+    background-position:center;
+    background-attachment:fixed;
+    position: relative;
+    z-index: 1;
+}
+.hero-content{
+    position: relative;
+    top:30px;
+}
+/* .hero .emoji_niconico{
+    transform: rotate(-30deg);
+} */
+.hero .emoji_megane{
+    transform: rotate(150deg);
+    position:relative;
+    top: -50px;
+
+}
+.hero p{
+    color: var(--primary) !important;
+    font-weight: 500;
+}
+
+.card-body li{
+    display: flex;
+    align-items: center; /* アイコンとテキストを垂直中央揃え */
+    text-decoration: none !important;
+}
+.card-body ul{
+    list-style:none;
+    padding:0;
+}
+
+
+.card-text img{
+    width: 1em;  /* 画像の幅を文字の大きさに合わせる */
+    height: 1em; /* 画像の高さを文字の大きさに合わせる */
+    margin-right: 5px; /*アイコンと文字の間にスペース*/
+
+}
+
+.card-effect{
+    box-shadow:var(--box-shadow) ;
+    transition:all 0.35s ease;
+}
+.card-effect:hover{
+    box-shadow:none;
+    transform: translateY(5px);
+}
+.card-img-top{
+    height:200px;
+    object-fit: contain;
+    background-color:#E8E8E8;
+
+}
+/* .detail-icons{
+    width:8%;
+    vertical-align: auto;
+} */
+.detail-img{
+    width:500px;
+    object-fit: contain;
+    background-color:#0c0b0b;
+}
+.detail li{
+    display: flex;
+    align-items: center; /* アイコンとテキストを垂直中央揃え */
+}
+.detail-tag img{
+    width: 1em;  /* 画像の幅を文字の大きさに合わせる */
+    height: 1em; /* 画像の高さを文字の大きさに合わせる */
+    margin-right: 5px; /*アイコンと文字の間にスペース*/
+    vertical-align: auto;
+}
+ul.detail{
+    list-style:none;
+    padding:0;
+}
+ul.detail-content{
+    list-style:none;
+}
+li.detail-content{
+    background-color: #D9D9D9;
+    border-radius:5px;
+    overflow-wrap:break-word;
+}
