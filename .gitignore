@@ -6,3 +6,5 @@ LostItemproject/top/__pycache__/
 
 .idea/
 .vscode/
+
+/LostItemproject/db.sqlite3
