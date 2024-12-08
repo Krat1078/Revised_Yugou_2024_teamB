@@ -6,44 +6,49 @@
     --box-shadow:0 8px 22px rgba(77, 77, 77, 0.204);
   }
 
-
-/* .cardlists{
-    background-color:var(--background);
-  } */
-
-/* .navbar .nav-link{
-    color: rgb(88, 88, 107) !important;
-} */
 .hero{
-    /* background-image: url("../imgs/haikei2.png"); */
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
+    background-image:radial-gradient(#67cbd63b 3px, #F7FBF4 2px);
+    background-size:30px 30px;
+    background-repeat:repeat;
+    background-position:center;
+    background-attachment:fixed;
     position: relative;
-    z-index: 2;
+    z-index: 1;
 }
-.Polka{
-    background-image: radial-gradient(#67cbd63b 3px, #F7FBF4 2px);
-    background-size: 30px 30px;
+.hero-content{
+    position: relative;
+    top:30px;
 }
-/* .hero::after{
-    content:"";
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
-    background-color:rgba(13, 49, 71, 0.7);
-    z-index: -1;
+/* .hero .emoji_niconico{
+    transform: rotate(-30deg);
 } */
+.hero .emoji_megane{
+    transform: rotate(150deg);
+    position:relative;
+    top: -50px;
 
+}
 .hero p{
     color: var(--primary) !important;
     font-weight: 500;
 }
-.card-icons{
-    width:7%;
-    vertical-align: auto;
+
+.card-body li{
+    display: flex;
+    align-items: center; /* アイコンとテキストを垂直中央揃え */
+    text-decoration: none !important;
+}
+.card-body ul{
+    list-style:none;
+    padding:0;
+}
+
+
+.card-text img{
+    width: 1em;  /* 画像の幅を文字の大きさに合わせる */
+    height: 1em; /* 画像の高さを文字の大きさに合わせる */
+    margin-right: 5px; /*アイコンと文字の間にスペース*/
+
 }
 
 .card-effect{
@@ -60,13 +65,28 @@
     background-color:#E8E8E8;
 
 }
-.detail-icons{
+/* .detail-icons{
     width:8%;
     vertical-align: auto;
+} */
+.detail-img{
+    width:500px;
+    object-fit: contain;
+    background-color:#0c0b0b;
 }
-
+.detail li{
+    display: flex;
+    align-items: center; /* アイコンとテキストを垂直中央揃え */
+}
+.detail-tag img{
+    width: 1em;  /* 画像の幅を文字の大きさに合わせる */
+    height: 1em; /* 画像の高さを文字の大きさに合わせる */
+    margin-right: 5px; /*アイコンと文字の間にスペース*/
+    vertical-align: auto;
+}
 ul.detail{
     list-style:none;
+    padding:0;
 }
 ul.detail-content{
     list-style:none;

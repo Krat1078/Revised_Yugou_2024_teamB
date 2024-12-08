@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from .models import ItemImage
-from .forms import TagFilterForm
+from .forms import TagFilterForm, DateFilterForm
 from django.db.models import Q
 
 # Create your views here.
@@ -11,6 +11,7 @@ def index(request):
     images = ItemImage.objects.select_related("item__item_name").all() # すべての物品表示
     if request.method == "POST":
         form = TagFilterForm(request.POST or None) # form.pyからimport
+        date_form = DateFilterForm(request.POST or None)
         if form.is_valid():
             # python側の変数にタグ情報を格納する
             itemname_tag = form.cleaned_data['itemname_tag']
@@ -23,10 +24,17 @@ def index(request):
             elif location_tag:
                 images = images.filter(item__PorD_location=location_tag)
             # ItemImageモデルのインスタンスを取得し、その関連するItemとItemNameTagを一度に取得
-            
+        if date_form.is_valid():
+            date = form.cleaned_data.get("date")
+            if date:
+                images = images.filter(item__created_at_gte=date)   
     else:
         form = TagFilterForm()
-    return render(request, 'index_yamamichi.html', {"images": images, "form": form })
-
-
-
+        date_form = DateFilterForm()
+    
+    context = {
+        "images": images, 
+        "form": form, 
+        "date_form": date_form,
+    }
+    return render(request, 'index.html', context)
