@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+
+/* @media (min-width: 992px) {
+  .rounded-lg-3 { border-radius: .3rem; }
+} */
+:root{
+  --primary: #67CAD6;
+  --body:#cef1f7;
+  --background:#F7FBF4;
+  --textcolor:#06343D;
+}
+
+
+body{
+  /* font-family: "Noto Sans JP", sans-serif !important;
+  font-optical-sizing: auto; */
+  /* font-weight: <weight>;
+  font-style: normal; */
+  font-family: "Inter", sans-serif !important;
+  font-optical-sizing: auto;
+  color:var(--textcolor) !important;
+  /* background-image: url("../imgs/haikei2.png") !important; */
+  /* background-size: cover;
+  background-attachment: fixed;背景固定 */
+  background-color:var(--background)!important;
+}
+/* section{
+  padding-top:60px;
+  padding-bottom:60px;
+} */
+footer{
+  background-color: #06343D !important;
+  color: var(--background);
+}
+.navbar{
+  background-color: #FFFFFF !important;
+  box-shadow: 0 5px 8px rgba(77, 77, 77, 0.204);
+}
+.navbar .navbar-brand{
+  color: var(--primary) !important;
+  font-size: 20px;
+  font-weight: 700;
+}
