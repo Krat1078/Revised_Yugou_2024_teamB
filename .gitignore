@@ -3,3 +3,8 @@ __pycache__/
 LostItemproject/founditem/__pycache__/
 LostItemproject/lostitem/__pycache__/
 LostItemproject/top/__pycache__/
+
+.idea/
+.vscode/
+
+/LostItemproject/db.sqlite3
