@@ -13,35 +13,7 @@
     <title>落とし物管理</title>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="/">落とし物管理アプリ</a>
-        <div class="collapse navbar-collapse  justify-content-end">
-            <ul class="navbar-nav ml-auto">
-                {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <span class="navbar-text">ようこそ，{{ user.username }}!</span>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'lostitem:logout' %}">ログアウト</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'lostitem:tolostitemregister' %}">遺失物登録</a>
-                    </li>
-                {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'lostitem:login' %}">ログイン</a>
-                    </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{% url 'founditem:tofounditemregister' %}">拾得物登録</a>
-                </li>
-            </ul>
-        </div>
-    </nav>
     <main>
-<<<<<<< HEAD
-        {% block content %}{% endblock %}
-=======
         <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
             <div class="container">
               <a class="navbar-brand" href="{% url 'top:home' %}">
@@ -86,7 +58,6 @@
         {% block content %}
         <p>This is the default content.</p>
         {% endblock %}
->>>>>>> main
     </main>
 </body>
 <footer>
