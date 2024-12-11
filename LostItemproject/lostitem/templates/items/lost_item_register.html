@@ -22,9 +22,8 @@
                     <label for="location" class="col-4 col-form-label">落とした場所</label>
                     <div class="col-8">
                         <select id="location" name="location" class="form-select">
-
                             {% for location in locations %}
-                                <option value="{{ location.storage_location_id }}">{{ location.storage_location_name }}</option>
+                                <option value="{{ location.PorD_location_id }}">{{ location.picked_or_dropped_location_name }}</option>
                             {% endfor %}
                         </select>
                     </div>
@@ -42,7 +41,8 @@
                         </select>
                     </div>
                 </div>
-
+                
+                {% comment %}
                 <!-- 写真 -->
                 <div class="row mb-3">
                     <label for="images-inputs" class="col-4 col-form-label">写真</label>
@@ -61,6 +61,7 @@
                         <button class="btn btn-outline-secondary" type="button" id="add-image-btn">+</button>
                     </div>
                 </div>
+                
 
                 <!-- 色 -->
                 <div class="row align-items-center mb-3">
@@ -69,6 +70,7 @@
                         <input type="text" name='color' id="color" class="form-control">
                     </div>
                 </div>
+                {% endcomment %}
 
                 <!-- コメント -->
                 <div class="row mb-3">
@@ -84,6 +86,7 @@
             </form>
         </div>
     </div>
+    {% comment %}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const addFileBtn = document.getElementById("add-image-btn"); // 获取加号按钮
@@ -139,7 +142,7 @@
             });
         });
     </script>
-
+    {% endcomment %}
 
 
 {% endblock content %}
