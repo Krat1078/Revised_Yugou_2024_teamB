@@ -54,7 +54,7 @@
                 
               <div class="card-body">
                 <ul>
-                <li class="card-text"><img class="card-icons" src="{% static "imgs/icons/CALENDAR I.png" %}">{{image.item.created_at|date:"Y-m-d"}}</li>
+                <li class="card-text"><img class="card-icons" src="{% static "imgs/icons/CALENDAR I.png" %}">{{image.item.created_at|date:"Y/m/d"}}</li>
                 <li class="card-text"><img class="card-icons" src="{% static "imgs/icons/CATEGORY I.png" %}">{{ image.item.item_name.item_name }}</li>
                 <li class="card-text"><img class="card-icons" src="{% static 'imgs/icons/Component 1.png'%}">{{image.item.PorD_location}}</li>
                 </ul>
@@ -79,7 +79,7 @@
                         <li class="detail-tag">物品ID　{{ image.item.item_id}}</li>
                         <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">日時</li>
                         <ul class="detail-content">
-                          <li class ="detail-content">{{ image.item.created_at|date:"Y-m-d"}}</li>
+                          <li class ="detail-content">{{ image.item.created_at|date:"Y/m/d"}}</li>
                         </ul>
                         <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/Component 1.png'%}">拾った場所</li>
                         <ul class="detail-content">
