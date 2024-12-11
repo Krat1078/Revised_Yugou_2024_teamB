@@ -6,6 +6,7 @@ from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.utils.dateparse import parse_date
+from utils import email_utils, item_utils
 
 from . import models
 
@@ -91,13 +92,13 @@ def register_item(request):
 
         item = models.get_item_model()
         itemImage = models.get_item_image_model()
-        itemImageTag = models.get_items_name_tag_model()
+        itemNameTag = models.get_items_name_tag_model()
         pickedOrDroppedLocationsTag = models.get_picked_or_dropped_locations_tag_model()
         storageLocationsTag = models.get_storage_locations_tag_model()
 
         # save to item
         item = item.objects.create(
-            item_name=get_object_or_404(itemImageTag, pk=category),
+            item_name=get_object_or_404(itemNameTag, pk=category),
             PorD_location=get_object_or_404(pickedOrDroppedLocationsTag, pk=location[0]),
             storage_location=get_object_or_404(storageLocationsTag, pk=location[1]),
             item_type=0,
@@ -111,6 +112,37 @@ def register_item(request):
         # save image
         for file in images:
             itemImage.objects.create(item_id=item.item_id, image_path=file, uploaded_at=timezone.now())
+
+
+        # 使用异步方法， 明天修改
+        match_lost_items = item_utils.match_items(item.item_id)
+
+        if match_lost_items:
+            attachments = []
+            if images:
+                print(images)
+                for image in images:
+                    image.seek(0)
+                    print(image)
+                    image_data = image.read()
+                    print(image_data)
+                    attachments.append((image.name, image_data, "image/jpeg"))
+
+            for lost_item in match_lost_items:
+                email = lost_item.contact_email
+                if email:
+                    email_utils.send_email(
+                        subject="遗失物品已找到",
+                        to_emails=[email],
+                        template_name="emails/found_item.html",
+                        context={
+                            "item_name": itemNameTag.objects.get(item_name_id=lost_item.item_name_id),
+                            "found_location": pickedOrDroppedLocationsTag.objects.get(PorD_location_id=lost_item.PorD_location_id),
+                            "storage_location": storageLocationsTag.objects.get(storage_location_id=lost_item.storage_location_id),
+                        },
+                        attachments=attachments
+                    )
+
 
         return JsonResponse({'status': 'success', 'message': 'Item registered successfully.'})
 
