@@ -24,6 +24,7 @@ body{
   /* background-size: cover;
   background-attachment: fixed;背景固定 */
   background-color:var(--background)!important;
+  margin-top: 100px;
 }
 /* section{
   padding-top:60px;
@@ -36,6 +37,9 @@ footer{
 .navbar{
   background-color: #FFFFFF !important;
   box-shadow: 0 5px 8px rgba(77, 77, 77, 0.204);
+}
+main{
+  padding-top: 56px;
 }
 .navbar .navbar-brand{
   color: var(--primary) !important;
