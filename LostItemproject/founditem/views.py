@@ -120,12 +120,9 @@ def register_item(request):
         if match_lost_items:
             attachments = []
             if images:
-                print(images)
                 for image in images:
                     image.seek(0)
-                    print(image)
                     image_data = image.read()
-                    print(image_data)
                     attachments.append((image.name, image_data, "image/jpeg"))
 
             for lost_item in match_lost_items:
