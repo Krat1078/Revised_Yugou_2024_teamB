@@ -147,7 +147,6 @@ def register_item(request):
         if description and len(description) > 500:
             errors.append("Description length must not exceed 500 characters.")
 
-
         """Maybe I don't need this place. (Lost and found registration does not require image registration.)
         images = request.FILES.getlist('images')
         # Used to store the hash value of the image and check for duplication
@@ -181,13 +180,13 @@ def register_item(request):
 
         item = apps.get_model('top', 'Item')
         ##### Maybe I don't need this place. (Lost and found registration does not require image registration.)
-        #itemImage = apps.get_model('top', 'ItemImage')
+        # itemImage = apps.get_model('top', 'ItemImage')
 
         # save to item
         item = item.objects.create(
             item_name=get_object_or_404(apps.get_model('top', 'ItemsNameTag'), pk=category),
             PorD_location=get_object_or_404(apps.get_model('top', 'PickedOrDroppedLocationsTag'), pk=location),
-            storage_location = None,
+            storage_location=None,
             # storage_location=get_object_or_404(apps.get_model('top', 'StorageLocationsTag'), pk=location),
             item_type=1,
             status=0,
@@ -195,11 +194,12 @@ def register_item(request):
             updated_at=timezone.now(),
             contact_email=user_email,
             contact_phone=post_data.get('contact_phone'),
+            description=description,
         )
 
         #### Maybe I don't need this place. (Lost and found registration does not require image registration.)
         # save image
-        #for file in images:
+        # for file in images:
         #   itemImage.objects.create(item_id=item.item_id, image_path=file, uploaded_at=timezone.now())
 
         return JsonResponse({'status': 'success', 'message': 'Item registered successfully.'})

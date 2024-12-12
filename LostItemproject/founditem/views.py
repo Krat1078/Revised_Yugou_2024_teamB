@@ -71,11 +71,6 @@ def register_item(request):
                 if img_format not in ['jpg', 'jpeg', 'png', 'gif']:
                     errors.append(f'{image.name} is not a valid image format (JPG, JPEG, PNG, GIF only).')
                 else:
-                    # 检查尺寸
-                    width, height = img.size
-                    if width > 1920 or height > 1080:
-                        errors.append(f"{image.name} exceeds maximum dimensions (1920x1080).")
-
                     # 检查重复
                     image.seek(0)
                     image_hash = hashlib.md5(image.read()).hexdigest()
@@ -107,6 +102,7 @@ def register_item(request):
             updated_at=timezone.now(),
             contact_email='',
             contact_phone=post_data.get('contact_phone'),
+            description=description,
         )
 
         # save image
