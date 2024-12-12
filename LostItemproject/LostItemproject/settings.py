@@ -169,3 +169,14 @@ EMAIL_HOST_USER = '1528392308@qq.com'
 EMAIL_HOST_PASSWORD = 'eqlatyyhvtombagd'
 
 DEFAULT_FROM_EMAIL = '1528392308@qq.com'
+
+
+# Celery config
+# You can start Redis with the command redis-server
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis ss a message queue
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# CELERY_TASK_SERIALIZER = "pickle"
+# CELERY_ACCEPT_CONTENT = ["json", "pickle"]
+# CELERY_RESULT_SERIALIZER = "pickle"
