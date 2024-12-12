@@ -15,7 +15,11 @@ python manage.py runserver 8000
 
 celery -A LostItemproject worker -l info -P gevent
 
+celery -A LostItemproject beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
 ```
+
+## update your database structure
+`python manage.py migrate`
 
 ## Redis related
 I used redis as a message queue to manage the asynchronous function of sending emails
@@ -28,6 +32,8 @@ You can start Redis with the command `redis-server`
 ## **start celery to work**
 `celery -A LostItemproject worker -l info -P gevent`
 
+## **start celery-beat-scheduler to work**
+`celery -A LostItemproject beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler`
 
 ## Backend management address
 http://127.0.0.1:8000/admin
