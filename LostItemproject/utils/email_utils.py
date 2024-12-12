@@ -31,7 +31,6 @@ def send_email(subject, to_emails, template_name, context=None, from_email=None,
     )
 
     email.attach_alternative(html_content, "text/html")
-    print(attachments)
 
     if attachments and attachments != []:
         for attachment in attachments:

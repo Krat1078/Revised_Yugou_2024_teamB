@@ -113,7 +113,7 @@ def register_item(request):
         for file in images:
             itemImage.objects.create(item_id=item.item_id, image_path=file, uploaded_at=timezone.now())
 
-        # 使用异步方法， 明天修改
+
         match_lost_items = item_utils.match_items(item.item_id)
 
         if match_lost_items:
