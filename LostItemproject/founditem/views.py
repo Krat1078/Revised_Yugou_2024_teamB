@@ -70,10 +70,12 @@ def register_item(request):
                 if img_format not in ['jpg', 'jpeg', 'png', 'gif']:
                     errors.append(f'{image.name} is not a valid image format (JPG, JPEG, PNG, GIF only).')
                 else:
-                    # 检查尺寸
+                    """
                     width, height = img.size
+                    Maybe I don't need this.
                     if width > 1920 or height > 1080:
                         errors.append(f"{image.name} exceeds maximum dimensions (1920x1080).")
+                    """
 
                     # 检查重复
                     image.seek(0)
