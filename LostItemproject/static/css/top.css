@@ -17,7 +17,7 @@
 }
 .hero-content{
     position: relative;
-    top:30px;
+    /* top:30px; */
 }
 /* .hero .emoji_niconico{
     transform: rotate(-30deg);
