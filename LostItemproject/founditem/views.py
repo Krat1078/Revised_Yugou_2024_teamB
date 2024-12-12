@@ -113,7 +113,6 @@ def register_item(request):
         for file in images:
             itemImage.objects.create(item_id=item.item_id, image_path=file, uploaded_at=timezone.now())
 
-
         match_lost_items = item_utils.match_items(item.item_id)
 
         if match_lost_items:
@@ -127,16 +126,21 @@ def register_item(request):
             for lost_item in match_lost_items:
                 email = lost_item.contact_email
                 if email:
-                    email_utils.send_email(
+                    itemName = itemNameTag.objects.get(item_name_id=lost_item.item_name_id)
+                    pickedOrDroppedLocations = pickedOrDroppedLocationsTag.objects.get(
+                        PorD_location_id=lost_item.PorD_location_id)
+                    storageLocations = storageLocationsTag.objects.get(
+                        storage_location_id=lost_item.storage_location_id)
+
+                    # Calling Celery asynchronous tasks
+                    email_utils.send_email_async.delay(
                         subject="落とし物が見つかるかもしれない",
                         to_emails=[email],
                         template_name="emails/found_item.html",
                         context={
-                            "item_name": itemNameTag.objects.get(item_name_id=lost_item.item_name_id),
-                            "found_location": pickedOrDroppedLocationsTag.objects.get(
-                                PorD_location_id=lost_item.PorD_location_id),
-                            "storage_location": storageLocationsTag.objects.get(
-                                storage_location_id=lost_item.storage_location_id),
+                            "item_name": str(itemName.item_name),
+                            "found_location": str(pickedOrDroppedLocations.picked_or_dropped_location_name),
+                            "storage_location": str(storageLocations.storage_location_name),
                         },
                         attachments=attachments
                     )
