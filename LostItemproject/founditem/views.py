@@ -113,7 +113,6 @@ def register_item(request):
         for file in images:
             itemImage.objects.create(item_id=item.item_id, image_path=file, uploaded_at=timezone.now())
 
-
         # 使用异步方法， 明天修改
         match_lost_items = item_utils.match_items(item.item_id)
 
@@ -129,17 +128,18 @@ def register_item(request):
                 email = lost_item.contact_email
                 if email:
                     email_utils.send_email(
-                        subject="遗失物品已找到",
+                        subject="落とし物が見つかるかもしれない",
                         to_emails=[email],
                         template_name="emails/found_item.html",
                         context={
                             "item_name": itemNameTag.objects.get(item_name_id=lost_item.item_name_id),
-                            "found_location": pickedOrDroppedLocationsTag.objects.get(PorD_location_id=lost_item.PorD_location_id),
-                            "storage_location": storageLocationsTag.objects.get(storage_location_id=lost_item.storage_location_id),
+                            "found_location": pickedOrDroppedLocationsTag.objects.get(
+                                PorD_location_id=lost_item.PorD_location_id),
+                            "storage_location": storageLocationsTag.objects.get(
+                                storage_location_id=lost_item.storage_location_id),
                         },
                         attachments=attachments
                     )
-
 
         return JsonResponse({'status': 'success', 'message': 'Item registered successfully.'})
 
