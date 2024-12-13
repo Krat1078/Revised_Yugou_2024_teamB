@@ -2,7 +2,7 @@ from PIL import Image, UnidentifiedImageError
 import hashlib
 from datetime import datetime
 
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, FileResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.utils.dateparse import parse_date
@@ -109,38 +109,60 @@ def register_item(request):
         for file in images:
             itemImage.objects.create(item_id=item.item_id, image_path=file, uploaded_at=timezone.now())
 
-        match_lost_items = item_utils.match_items(item.item_id)
-
-        if match_lost_items:
-            attachments = []
-            if images:
-                for image in images:
-                    image.seek(0)
-                    image_data = image.read()
-                    attachments.append((image.name, image_data, "image/jpeg"))
-
-            for lost_item in match_lost_items:
-                email = lost_item.contact_email
-                if email:
-                    itemName = itemNameTag.objects.get(item_name_id=lost_item.item_name_id)
-                    pickedOrDroppedLocations = pickedOrDroppedLocationsTag.objects.get(
-                        PorD_location_id=lost_item.PorD_location_id)
-                    storageLocations = storageLocationsTag.objects.get(
-                        storage_location_id=lost_item.storage_location_id)
-
-                    # Calling Celery asynchronous tasks
-                    email_utils.send_email_async.delay(
-                        subject="落とし物が見つかるかもしれない",
-                        to_emails=[email],
-                        template_name="emails/found_item.html",
-                        context={
-                            "item_name": str(itemName.item_name),
-                            "found_location": str(pickedOrDroppedLocations.picked_or_dropped_location_name),
-                            "storage_location": str(storageLocations.storage_location_name),
-                        },
-                        attachments=attachments
-                    )
+        # match_lost_items = item_utils.match_items(item.item_id)
+        #
+        # if match_lost_items:
+        #     attachments = []
+        #     if images:
+        #         for image in images:
+        #             image.seek(0)
+        #             image_data = image.read()
+        #             attachments.append((image.name, image_data, "image/jpeg"))
+        #
+        #     for lost_item in match_lost_items:
+        #         email = lost_item.contact_email
+        #         if email:
+        #             itemName = itemNameTag.objects.get(item_name_id=lost_item.item_name_id)
+        #             pickedOrDroppedLocations = pickedOrDroppedLocationsTag.objects.get(
+        #                 PorD_location_id=lost_item.PorD_location_id)
+        #             storageLocations = storageLocationsTag.objects.get(
+        #                 storage_location_id=lost_item.storage_location_id)
+        #
+        #             # Calling Celery asynchronous tasks
+        #             email_utils.send_email_async.delay(
+        #                 subject="落とし物が見つかるかもしれない",
+        #                 to_emails=[email],
+        #                 template_name="emails/found_item.html",
+        #                 context={
+        #                     "item_name": str(itemName.item_name),
+        #                     "found_location": str(pickedOrDroppedLocations.picked_or_dropped_location_name),
+        #                     "storage_location": str(storageLocations.storage_location_name),
+        #                 },
+        #                 attachments=attachments
+        #             )
 
         return JsonResponse({'status': 'success', 'message': 'Item registered successfully.'})
 
     return HttpResponse("Please submit the form.", status=405)
+
+
+def get_image(request, id):
+    ItemImage = models.get_item_image_model()
+    try:
+        # 获取对应的 ItemImage 对象
+        item_image = get_object_or_404(ItemImage, id=id)
+
+        # 获取图片的实际路径
+        image_path = item_image.image_path.path  # 假设图片保存在 MEDIA_URL 目录下
+        # 打开并返回图片文件
+        return FileResponse(open(image_path, 'rb'), content_type='image/jpeg')
+
+    except ItemImage.DoesNotExist:
+        # 如果找不到对应的 ItemImage，则返回错误信息
+        errors = ["Item image not found."]
+        return JsonResponse({'status': 'error', 'errors': errors}, status=404)
+
+    except Exception as e:
+        # 捕获其他异常并返回错误信息
+        errors = [str(e)]  # 捕获并返回异常信息
+        return JsonResponse({'status': 'error', 'errors': errors}, status=400)

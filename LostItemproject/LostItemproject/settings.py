@@ -145,6 +145,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 # Path where uploaded media files are stored
+SITE_DOMAIN = "127.0.0.1:8000"
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
@@ -186,7 +188,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 CELERY_ENABLE_UTC = True
 CELERY_TIMEZONE = 'Asia/Tokyo'
-
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # CELERY_BEAT_SCHEDULE = {
 #     'sample_task': {
