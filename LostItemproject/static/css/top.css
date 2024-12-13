@@ -15,10 +15,9 @@
     position: relative;
     z-index: 1;
 }
-.hero-content{
-    position: relative;
-    /* top:30px; */
-}
+/* .hero .hero-illust{
+    width: ;
+} */
 /* .hero .emoji_niconico{
     transform: rotate(-30deg);
 } */
@@ -84,6 +83,12 @@
     margin-right: 5px; /*アイコンと文字の間にスペース*/
     vertical-align: auto;
 }
+.detail-comment img{
+    width: 1em;  /* 画像の幅を文字の大きさに合わせる */
+    height: 1em; /* 画像の高さを文字の大きさに合わせる */
+    margin-right: 5px; /*アイコンと文字の間にスペース*/
+    vertical-align: auto;
+}
 ul.detail{
     list-style:none;
     padding:0;
@@ -101,7 +106,10 @@ li.detail-content{
     /* margin-left: 50%; */
 }
 
-.top-forms .date{
+.top-forms .form-date{
     background-color: #53c3d220 !important;
+}
+.top-forms .search_pulldown{
+    background-color: #E8E8E8;
 }
 
