@@ -1,9 +1,35 @@
 <html>
 <body>
-    <h1>落とし物が見つかるかもしれない</h1>
-    <p>忘れ物名：{{ item_name }}</p>
-    <p>場所を見つける：{{ found_location }}</p>
-    <p>場所を保存する：{{ storage_location }}</p>
+<h1>落とし物が見つかるかもしれない</h1>
 
+{% if found_items %}
+    <p>以下の忘れ物が見つかりました(画像が表示されない場合は添付ファイルをご覧ください)：</p>
+    <ul>
+        {% for item in found_items %}
+            <li>
+                <h2>忘れ物名：{{ item.item_name }}</h2>
+                <p>場所を見つける：{{ item.found_location }}</p>
+                <p>場所を保存する：{{ item.storage_location }}</p>
+
+                {% if item.images %}
+                    <p>関連画像：</p>
+                    {% for image in item.images %}
+                        <img src="{{ image }}" alt="Item Image"
+                             style="max-width: 200px; max-height: 200px; margin: 5px;">
+                    {% endfor %}
+                    <p>もし画像が表示されない場合は、以下のリンクをクリックして確認してください：</p>
+                    {% for url in item.urls %}
+                        <a href="{{ url }}" target="_blank">画像リンク</a><br>
+                    {% endfor %}
+                {% else %}
+                    <p>画像はありません。</p>
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p>現在、見つかるアイテムはありません。</p>
+{% endif %}
 </body>
 </html>
+
