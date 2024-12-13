@@ -36,7 +36,8 @@ class Item(models.Model):
     item_name = models.ForeignKey(ItemsNameTag, on_delete=models.CASCADE, verbose_name="Item Name")
     PorD_location = models.ForeignKey(PickedOrDroppedLocationsTag, on_delete=models.CASCADE,
                                       verbose_name="Picked or Dropped Location")
-    storage_location = models.ForeignKey(StorageLocationsTag, on_delete=models.CASCADE, verbose_name="Storage Location")
+    # Allow NULL when registering lost property because the location where it was received is not known.
+    storage_location = models.ForeignKey(StorageLocationsTag, on_delete=models.CASCADE, verbose_name="Storage Location", null=True)
     item_type = models.IntegerField(verbose_name="Item Type", help_text="0: Found, 1: Lost")
     status = models.SmallIntegerField(verbose_name="Status", help_text="0: Pending, 1: In Progress, 2: Resolved")
     created_at = models.DateTimeField(auto_now_add=True)

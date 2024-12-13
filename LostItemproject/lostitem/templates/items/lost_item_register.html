@@ -1,40 +1,46 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
+{% load static %}
 {% block content %}
 
 
-
-    <div class="container mt-5">
-        <div class="mx-auto" style="max-width: 600px;">
-            <h3 class="text-center mb-4 fw-bold">遺失物登録</h3>
+    <div class="LostItemRegister container row mx-auto flex-lg-row-reverse " style="max-width: 920px;">
+        <h1 class="text-start mb-5 fw-bold ">遺失物登録</h1>
+        <div class="col-lg-4 col-sm-12">
+            <img src = "{% static 'imgs\illustrations\L-遺失物登録.png'%}" class="img-fluid">
+        </div>
+        <div class="col-lg-8 col-sm-12" >
             <form method="post" action="{% url 'lostitem:register_item' %}" enctype="multipart/form-data" class="dropzone" id="itemsRegister">
                 {% csrf_token %}
                 <!-- 日時 -->
-                <div class="row align-items-center mb-3">
-                    <label for="date" class="col-4 col-form-label">日時</label>
-                    <div class="col-8">
-                        <input type="date" name="data" id="date" class="form-control" value="2024-11-21">
+                <div class="Data row d-flex align-items-center mb-3">
+                    <img src = "{% static 'imgs\icons\CALENDAR I.png'%}" class="col-1">
+                    <label for="date" class="col-4 col-form-label fw-bold">日時</label>
+                    <div class="col-sm-12 col-lg-7">
+                        <input type="date" style="background-color:#53C3D233; color:#67CAD6" name="data" id="date" class="form-control" value="2024-11-21">
                     </div>
                 </div>
 
                 <!-- 落とした場所 -->
-                <div class="row align-items-center mb-3">
-                    <label for="location" class="col-4 col-form-label">落とした場所</label>
-                    <div class="col-8">
-                        <select id="location" name="location" class="form-select">
+                <div class="Location row d-flex align-items-center mb-3">
+                    <img src = "{% static 'imgs\icons\Component 1.png'%}" class="col-1">
+                    <label for="location" class="col-4 col-form-label fw-bold">落とした場所</label>
+                    <div class="col-sm-12 col-lg-7">
+                        <select id="location" style="background-color:#53C3D233; color:#67CAD6" name="location" class="form-select">
 
                             {% for location in locations %}
-                                <option value="{{ location.storage_location_id }}">{{ location.storage_location_name }}</option>
+                                <option value="{{ location.PorD_location_id }}">{{ location.picked_or_dropped_location_name }}</option>
                             {% endfor %}
                         </select>
                     </div>
                 </div>
 
                 <!-- 物品カテゴリー -->
-                <div class="row align-items-center mb-3">
-                    <label for="category" class="col-4 col-form-label">物品カテゴリー</label>
-                    <div class="col-8">
-                        <select id="category" name="category" class="form-select">
+                <div class="Category row d-flex align-items-center mb-3">
+                    <img src = "{% static 'imgs\icons\CATEGORY I.png'%}" class="col-1">
+                    <label for="category" class="col-4 col-form-label fw-bold">物品カテゴリー</label>
+                    <div class="col-sm-12 col-lg-7">
+                        <select id="category" style="background-color:#53C3D233; color:#67CAD6" name="category" class="form-select">
 
                             {% for category in categories %}
                                 <option value="{{ category.item_name_id }}">{{ category.item_name }}</option>
@@ -43,47 +49,21 @@
                     </div>
                 </div>
 
-                <!-- 写真 -->
-                <div class="row mb-3">
-                    <label for="images-inputs" class="col-4 col-form-label">写真</label>
-                    {#                    <div class="col-8 d-flex gap-2">#}
-                    {#                        <div id="file-inputs" class="d-flex gap-2">#}
-                    {#                            <input type="file" id="images" name="images" class="form-control">#}
-                    {#                        </div>#}
-                    {#                        <!-- 新規ファイル入力ボタン -->#}
-                    {#                        <button type="button" class="btn btn-outline-primary mt-2" id="add-file-btn">+</button>#}
-                    {#                    </div>#}
-                    <div class="col-8 d-flex gap-2">
-                        <div id="images-inputs" class="col-8 d-flex gap-2">
-                            <input type="file" class="form-control" id="images" name="images"
-                                   aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                        </div>
-                        <button class="btn btn-outline-secondary" type="button" id="add-image-btn">+</button>
-                    </div>
-                </div>
-
-                <!-- 色 -->
-                <div class="row align-items-center mb-3">
-                    <label for="color" class="col-4 col-form-label">色 *</label>
-                    <div class="col-8">
-                        <input type="text" name='color' id="color" class="form-control">
-                    </div>
-                </div>
-
                 <!-- コメント -->
-                <div class="row mb-3">
-                    <label for="comment" class="col-4 col-form-label">コメント</label>
-                    <div class="col-8">
-                        <textarea id="comment" name='comment' class="form-control" rows="3"></textarea>
+                <div class="Comment row mb-3">
+                    <label for="comment" class="col-5 col-form-label fw-bold">メモ</label>
+                    <div class="col-sm-12 col-lg-7">
+                        <textarea id="comment" style="background-color:#53C3D233; color:#67CAD6" name='comment' class="form-control" rows="3"></textarea>
                     </div>
                 </div>
-                <!-- 登録ボタン -->
-                <div class="text-center">
-                    <button type="submit" class="btn btn-primary w-100">登録</button>
-                </div>
-            </form>
+            </form> 
+        </div>
+        <!-- 登録ボタン -->
+        <div class="text-center">
+            <button type="submit" class="btn btn-outline-success fw-bold" style="width:140px; font-size:20px; color:#0000004B; border-color:#0000004B; border-width:2px; border-radius:10px;">登録</button>
         </div>
     </div>
+    {% comment %}
     <script>
         document.addEventListener("DOMContentLoaded", function () {
             const addFileBtn = document.getElementById("add-image-btn"); // 获取加号按钮
@@ -139,7 +119,7 @@
             });
         });
     </script>
-
+    {% endcomment %}
 
 
 {% endblock content %}

@@ -1,5 +1,7 @@
 
 # How to start 
+
+
 ```bash
 conda create -n django python=3.8
 
@@ -11,14 +13,35 @@ cd LostItemproject
 
 python manage.py runserver 8000
 
+celery -A LostItemproject worker -l info -P gevent
+
+celery -A LostItemproject beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
 ```
-### Backend management address
+
+## update your database structure
+`python manage.py migrate`
+
+## Redis related
+I used redis as a message queue to manage the asynchronous function of sending emails
+
+### Redis install
+windows: https://github.com/tporadowski/redis/releases/download/v5.0.14.1/Redis-x64-5.0.14.1.msi
+
+You can start Redis with the command `redis-server`
+
+## **start celery to work**
+`celery -A LostItemproject worker -l info -P gevent`
+
+## **start celery-beat-scheduler to work**
+`celery -A LostItemproject beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler`
+
+## Backend management address
 http://127.0.0.1:8000/admin
 
 username: admin
 passwd: admin123456
 
-### student login
+## student login
 username: student1
 passwd: !Stu123456
 

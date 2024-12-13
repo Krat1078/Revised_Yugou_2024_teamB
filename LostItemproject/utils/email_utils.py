@@ -4,6 +4,7 @@ from celery import shared_task
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import render_to_string
 from django.conf import settings
+from smtplib import SMTPException
 import logging
 import base64
 
@@ -55,7 +56,12 @@ def send_email(subject, to_emails, template_name, context=None, from_email=None,
             filename, content, mimetype = attachment
             email.attach(filename, content, mimetype)
 
-    email.send()
+    try:
+        email.send()
+    except SMTPException as e:
+        print(f"SMTP error occurred: {e}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 # 使用例
 # 紛失物が見つかった場合は、電子メールを送信して所有者に通知します。

@@ -13,12 +13,10 @@
 
 
 body{
-  /* font-family: "Noto Sans JP", sans-serif !important;
-  font-optical-sizing: auto; */
+  font-family: "Noto Sans JP", sans-serif !important;
+  font-optical-sizing: auto;
   /* font-weight: <weight>;
   font-style: normal; */
-  font-family: "Inter", sans-serif !important;
-  font-optical-sizing: auto;
   color:var(--textcolor) !important;
   /* background-image: url("../imgs/haikei2.png") !important; */
   /* background-size: cover;

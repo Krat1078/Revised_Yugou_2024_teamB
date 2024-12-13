@@ -14,6 +14,8 @@ import os
 from pathlib import Path
 from django.db import connection
 from django.db.backends.signals import connection_created
+from celery.schedules import crontab
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +45,7 @@ INSTALLED_APPS = [
     'founditem',
     'crispy_forms',
     'crispy_bootstrap5',
+    'django_celery_beat',
 ]
 
 MIDDLEWARE = [
@@ -130,7 +133,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Tokyo'
 
 USE_I18N = True
 
@@ -167,3 +170,27 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = '1528392308@qq.com'
 EMAIL_HOST_PASSWORD = 'eqlatyyhvtombagd'
+
+DEFAULT_FROM_EMAIL = '1528392308@qq.com'
+
+
+# Celery config
+# You can start Redis with the command redis-server
+CELERY_BROKER_URL = 'redis://localhost:6379/0'  # Redis ss a message queue
+CELERY_ACCEPT_CONTENT = ['json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+# CELERY_TASK_SERIALIZER = "pickle"
+# CELERY_ACCEPT_CONTENT = ["json", "pickle"]
+# CELERY_RESULT_SERIALIZER = "pickle"
+
+CELERY_ENABLE_UTC = True
+CELERY_TIMEZONE = 'Asia/Tokyo'
+
+
+# CELERY_BEAT_SCHEDULE = {
+#     'sample_task': {
+#         'task': 'founditem.tasks.my_scheduled_task',
+#         'schedule': crontab(minute='*/1'),  # 每分钟运行一次
+#     },
+# }

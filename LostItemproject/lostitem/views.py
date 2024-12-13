@@ -101,14 +101,16 @@ def tolostitemregister(request):
     # search from database
     # from top app get models
     storageLocationsTag = apps.get_model('top', 'StorageLocationsTag')
+    pickedOrDroppedLocationsTag = apps.get_model("top", "PickedOrDroppedLocationsTag")
     itemsNameTag = apps.get_model('top', 'ItemsNameTag')
     # do search
     LocationsTags = storageLocationsTag.objects.all()
+    PorDLocationsTags = pickedOrDroppedLocationsTag.objects.all()
     itemsNameTags = itemsNameTag.objects.all()
 
     # back to html
     return render(request, 'items/lost_item_register.html', {
-        'locations': LocationsTags,
+        'locations': PorDLocationsTags,
         'categories': itemsNameTags
     })
 
@@ -145,6 +147,7 @@ def register_item(request):
         if description and len(description) > 500:
             errors.append("Description length must not exceed 500 characters.")
 
+        """Maybe I don't need this place. (Lost and found registration does not require image registration.)
         images = request.FILES.getlist('images')
         # Used to store the hash value of the image and check for duplication
         image_hashes = set()
@@ -170,29 +173,34 @@ def register_item(request):
                 image.seek(0)
             except UnidentifiedImageError:
                 errors.append(f'{image.name} is not a valid image format.')
+        """
 
         if errors:
             return JsonResponse({'status': 'error', 'errors': errors}, status=400)
 
         item = apps.get_model('top', 'Item')
-        itemImage = apps.get_model('top', 'ItemImage')
+        ##### Maybe I don't need this place. (Lost and found registration does not require image registration.)
+        # itemImage = apps.get_model('top', 'ItemImage')
 
         # save to item
         item = item.objects.create(
             item_name=get_object_or_404(apps.get_model('top', 'ItemsNameTag'), pk=category),
             PorD_location=get_object_or_404(apps.get_model('top', 'PickedOrDroppedLocationsTag'), pk=location),
-            storage_location=get_object_or_404(apps.get_model('top', 'StorageLocationsTag'), pk=location),
+            storage_location=None,
+            # storage_location=get_object_or_404(apps.get_model('top', 'StorageLocationsTag'), pk=location),
             item_type=1,
             status=0,
             created_at=data,
             updated_at=timezone.now(),
             contact_email=user_email,
             contact_phone=post_data.get('contact_phone'),
+            description=description,
         )
 
+        #### Maybe I don't need this place. (Lost and found registration does not require image registration.)
         # save image
-        for file in images:
-            itemImage.objects.create(item_id=item.item_id, image_path=file, uploaded_at=timezone.now())
+        # for file in images:
+        #   itemImage.objects.create(item_id=item.item_id, image_path=file, uploaded_at=timezone.now())
 
         return JsonResponse({'status': 'success', 'message': 'Item registered successfully.'})
 
