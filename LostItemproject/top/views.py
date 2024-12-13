@@ -2,6 +2,7 @@ from django.shortcuts import render
 from .models import ItemImage
 from .forms import TagFilterForm, DateFilterForm
 from django.db.models import Q
+from django.core.paginator import Paginator
 
 # Create your views here.
 def index(request):
@@ -39,10 +40,17 @@ def index(request):
         form = TagFilterForm()
         date_form = DateFilterForm()
     
+    # ページネーションの設定
+    paginator = Paginator(images, 4)
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
     context = {
-        "images": images, 
+        #"images": images, 
+        "images": page_obj,
         "form": form, 
         "date_form": date_form,
+        "page_obj": page_obj,
     }
 
     return render(request, 'index.html', context)
