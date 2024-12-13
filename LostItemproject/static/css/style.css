@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 /* @media (min-width: 992px) {
@@ -41,4 +41,7 @@ footer{
   color: var(--primary) !important;
   font-size: 20px;
   font-weight: 700;
+}
+.navbar-collapse {
+  text-align: right;
 }

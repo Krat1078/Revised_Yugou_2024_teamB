@@ -25,11 +25,12 @@ class TagFilterForm(forms.Form):
         queryset=PickedOrDroppedLocationsTag.objects.all(),
         widget=forms.Select(attrs={'class': 'form-select'}),
         required=False, 
+        label="落とした場所"
     )
 
 class DateFilterForm(forms.Form):
     date = forms.DateField(
         required=False,
-        widget=forms.DateInput(attrs={"type": "date"}),
+        widget=forms.DateInput(attrs={"type": "date",'class': 'form-select'}),
         label="落とした日"
     )

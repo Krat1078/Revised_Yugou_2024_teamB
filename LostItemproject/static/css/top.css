@@ -22,12 +22,12 @@
 /* .hero .emoji_niconico{
     transform: rotate(-30deg);
 } */
-.hero .emoji_megane{
+/* .hero .emoji_megane{
     transform: rotate(150deg);
     position:relative;
     top: -50px;
 
-}
+} */
 .hero p{
     color: var(--primary) !important;
     font-weight: 500;
@@ -96,3 +96,12 @@ li.detail-content{
     border-radius:5px;
     overflow-wrap:break-word;
 }
+.top-forms .form-select{
+    background-color: #53c3d220 !important;
+    /* margin-left: 50%; */
+}
+
+.top-forms .date{
+    background-color: #53c3d220 !important;
+}
+
