@@ -8,10 +8,10 @@
     
 <!--  hero  -->
 <div class="hero">
-  <div class="container col-xxl-8 pt-5 hero-content">
+  <div class="container col-12 hero-content">
     <div class="row flex-md-row-reverse align-items-center">
       <div class="col-sm-12 col-md-6 col-lg-6">
-        <img src="{% static "imgs/illustrations/2 people emoji added-final.png" %}" class="d-block mx-lg-auto img-fluid" alt="illustration" width="100%" loading="lazy">
+        <img src="{% static "imgs/illustrations/2 people emoji added-final.png" %}" class="hero-illust d-block mx-lg-auto img-fluid" alt="illustration" width="130%" loading="lazy">
       </div>
       <div class="hero-texts col-sm-12 col-md-6 col-lg-6">
         <div class="emojis d-none d-md-inline-flex justify-content-between">
@@ -19,7 +19,7 @@
           <img src="{% static "imgs/illustrations/emoji_泣き顔.png" %}" class="img-fluid emoji_nakigao" alt="illustration" width="20%" loading="lazy">
         </div>
         <h1 class="display-5 fw-bold lh-1 mb-3 my-sm-3">岩手大学の落とし物</h1>
-        <p class="lead my-0 py-0">学内の落とし物と拾得物はここで簡単に登録できます．</p>
+        <p class="lead my-0 py-0">学内の落とし物と拾得物はここで簡単に登録できます。</p>
         <div class="emojis d-none d-md-inline-flex justify-content-end my-0 py-0">
           <img src="{% static "imgs/illustrations/Glass emoji-fixed.png" %}" class="img-fluid mt-0 emoji_megane" alt="illustration" width="23%" loading="lazy">
         </div>
@@ -32,7 +32,7 @@
 </div>
 
 <div class="top-forms collapse row pt-4" id="collapseSearch">
-  <div class="search_pulldown col-6 px-5">
+  <div class="search_pulldown col-lg-4 col-sm-12 px-5">
     <form method="post">
       {% csrf_token %}
 
@@ -40,7 +40,7 @@
       <button type="submit" class="btn btn-primary">検索</button>
     </form>
   </div>
-  <div class="search_date col-4">
+  <div class="search_date col-lg-4 col-sm-12">
     <form method="post">
       {% csrf_token %}
       {{ date_form.as_p }}
@@ -131,8 +131,8 @@
               <div class="row">
                 <div class="col-12">
                   <ul class="detail detail-content">
-                  <li class="detail">コメント</li>
-                  <li class ="detail-content">{{ image.item.description }}</li>
+                  <li class="detail-comment"><img class="detail-icons" src="{% static 'imgs/icons/Comment.png'%}">コメント</li>
+                  <li class ="detail-content">{{ image.item.item_name.description }}</li>
                   </ul>
                 </div>
               </div>
