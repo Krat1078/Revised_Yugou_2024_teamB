@@ -9,7 +9,7 @@ def index(request):
     # タグは最初None
     itemname_tag = None
     location_tag = None
-    images = ItemImage.objects.select_related("item__item_name").all() # すべての物品表示
+    images = ItemImage.objects.select_related("item").order_by("item__created_at") # すべての物品表示（日付順）
     # images = images.filter(item__item_type=0) # item_type = 0の物品だけ表示
     ##########################################################
     ## そもそも画像が登録されるときは必ず「拾得物登録」なので、  
