@@ -2,9 +2,6 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-
-
-  
     
 <!--  hero  -->
 <div class="hero">
@@ -40,6 +37,15 @@
       <button type="submit" class="btn btn-primary">検索</button>
     </form>
   </div>
+  <div class="col-lg-4 col-sm-12">
+    岩手大学のマップはこちら↓
+    <div class="gallery" id="photoGallery">
+      <a href="{% static 'imgs/iwate_university_map.jpg' %}" data-pswp-width="1298" data-pswp-height="1080" target="_blank">
+        <img src="{% static 'imgs/iwate_university_map.jpg' %}" class="img-fluid" alt="岩手大学マップ" loading="lazy" width="1298" height="1080">
+      </a>
+    </div>
+    <!-- Button to Trigger Modal -->
+  </div>
   <div class="search_date col-lg-4 col-sm-12">
     <form method="post">
       {% csrf_token %}
@@ -48,8 +54,31 @@
     </form>
   </div>
 </div>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe.min.css"
+  integrity="sha512-aKJqqX25Ch6C/Gae4xBq5gDKhUS2QcNrPoAxqy4fbLr9CqGq7uo/i0aRuti1TUYpZxjXuOr90cTP/aD9WY8CLQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
 
-{% comment %} <div class="search-forms">
+<script type="module">
+  import PhotoSwipeLightbox from "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe-lightbox.esm.min.js";
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: "#photoGallery",
+    children: "a",
+    pswpModule: () =>
+      import(
+        "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe.esm.min.js"
+      ),
+      wheelToZoom: true,
+  });
+  lightbox.init();
+</script>
+
+
+{% comment %} 
+<div class="search-forms">
   <form method="post">
     <div class="search_category">
       {% csrf_token %}
@@ -64,7 +93,8 @@
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
   </form>
-</div> {% endcomment %}
+</div> 
+{% endcomment %}
 
 <!--  card  -->
 <section id="cardlists">

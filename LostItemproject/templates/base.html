@@ -29,23 +29,36 @@
               </button> -->
               <div class="collapse navbar-collapse justify-content-end" id="navbarXL">
                 <ul class="navbar-nav ml-auto">
-                    {% if user.is_authenticated %}
+                  {% if user.is_superuser %}<!--管理者アカウントかどうか-->
+                    <li class="nav-item">
+                      <span class="navbar-text">Welcome, {{ user.username }}!</span>
+                    </li>
+                    <li class="nav-item mx-3">
+                        <a class="nav-link" href="{% url 'lostitem:logout' %}">ログアウト</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                      <a class="nav-link" href="{% url 'lostitem:tolostitemregister' %}">遺失物登録</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                      <a class="nav-link" href="{% url 'founditem:tofounditemregister' %}">拾得物登録</a>
+                    </li>
+                  {% elif user.is_authenticated %}<!--そうでないアカウントの場合-->
                     <li class="nav-item">
                         <span class="navbar-text">Welcome, {{ user.username }}!</span>
                     </li>
                     <li class="nav-item mx-3">
                         <a class="nav-link" href="{% url 'lostitem:logout' %}">ログアウト</a>
                     </li>
-                  <li class="nav-item mx-3">
-                    <a class="nav-link" href="{% url 'lostitem:tolostitemregister' %}">遺失物登録</a>
-                  </li>
-                  <li class="nav-item mx-3">
-                    <a class="nav-link" href="{% url 'founditem:tofounditemregister' %}">拾得物登録</a>
-                  </li>
-                  {% else %}
-                  <li class="nav-item mx-3">
-                    <a class="nav-link" href="{% url 'lostitem:login' %}">ログイン</a>
-                  </li>
+                    <li class="nav-item mx-3">
+                      <a class="nav-link" href="{% url 'lostitem:tolostitemregister' %}">遺失物登録</a>
+                    </li>
+                  {% else %}<!--ログインしていない場合-->
+                    <li class="nav-item mx-3">
+                      <a class="nav-link" href="{% url 'lostitem:login' %}">ログイン</a>
+                    </li>
+                    <li class="nav-item mx-3">
+                      <a class="nav-link" href="{% url 'founditem:tofounditemregister' %}">拾得物登録</a>
+                    </li>
                   {% endif %}
         
                 </ul>

@@ -22,7 +22,7 @@ class TagFilterForm(forms.Form):
         label="落とした物"
     )
     location_tag = forms.ModelChoiceField(
-        queryset=PickedOrDroppedLocationsTag.objects.all(),
+        queryset=PickedOrDroppedLocationsTag.objects.order_by("picked_or_dropped_location_name"), # 表示する順番をソートする
         widget=forms.Select(attrs={'class': 'form-select'}),
         required=False, 
         label="落とした場所"
