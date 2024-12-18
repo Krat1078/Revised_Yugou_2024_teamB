@@ -45,6 +45,11 @@ passwd: admin123456
 username: student1
 passwd: !Stu123456
 
+# sand email
+
+![sand_email.png](/assets/images/sand_email.png)
+
+
 # Project Directory Structure
 
 ```plaintext
