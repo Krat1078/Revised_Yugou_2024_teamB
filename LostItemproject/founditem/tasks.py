@@ -1,6 +1,5 @@
 # 定时检查数据中可能登记或者时间超时（1个月）
-
-
+import os
 from os.path import basename
 import base64
 from mimetypes import guess_type
@@ -43,7 +42,7 @@ def match_items_scheduled_task():
     storageLocationsTag = get_storage_locations_tag_model()
 
     # search all of the lost items
-    lost_items = item_model.objects.filter(item_type=1)
+    lost_items = item_model.objects.filter(item_type=1, status__in=[0, 1])
 
     for lost_item in lost_items:
         to_email = lost_item.contact_email
@@ -67,39 +66,38 @@ def match_items_scheduled_task():
                     storage_location_id=found_item.storage_location_id)
 
                 images = itemImage.objects.filter(item=found_item.item_id)
-                base64_images = []  # 用于存储 Base64 编码后的图片信息
-                images_urls = []
+                image_urls = []  # 用于存储 Base64 编码后的图片信息
+                get_images_urls = []
                 if images.exists():
                     for image in images:
                         if image.image_path:
                             with image.image_path.open('rb') as img_file:
-
                                 image_data = img_file.read()
-                                # get MIME
+                                # # get MIME
                                 mime_type, _ = guess_type(image.image_path.name)
                                 mime_type = mime_type or "application/octet-stream"  # 默认 MIME 类型
-                                print(image.image_path)
-                                print(mime_type)
 
-                                base64_str = base64.b64encode(image_data).decode('utf-8')
-                                # base64_str = base64_str.replace(" ", "").replace("\n", "").replace("\r", "")
-                                # encode image to base64_image
-                                base64_image = f"data:{mime_type};base64,{base64_str}"
-                                base64_images.append(base64_image)
+                                # base64_str = base64.b64encode(image_data).decode('utf-8')
+                                # # base64_str = base64_str.replace(" ", "").replace("\n", "").replace("\r", "")
+                                # # encode image to base64_image
+                                # base64_image = f"data:{mime_type};base64,{base64_str}"
 
-                                image_url = f"{settings.SITE_DOMAIN}/founditem/image/"+str(image.id)
-                                print(image_url)
-                                images_urls.append(image_url)
+                                file_name = os.path.basename(image.image_path.name)
+                                image_url = f'{settings.IMAGE_BASE_URL}media/item_images/{file_name}'
+                                image_urls.append(image_url)
 
+                                get_image_url = f"http://{settings.SITE_DOMAIN}/founditem/image/" + str(image.id)
+                                get_images_urls.append(get_image_url)
                                 attachments.append((basename(image.image_path.name), image_data, mime_type))
 
-
                 context = {
+                    "itemID": str(found_item.item_id),
                     "item_name": str(itemName.item_name),
                     "found_location": str(pickedOrDroppedLocations.picked_or_dropped_location_name),
                     "storage_location": str(storageLocations.storage_location_name),
-                    "images": base64_images,
-                    "urls": images_urls,
+                    "images": image_urls,
+                    "urls": get_images_urls,
+                    "description": str(found_item.description),
                 }
 
                 contexts.append(context)
@@ -108,6 +106,6 @@ def match_items_scheduled_task():
                 subject="落とし物が見つかるかもしれない",
                 to_emails=[to_email],
                 template_name="emails/found_item.html",
-                context={'found_items': contexts},
+                context={'found_items': contexts, 'domain': settings.SITE_DOMAIN,},
                 attachments=attachments,
             )

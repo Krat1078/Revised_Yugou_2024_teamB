@@ -196,3 +196,7 @@ CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 #         'schedule': crontab(minute='*/1'),  # 每分钟运行一次
 #     },
 # }
+
+# 这里是由于图片在Gmail上的展示问题，暂时使用GITHUB的图片展示，后面替换为项目的地址
+# こちらはGmailでの画像表示の問題による一時的な対応として、現在GitHubの画像リンクを使用しています。後ほどプロジェクトのアドレスに置き換える予定です。
+IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Krat1078/Revised_Yugou_2024_teamB/refs/heads/main/LostItemproject/'
