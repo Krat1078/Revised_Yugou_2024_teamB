@@ -9,4 +9,5 @@ urlpatterns = [
     path('tofounditemregister/', views.tofounditemregister, name='tofounditemregister'),
     path('registeritem/', views.register_item, name='register_item'),
     path('image/<int:id>/', views.get_image, name='get_image'),
+    path('validate_qr_code', views.validate_qr_code, name='validate_qr_code'),
 ]

@@ -1,15 +1,42 @@
 from PIL import Image, UnidentifiedImageError
 import hashlib
 from datetime import datetime
+import json
 
 from django.http import JsonResponse, HttpResponse, FileResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.utils.dateparse import parse_date
-from utils import email_utils, item_utils
+from django.views.decorators.csrf import csrf_exempt
+from utils import email_utils, item_utils, QR_utils
 
 from . import models
 
+@csrf_exempt
+def validate_qr_code(request):
+    if request.method == "POST":
+        try:
+            qr_data = request.POST.get("qr_code") or json.loads(request.body).get("qr_code")
+            try:
+                # 如果 qr_data 是字符串，尝试解析
+                if isinstance(qr_data, str):
+                    # 将单引号替换为双引号，转换为标准 JSON 格式
+                    if qr_data.startswith("{") and qr_data.endswith("}"):
+                        qr_data = qr_data.replace("'", '"')  # 替换单引号为双引号
+                    qr_code = json.loads(qr_data)  # 尝试解析为字典
+                else:
+                    qr_code = qr_data  # 已经是字典，直接使用
+            except json.JSONDecodeError as e:
+                return JsonResponse({"status": "error", "message": ""})
+
+            # 解析 QR 数据并验证时限
+            valid, message = QR_utils.validate_qr_code(qr_code)  # 自定义验证逻辑
+            if valid:
+                return JsonResponse({"status": "success", "message": "QRコードが有効です。"})
+            else:
+                return JsonResponse({"status": "error", "message": message})
+        except Exception as e:
+            return JsonResponse({"status": "error", "message": str(e)})
 
 # Create your views here.
 def index(request):
