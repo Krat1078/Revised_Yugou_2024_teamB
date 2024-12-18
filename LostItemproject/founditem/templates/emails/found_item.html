@@ -8,8 +8,10 @@
         {% for item in found_items %}
             <li>
                 <h2>忘れ物名：{{ item.item_name }}</h2>
+                <p>忘れ物ID :{{ item.itemID }}</p>
                 <p>場所を見つける：{{ item.found_location }}</p>
                 <p>場所を保存する：{{ item.storage_location }}</p>
+                <p>コメント: {{ item.description }} </p>
 
                 {% if item.images %}
                     <p>関連画像：</p>
@@ -17,16 +19,16 @@
                         <img src="{{ image }}" alt="Item Image"
                              style="max-width: 200px; max-height: 200px; margin: 5px;">
                     {% endfor %}
-                    <p>もし画像が表示されない場合は、以下のリンクをクリックして確認してください：</p>
-                    {% for url in item.urls %}
-                        <a href="{{ url }}" target="_blank">画像リンク</a><br>
-                    {% endfor %}
+                    <p>もし画像が表示されない場合は、添付ファイルをご確認ください!</p>
+
                 {% else %}
                     <p>画像はありません。</p>
                 {% endif %}
             </li>
         {% endfor %}
     </ul>
+
+    <a href="http://{{ domain }}/home">ホームページで確認する</a>
 {% else %}
     <p>現在、見つかるアイテムはありません。</p>
 {% endif %}
