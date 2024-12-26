@@ -11,7 +11,7 @@ admin.site.register(ItemImage)
 
 class ItemAdmin(admin.ModelAdmin):
     # 自定义展示的字段
-    list_display = ('item_id', 'item_name', 'PorD_location', 'storage_location', 'item_type', 'contact_email')
+    list_display = ('item_id', 'item_name', 'PorD_location', 'storage_location', 'item_type', 'contact_email', "created_at")
     # 添加可搜索字段
     search_fields = ('item_name', 'PorD_location', 'contact_email')
     # 添加过滤器
