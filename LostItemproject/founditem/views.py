@@ -19,18 +19,20 @@ def validate_qr_code(request):
             qr_data = request.POST.get("qr_code") or json.loads(request.body).get("qr_code")
             try:
                 # 如果 qr_data 是字符串，尝试解析
+                # qr_data が文字列の場合、それをパースする。
                 if isinstance(qr_data, str):
                     # 将单引号替换为双引号，转换为标准 JSON 格式
+                    # シングルクォートをダブルクォートに置き換え、標準的なJSONフォーマットに変換する。
                     if qr_data.startswith("{") and qr_data.endswith("}"):
-                        qr_data = qr_data.replace("'", '"')  # 替换单引号为双引号
-                    qr_code = json.loads(qr_data)  # 尝试解析为字典
+                        qr_data = qr_data.replace("'", '"')  # 替换单引号为双引号 # シングルクォートをダブルクォートに置き換える
+                    qr_code = json.loads(qr_data)  # 尝试解析为字典 # 辞書へのパースを試みる
                 else:
-                    qr_code = qr_data  # 已经是字典，直接使用
+                    qr_code = qr_data  # 已经是字典，直接使用 # qr_data はすでに辞書なので、それを直接使う
             except json.JSONDecodeError as e:
                 return JsonResponse({"status": "error", "message": ""})
 
-            # 解析 QR 数据并验证时限
-            valid, message = QR_utils.validate_qr_code(qr_code)  # 自定义验证逻辑
+            # 解析 QR 数据并验证时限 # QRデータを解析し、時間制限を検証する
+            valid, message = QR_utils.validate_qr_code(qr_code)  # 自定义验证逻辑 # カスタマイズされた検証ロジック
             if valid:
                 return JsonResponse({"status": "success", "message": "QRコードが有効です。"})
             else:
@@ -98,7 +100,7 @@ def register_item(request):
                 if img_format not in ['jpg', 'jpeg', 'png', 'gif']:
                     errors.append(f'{image.name} is not a valid image format (JPG, JPEG, PNG, GIF only).')
                 else:
-                    # 检查重复
+                    # 检查重复 # 重複チェック
                     image.seek(0)
                     image_hash = hashlib.md5(image.read()).hexdigest()
                     if image_hash in image_hashes:
@@ -177,19 +179,24 @@ def get_image(request, id):
     ItemImage = models.get_item_image_model()
     try:
         # 获取对应的 ItemImage 对象
+        # 対応するItemImageオブジェクトを取得する
         item_image = get_object_or_404(ItemImage, id=id)
 
         # 获取图片的实际路径
-        image_path = item_image.image_path.path  # 假设图片保存在 MEDIA_URL 目录下
-        # 打开并返回图片文件
+        # 画像の実際のパスを取得する
+        image_path = item_image.image_path.path  # 假设图片保存在 MEDIA_URL 目录下 # MEDIA_URLディレクトリに画像が保存されていると仮定した場合
+        # 打开并返回图片文件 
+        # 画像ファイルを開いて返す
         return FileResponse(open(image_path, 'rb'), content_type='image/jpeg')
 
     except ItemImage.DoesNotExist:
         # 如果找不到对应的 ItemImage，则返回错误信息
+        # 対応するItemImageが見つからない場合、エラーメッセージが返されます。
         errors = ["Item image not found."]
         return JsonResponse({'status': 'error', 'errors': errors}, status=404)
 
     except Exception as e:
         # 捕获其他异常并返回错误信息
-        errors = [str(e)]  # 捕获并返回异常信息
+        # 他の例外をキャッチしてエラーメッセージを返す
+        errors = [str(e)]  # 捕获并返回异常信息 # 例外メッセージをキャッチして返す
         return JsonResponse({'status': 'error', 'errors': errors}, status=400)

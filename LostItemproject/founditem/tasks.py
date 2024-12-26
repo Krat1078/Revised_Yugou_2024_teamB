@@ -15,13 +15,14 @@ import pprint
 def my_scheduled_task():
     print("Executing scheduled task...")
     # 在此处添加您的定时任务逻辑
+    # タイムドタスクのロジックをここに追加する
     return "Task completed!"
 
 
 @shared_task
 def send_periodic_email():
-    subject = "定时任务测试邮件"
-    message = "这是 Celery 定时任务发送的测试邮件。"
+    subject = "時限タスクテスト・メール - Timed task test/email"
+    message = "これはCeleryの時間指定タスクが送信したテストメールです。\n - This is a test email sent by Celery's timed task."
     email_utils.send_email_async(subject=subject,
                                  to_emails=['cralpbin@gmail.com'],
                                  template_name="emails/found_item.html",
@@ -66,7 +67,7 @@ def match_items_scheduled_task():
                     storage_location_id=found_item.storage_location_id)
 
                 images = itemImage.objects.filter(item=found_item.item_id)
-                image_urls = []  # 用于存储 Base64 编码后的图片信息
+                image_urls = []  # 用于存储 Base64 编码后的图片信息 # Base64エンコードされた画像情報を格納するために使用される
                 get_images_urls = []
                 if images.exists():
                     for image in images:
@@ -75,7 +76,7 @@ def match_items_scheduled_task():
                                 image_data = img_file.read()
                                 # # get MIME
                                 mime_type, _ = guess_type(image.image_path.name)
-                                mime_type = mime_type or "application/octet-stream"  # 默认 MIME 类型
+                                mime_type = mime_type or "application/octet-stream"  # 默认 MIME 类型 # デフォルトのMIMEタイプ
 
                                 # base64_str = base64.b64encode(image_data).decode('utf-8')
                                 # # base64_str = base64_str.replace(" ", "").replace("\n", "").replace("\r", "")
