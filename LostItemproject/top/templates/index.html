@@ -135,7 +135,11 @@
                 </div>
                 <div class="col-5">
                   <ul class="detail">
-                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">日時</li>
+                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">落とし物ID</li>
+                    <ul class="detail-content">
+                      <li class ="detail-content">{{image.item.item_id}}</li>
+                    </ul>
+                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">届いた日時</li>
                     <ul class="detail-content">
                       <li class ="detail-content">{{image.item.created_at|date:"Y/m/d"}}</li>
                     </ul>
@@ -143,7 +147,7 @@
                     <ul class="detail-content">
                       <li class ="detail-content">{{ image.item.PorD_location }}</li>
                     </ul>
-                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/SENT.png'%}">届けた場所</li>
+                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/SENT.png'%}">届いた場所</li>
                     <ul class="detail-content">
                       <li class ="detail-content">{{ image.item.storage_location }}</li>
                     </ul>
@@ -154,7 +158,8 @@
                     {% comment %} <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">色*</li>
                     <ul class="detail-content">
                       <li class ="detail-content">赤</li>
-                    </ul> {% endcomment %}
+                    </ul> 
+                    {% endcomment %}
                   </ul>
                 </div>
               </div>
@@ -162,7 +167,7 @@
                 <div class="col-12">
                   <ul class="detail detail-content">
                   <li class="detail-comment"><img class="detail-icons" src="{% static 'imgs/icons/Comment.png'%}">コメント</li>
-                  <li class ="detail-content">{{ image.item.item_name.description }}</li>
+                  <li class ="detail-content">{{ image.item.description }}</li>
                   </ul>
                 </div>
               </div>

@@ -9,6 +9,7 @@ def index(request):
     # タグは最初None
     itemname_tag = None
     location_tag = None
+    storage_tag = None
     images = ItemImage.objects.select_related("item").order_by("item__created_at") # すべての物品表示（日付順）
     # images = images.filter(item__item_type=0) # item_type = 0の物品だけ表示
     ##########################################################
@@ -23,13 +24,16 @@ def index(request):
             # python側の変数にタグ情報を格納する
             itemname_tag = form.cleaned_data['itemname_tag']
             location_tag = form.cleaned_data["location_tag"]
+            storage_tag = form.cleaned_data["storage_tag"]
             # タグによってフィルタリングをかける 
-            if itemname_tag and location_tag:
-                images = images.filter(Q(item__item_name=itemname_tag) & Q(item__PorD_location=location_tag))
+            if itemname_tag and location_tag and storage_tag:
+                images = images.filter(Q(item__item_name=itemname_tag) & Q(item__PorD_location=location_tag) & Q(item__storage_location=storage_tag))
             elif itemname_tag:
                 images = images.filter(item__item_name=itemname_tag)
             elif location_tag:
                 images = images.filter(item__PorD_location=location_tag)
+            elif storage_tag:
+                images = images.filter(item__storage_location=storage_tag)
             # ItemImageモデルのインスタンスを取得し、その関連するItemとItemNameTagを一度に取得
         if date_form.is_valid():
             date = date_form.cleaned_data.get("date")
