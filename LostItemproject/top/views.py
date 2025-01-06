@@ -28,6 +28,12 @@ def index(request):
             # タグによってフィルタリングをかける 
             if itemname_tag and location_tag and storage_tag:
                 images = images.filter(Q(item__item_name=itemname_tag) & Q(item__PorD_location=location_tag) & Q(item__storage_location=storage_tag))
+            elif itemname_tag and location_tag:
+                images = images.filter(Q(item__item_name=itemname_tag) & Q(item__PorD_location=location_tag))
+            elif itemname_tag and storage_tag:
+                images = images.filter(Q(item__item_name=itemname_tag) & Q(item__storage_location=storage_tag))
+            elif location_tag and storage_tag:
+                images = images.filter(Q(item__PorD_location=location_tag) & Q(item__storage_location=storage_tag))
             elif itemname_tag:
                 images = images.filter(item__item_name=itemname_tag)
             elif location_tag:
