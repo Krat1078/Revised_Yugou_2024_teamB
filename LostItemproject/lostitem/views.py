@@ -39,10 +39,8 @@ def index(request):
 
 class CustomLoginView(auth_views.LoginView):
     def get_success_url(self):
-        if self.request.user.is_superuser:
-            return reverse_lazy('admin:index')
-        else:
-            return reverse_lazy('top:home')
+        # ログインしたらどの学生でもトップページへ
+        return reverse_lazy('top:home')
 
 
 class SignUpView(SuccessMessageMixin, CreateView):
