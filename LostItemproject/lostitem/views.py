@@ -103,7 +103,7 @@ def tolostitemregister(request):
     itemsNameTag = apps.get_model('top', 'ItemsNameTag')
     # do search
     LocationsTags = storageLocationsTag.objects.all()
-    PorDLocationsTags = pickedOrDroppedLocationsTag.objects.all()
+    PorDLocationsTags = pickedOrDroppedLocationsTag.objects.all().order_by("picked_or_dropped_location_name")
     itemsNameTags = itemsNameTag.objects.all()
 
     # back to html

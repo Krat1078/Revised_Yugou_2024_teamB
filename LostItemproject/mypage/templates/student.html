@@ -1,10 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>学生マイページ</h1>
-</body>
-</html>
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<h1>{{ user.username }}さんのマイページ</h1>
+
+{% if useritems %}
+    {% for item in useritems %}
+        <li>{{ item.item_name.item_name }}</li>
+        <form action="{% url 'mypage:student_delete' item.item_id %}" method="POST">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
+        </form>
+    {% endfor %}
+{% else %}
+    <p>遺失物は登録されていません</p>
+{% endif %}
+{% endblock content %}
