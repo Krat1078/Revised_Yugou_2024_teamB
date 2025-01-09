@@ -139,35 +139,38 @@
 
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const openQrModalBtn = document.getElementById("openQrModal");
-            const qrModal = new bootstrap.Modal(document.getElementById("qrModal"));
+        document.addEventListener("DOMContentLoaded", function () { // HTMLの終わりから
+            const openQrModalBtn = document.getElementById("openQrModal"); // モーダルを開くボタンのオブジェクト
+            const qrModal = new bootstrap.Modal(document.getElementById("qrModal")); // モーダルを開くオブジェクト
             let qrScanner;
 
-            openQrModalBtn.addEventListener("click", function () {
-                qrModal.show();
-                const qrError = document.getElementById("qrError");
-                const qrReaderContainer = document.getElementById("reader");
+            openQrModalBtn.addEventListener("click", function () { // ボタンがクリックされたとき
+                qrModal.show(); // モーダル表示
+                const qrError = document.getElementById("qrError"); // エラーメッセージのオブジェクト
+                const qrReaderContainer = document.getElementById("reader"); // QRコードをスキャンするオブジェクト
 
                 // 如果已经启动摄像头，停止之前的扫描
+                // カメラがすでに起動している場合は、以前のスキャンを停止する。
                 if (qrScanner) {
                     qrScanner.stop().then(() => qrScanner = null);
                 }
 
                 // 启动摄像头扫描
+                // カメラのスキャンを開始する
                 qrScanner = new Html5Qrcode("reader");
-                Html5Qrcode.getCameras().then(cameras => {
-                    if (cameras.length > 0) {
-                        const rearCamera = cameras.find(cam => cam.label.toLowerCase().includes("back"));
-                        const cameraId = rearCamera ? rearCamera.id : cameras[0].id;
+                Html5Qrcode.getCameras().then(cameras => { // 利用可能なカメラの取得
+                    if (cameras.length > 0) { 
+                        // cameras.length -> 利用可能なカメラの数
+                        const rearCamera = cameras.find(cam => cam.label.toLowerCase().includes("back")); // 背面にあるカメラを探す
+                        const cameraId = rearCamera ? rearCamera.id : cameras[0].id; // 背面のカメラが見つからない場合、最初のカメラを選択
 
-                        qrScanner.start(
+                        qrScanner.start( // QRコードスキャンの開始
                             cameraId,
-                            {fps: 10, qrbox: 250},
-                            (decodedText) => {
-                                validateQrCode(decodedText);
+                            {fps: 10, qrbox: 250}, // 毎秒10フレームスキャン、250pxの製法領域でスキャン
+                            (decodedText) => { // 成功時
+                                validateQrCode(decodedText); 
                             },
-                            (errorMessage) => {
+                            (errorMessage) => { // 成功していない時
                                 qrError.textContent = "QRコード読み取り中...";
                             }
                         );

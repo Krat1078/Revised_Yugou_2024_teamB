@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<h1>{{ user.username }}さんのマイページ</h1>
+
+{% if founditems %}
+    {% for item in founditems %}
+        <li>{{ item.item_name.item_name }}, {{ item.storage_location.storage_location_name }}, {{ item.created_at | date:"Y/m/d" }}</li>
+    {% endfor %}
+{% else %}
+    <p>拾得物は登録されていません</p>
+{% endif %}
+{% endblock content %}
