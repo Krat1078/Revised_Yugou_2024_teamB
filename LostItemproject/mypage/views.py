@@ -16,4 +16,6 @@ def student_delete(request, item_id): # 削除用ビュー
 
 
 def admin_mypage(request): # 未完成
-    return render(request, "administrator.html")
+    username = request.user.username # ユーザー名の取得
+    founditems = Item.objects.filter(item_type=0).order_by("created_at") 
+    return render(request, "administrator.html", {"founditems":founditems})

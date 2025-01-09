@@ -9,7 +9,7 @@
         <li>{{ item.item_name.item_name }}</li>
         <form action="{% url 'mypage:student_delete' item.item_id %}" method="POST">
             {% csrf_token %}
-            <button type="submit" onclick="return confirm('本当に削除しますか？');">削除</button>
+            <button type="submit" onclick="return confirm('この登録を解除してよろしいですか？');">削除</button>
         </form>
     {% endfor %}
 {% else %}

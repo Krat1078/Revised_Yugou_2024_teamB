@@ -13,7 +13,7 @@ from .models import ItemsNameTag, PickedOrDroppedLocationsTag, StorageLocationsT
 #         required=False,
 #         label="落とした場所"
 #     )
-
+"""
 class TagFilterForm(forms.Form):
     itemname_tag = forms.ModelChoiceField(
         queryset=ItemsNameTag.objects.all(), 
@@ -33,6 +33,7 @@ class TagFilterForm(forms.Form):
         required=False,
         label="保管場所"
     )
+"""
 
 class DateFilterForm(forms.Form):
     date = forms.DateField(

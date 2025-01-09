@@ -32,11 +32,40 @@
   <div class="search_pulldown col-lg-4 col-sm-12 px-5">
     <form method="post">
       {% csrf_token %}
+      落とした物：
+      <select name="item" id="tag">
+        <option value="">------</option>  <!-- 空欄 -->
+        {% for itemname in itemnametags %}
+          <option value="{{ itemname.item_name_id }}">{{ itemname.item_name }}</option>
+        {% endfor %}
+      </select>
+      落とした場所：
+      <select name="location" id="tag">
+        <option value="">------</option>  <!-- 空欄 -->
+        {% for location in locationtags %}
+          <option value="{{ location.PorD_location_id }}">{{ location.picked_or_dropped_location_name }}</option>
+        {% endfor %}
+      </select>
+      保管場所：
+      <select name="storage" id="tag">
+        <option value="">------</option>  <!-- 空欄 -->
+        {% for storage in storagetags %}
+        <option value="{{ storage.storage_location_id }}">{{ storage.storage_location_name}}</option>
+        {% endfor %}
+      </select>
+      <button type="submit" class="btn btn-primary">検索</button>
+    </form>
+  </div>
+  {% comment %}
+  <div class="search_pulldown col-lg-4 col-sm-12 px-5">
+    <form method="post">
+      {% csrf_token %}
 
       {{ form.as_p }}
       <button type="submit" class="btn btn-primary">検索</button>
     </form>
   </div>
+  {% endcomment %}
   <div class="col-lg-4 col-sm-12">
     岩手大学のマップはこちら
     <div class="gallery" id="photoGallery">

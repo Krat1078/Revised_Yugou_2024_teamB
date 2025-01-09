@@ -104,7 +104,7 @@ def tolostitemregister(request):
     # do search
     LocationsTags = storageLocationsTag.objects.all()
     PorDLocationsTags = pickedOrDroppedLocationsTag.objects.all().order_by("picked_or_dropped_location_name")
-    itemsNameTags = itemsNameTag.objects.all()
+    itemsNameTags = itemsNameTag.objects.all().order_by("item_name")
 
     # back to html
     return render(request, 'items/lost_item_register.html', {
