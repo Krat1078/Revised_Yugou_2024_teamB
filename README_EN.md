@@ -45,6 +45,11 @@ passwd: admin123456
 username: student1
 passwd: !Stu123456
 
+# sand email
+***This is a temporary workaround for image display issues in Gmail, so we are currently using GitHub image links. We will replace them with the project address later.***
+![sand_email.png](/assets/images/sand_email.png)
+
+
 # Project Directory Structure
 
 ```plaintext

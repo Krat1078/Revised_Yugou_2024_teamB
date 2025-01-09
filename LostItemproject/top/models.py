@@ -40,7 +40,7 @@ class Item(models.Model):
     storage_location = models.ForeignKey(StorageLocationsTag, on_delete=models.CASCADE, verbose_name="Storage Location", null=True)
     item_type = models.IntegerField(verbose_name="Item Type", help_text="0: Found, 1: Lost")
     status = models.SmallIntegerField(verbose_name="Status", help_text="0: Pending, 1: In Progress, 2: Resolved")
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField() # 時間を自動的に更新しない
     updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
     contact_email = models.EmailField(max_length=100, null=True, blank=True)
     contact_phone = models.CharField(max_length=20, null=True, blank=True)

@@ -1,5 +1,5 @@
 from django import forms
-from .models import ItemsNameTag, PickedOrDroppedLocationsTag
+from .models import ItemsNameTag, PickedOrDroppedLocationsTag, StorageLocationsTag
 
 # class TagFilterForm(forms.Form):
 #     itemname_tag = forms.ModelChoiceField(
@@ -22,10 +22,16 @@ class TagFilterForm(forms.Form):
         label="落とした物"
     )
     location_tag = forms.ModelChoiceField(
-        queryset=PickedOrDroppedLocationsTag.objects.all(),
+        queryset=PickedOrDroppedLocationsTag.objects.order_by("picked_or_dropped_location_name"), # 表示する順番をソートする
         widget=forms.Select(attrs={'class': 'form-select'}),
         required=False, 
         label="落とした場所"
+    )
+    storage_tag = forms.ModelChoiceField(
+        queryset=StorageLocationsTag.objects.order_by("storage_location_name"), # 表示する順番をソートする
+        widget=forms.Select(attrs={"class": "form-select"}),
+        required=False,
+        label="保管場所"
     )
 
 class DateFilterForm(forms.Form):
