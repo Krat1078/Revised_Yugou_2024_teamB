@@ -101,8 +101,9 @@
                     </div>
                 </div>
             </div>
-
-                <!-- 登録ボタン -->
+                
+    
+                <!--登録ボタン 
                 <div class="text-center" >
                     <button type="button" id="my-popover" class="col-lg-2 col-sm-4 btn btn-outline-secondary custom-button fw-bold" style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">登録</button>
                 </div>
@@ -111,11 +112,13 @@
                         background-color: #53C3D250; 
                     }
                 </style>
+                -->
+                
             </form>
         </div>
     </div>
 
-    <!-- モーダル -->
+    <!-- モーダル 
     <div class="modal" id="myModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content" style="background-color: #F7FBF4;">
@@ -136,6 +139,40 @@
             </div>
         </div>
     </div>
+    -->
+
+        <!-- 登録ボタン -->
+        {#                <div class="text-center">#}
+            {#                    <button type="submit" class="btn btn-outline-success fw-bold " style="width: 140px; font-size: 20px; color: #0000004B; border-color: #0000004B; border-width: 2px; border-radius: 10px;">登録</button>#}
+            {#                </div>#}
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="button" id="openQrModal" class="btn btn-outline-success fw-bold"
+                        style="width: 140px; font-size: 20px;">
+                    登録
+                </button>
+            </div>
+        </form>
+    </div>
+    </div>
+    <!-- Modal Window -->
+    <div id="qrModal" class="modal fade" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">QRコードをスキャン</h5>
+            </div>
+            <div class="modal-body">
+                <div id="reader" style="width: 100%;"></div>
+                <p id="qrError" class="text-danger mt-2"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">キャンセル</button>
+            </div>
+        </div>
+    </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 
 
     <script>
