@@ -39,10 +39,8 @@ def index(request):
 
 class CustomLoginView(auth_views.LoginView):
     def get_success_url(self):
-        if self.request.user.is_superuser:
-            return reverse_lazy('admin:index')
-        else:
-            return reverse_lazy('top:home')
+        # ログインしたらどの学生でもトップページへ
+        return reverse_lazy('top:home')
 
 
 class SignUpView(SuccessMessageMixin, CreateView):
@@ -105,8 +103,8 @@ def tolostitemregister(request):
     itemsNameTag = apps.get_model('top', 'ItemsNameTag')
     # do search
     LocationsTags = storageLocationsTag.objects.all()
-    PorDLocationsTags = pickedOrDroppedLocationsTag.objects.all()
-    itemsNameTags = itemsNameTag.objects.all()
+    PorDLocationsTags = pickedOrDroppedLocationsTag.objects.all().order_by("picked_or_dropped_location_name")
+    itemsNameTags = itemsNameTag.objects.all().order_by("item_name")
 
     # back to html
     return render(request, 'items/lost_item_register.html', {

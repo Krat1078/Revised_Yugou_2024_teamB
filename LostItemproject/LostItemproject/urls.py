@@ -23,6 +23,7 @@ urlpatterns = [
     path('', include('top.urls')),
     path('lostitem/', include('lostitem.urls')),
     path('founditem/', include('founditem.urls')),
+    path("mypage/", include("mypage.urls")),
 ]
 
 if settings.DEBUG:

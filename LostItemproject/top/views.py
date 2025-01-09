@@ -1,6 +1,6 @@
 from django.shortcuts import render
-from .models import ItemImage
-from .forms import TagFilterForm, DateFilterForm
+from .models import ItemImage, ItemsNameTag, PickedOrDroppedLocationsTag, StorageLocationsTag
+from .forms import DateFilterForm
 from django.db.models import Q
 from django.core.paginator import Paginator
 
@@ -17,6 +17,43 @@ def index(request):
     ## この.filter()はいらない？                             
     #########################################################
     images = images.filter(item__status=0) # status = 0の物品だけ表示
+    itemname_tags = ItemsNameTag.objects.all().order_by("item_name")
+    location_tags = PickedOrDroppedLocationsTag.objects.all().order_by("picked_or_dropped_location_name")
+    storage_tags = StorageLocationsTag.objects.all().order_by("storage_location_name")
+    if request.method == "POST":
+        date_form = DateFilterForm(request.POST)
+        itemname_tag = request.POST.get("item")
+        location_tag = request.POST.get("location")
+        storage_tag = request.POST.get("storage")
+        if itemname_tag == "":
+            itemname_tag = None
+        if location_tag == "":
+            location_tag = None
+        if storage_tag == "":
+            storage_tag = None
+        # タグによってフィルタリングをかける 
+        if itemname_tag and location_tag and storage_tag:
+            images = images.filter(Q(item__item_name=itemname_tag) & Q(item__PorD_location=location_tag) & Q(item__storage_location=storage_tag))
+        elif itemname_tag and location_tag:
+            images = images.filter(Q(item__item_name=itemname_tag) & Q(item__PorD_location=location_tag))
+        elif itemname_tag and storage_tag:
+            images = images.filter(Q(item__item_name=itemname_tag) & Q(item__storage_location=storage_tag))
+        elif location_tag and storage_tag:
+            images = images.filter(Q(item__PorD_location=location_tag) & Q(item__storage_location=storage_tag))
+        elif itemname_tag:
+            images = images.filter(item__item_name=itemname_tag)
+        elif location_tag:
+            images = images.filter(item__PorD_location=location_tag)
+        elif storage_tag:
+            images = images.filter(item__storage_location=storage_tag)
+        # ItemImageモデルのインスタンスを取得し、その関連するItemとItemNameTagを一度に取得
+        if date_form.is_valid():
+            date = date_form.cleaned_data.get("date")
+            if date:
+                images = images.filter(item__created_at__gte=date)
+    else:
+        date_form = DateFilterForm()   
+    """
     if request.method == "POST":
         form = TagFilterForm(request.POST) # form.pyからimport
         date_form = DateFilterForm(request.POST)
@@ -28,6 +65,12 @@ def index(request):
             # タグによってフィルタリングをかける 
             if itemname_tag and location_tag and storage_tag:
                 images = images.filter(Q(item__item_name=itemname_tag) & Q(item__PorD_location=location_tag) & Q(item__storage_location=storage_tag))
+            elif itemname_tag and location_tag:
+                images = images.filter(Q(item__item_name=itemname_tag) & Q(item__PorD_location=location_tag))
+            elif itemname_tag and storage_tag:
+                images = images.filter(Q(item__item_name=itemname_tag) & Q(item__storage_location=storage_tag))
+            elif location_tag and storage_tag:
+                images = images.filter(Q(item__PorD_location=location_tag) & Q(item__storage_location=storage_tag))
             elif itemname_tag:
                 images = images.filter(item__item_name=itemname_tag)
             elif location_tag:
@@ -43,6 +86,7 @@ def index(request):
     else:
         form = TagFilterForm()
         date_form = DateFilterForm()
+    """
     
     # ページネーションの設定
     paginator = Paginator(images, 4)
@@ -52,9 +96,12 @@ def index(request):
     context = {
         #"images": images, 
         "images": page_obj,
-        "form": form, 
+        # "form": form, 
         "date_form": date_form,
         "page_obj": page_obj,
+        "itemnametags": itemname_tags,
+        "locationtags": location_tags,
+        "storagetags": storage_tags,
     }
 
     return render(request, 'index.html', context)

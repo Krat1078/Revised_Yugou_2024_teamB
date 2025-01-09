@@ -53,9 +53,9 @@ def tofounditemregister(request):
     itemsNameTag = models.get_items_name_tag_model()
     pickedOrDroppedLocationsTag = models.get_picked_or_dropped_locations_tag_model()
     # do search
-    LocationsTags = storageLocationsTag.objects.all()
-    itemsNameTags = itemsNameTag.objects.all()
-    pickedOrDroppedLocationsTags = pickedOrDroppedLocationsTag.objects.all()
+    LocationsTags = storageLocationsTag.objects.all().order_by("storage_location_name")
+    itemsNameTags = itemsNameTag.objects.all().order_by("item_name")
+    pickedOrDroppedLocationsTags = pickedOrDroppedLocationsTag.objects.all().order_by("picked_or_dropped_location_name")
 
     # back to html
     return render(request, 'items/found_item_register.html', {
