@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-{% load static%}
+{% load static %}
 {% block content %}
 
 <body>
@@ -140,6 +140,72 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
+            const openQrModalBtn = document.getElementById("openQrModal");
+            const qrModal = new bootstrap.Modal(document.getElementById("qrModal"));
+            let qrScanner;
+
+            openQrModalBtn.addEventListener("click", function () {
+                qrModal.show();
+                const qrError = document.getElementById("qrError");
+                const qrReaderContainer = document.getElementById("reader");
+
+                // 如果已经启动摄像头，停止之前的扫描
+                if (qrScanner) {
+                    qrScanner.stop().then(() => qrScanner = null);
+                }
+
+                // 启动摄像头扫描
+                qrScanner = new Html5Qrcode("reader");
+                Html5Qrcode.getCameras().then(cameras => {
+                    if (cameras.length > 0) {
+                        const rearCamera = cameras.find(cam => cam.label.toLowerCase().includes("back"));
+                        const cameraId = rearCamera ? rearCamera.id : cameras[0].id;
+
+                        qrScanner.start(
+                            cameraId,
+                            {fps: 10, qrbox: 250},
+                            (decodedText) => {
+                                validateQrCode(decodedText);
+                            },
+                            (errorMessage) => {
+                                qrError.textContent = "QRコード読み取り中...";
+                            }
+                        );
+                    } else {
+                        alert("カメラが検出されませんでした。カメラへのアクセスを許可してください。");
+                    }
+                }).catch(err => {
+                    alert("カメラにアクセスできません: " + err);
+                });
+            });
+
+            function validateQrCode(qrData) {
+                console.log("QR Code scanned:", qrData);
+                fetch("{% url 'founditem:validate_qr_code' %}", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "X-CSRFToken": "{{ csrf_token }}"
+                    },
+                    body: JSON.stringify({qr_code: qrData})
+                })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === "success") {
+                            qrModal.hide();
+                            alert("QRコードが有効です。データを送信します。");
+                            document.getElementById("itemsRegister").submit();
+                        } else {
+                            alert("QRコードが無効です。" + data.message);
+                        }
+                    })
+                    .catch(() => {
+                        alert("QRコードの検証中にエラーが発生しました。");
+                    });
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
             const addFileBtn = document.getElementById("add-image-btn"); // プラスボタン
             const fileInputsContainer = document.getElementById("images-inputs"); // ファイル入力コンテナの取得
             const modal = document.getElementById("myModal"); // モーダル
@@ -214,6 +280,8 @@
             });
         });
     </script>
-</body>
+
+
+    </body>
 
 {% endblock content %}

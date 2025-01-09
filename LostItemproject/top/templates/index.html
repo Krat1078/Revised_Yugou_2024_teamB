@@ -3,142 +3,214 @@
 {% load static %}
 {% block content %}
     
-    <!--  hero  -->
-    <div class="hero">
-      <div class="container col-xxl-8 pt-5 hero-content">
-        <div class="row flex-lg-row-reverse align-items-center">
-          <div class="col-sm-12 col-md-6 col-lg-6">
-            <img src="{% static "imgs/illustrations/HomePage-L.png" %}" class="d-block mx-lg-auto img-fluid" alt="illustration" width="100%" loading="lazy">
-          </div>
-          <div class="hero-texts col-sm-12 col-md-6 col-lg-6">
-            <div class="emojis d-none d-md-inline-flex justify-content-between">
-              <img src="{% static "imgs/illustrations/emoji_ニコニコ.png" %}" class="img-fluid emoji_niconico" alt="illustration" width="20%" loading="lazy">
-              <img src="{% static "imgs/illustrations/emoji_泣き顔.png" %}" class="img-fluid emoji_nakigao" alt="illustration" width="20%" loading="lazy">
-            </div>
-            <h1 class="display-5 fw-bold lh-1 mb-3">岩手大学の落とし物</h1>
-            <p class="lead py-0">学内の落とし物と拾得物はここで簡単に登録できます．</p>
-            <div class="emojis d-none d-md-inline-flex justify-content-end py-0">
-              <img src="{% static "imgs/illustrations/emoji_めがね.png" %}" class="img-fluid emoji_megane" alt="illustration" width="23%" loading="lazy">
-            </div>
-          </div>
+<!--  hero  -->
+<div class="hero">
+  <div class="container col-12 hero-content">
+    <div class="row flex-md-row-reverse align-items-center">
+      <div class="col-sm-12 col-md-6 col-lg-6">
+        <img src="{% static "imgs/illustrations/2 people emoji added-final.png" %}" class="hero-illust d-block mx-lg-auto img-fluid" alt="illustration" width="130%" loading="lazy">
+      </div>
+      <div class="hero-texts col-sm-12 col-md-6 col-lg-6">
+        <div class="emojis d-none d-md-inline-flex justify-content-between">
+          <img src="{% static "imgs/illustrations/emoji_ニコニコ.png" %}" class="img-fluid emoji_niconico" alt="illustration" width="20%" loading="lazy">
+          <img src="{% static "imgs/illustrations/emoji_泣き顔.png" %}" class="img-fluid emoji_nakigao" alt="illustration" width="20%" loading="lazy">
         </div>
+        <h1 class="display-5 fw-bold lh-1 mb-3 my-sm-3">岩手大学の落とし物</h1>
+        <p class="lead my-0 py-0">学内の落とし物と拾得物はここで簡単に登録できます。</p>
+        <div class="emojis d-none d-md-inline-flex justify-content-end my-0 py-0">
+          <img src="{% static "imgs/illustrations/Glass emoji-fixed.png" %}" class="img-fluid mt-0 emoji_megane" alt="illustration" width="23%" loading="lazy">
+        </div>
+        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseExample">
+          タグ検索
+        </button>
       </div>
     </div>
+  </div>
+</div>
 
+<div class="top-forms collapse row pt-4" id="collapseSearch">
+  <div class="search_pulldown col-lg-4 col-sm-12 px-5">
     <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">検索</button>
-    </form>
+      {% csrf_token %}
 
+      {{ form.as_p }}
+      <button type="submit" class="btn btn-primary">検索</button>
+    </form>
+  </div>
+  <div class="col-lg-4 col-sm-12">
+    岩手大学のマップはこちら↓
+    <div class="gallery" id="photoGallery">
+      <a href="{% static 'imgs/iwate_university_map.jpg' %}" data-pswp-width="1298" data-pswp-height="1080" target="_blank">
+        <img src="{% static 'imgs/iwate_university_map.jpg' %}" class="img-fluid" alt="岩手大学マップ" loading="lazy" width="1298" height="1080">
+      </a>
+    </div>
+    <!-- Button to Trigger Modal -->
+  </div>
+  <div class="search_date col-lg-4 col-sm-12">
     <form method="post">
-        {% csrf_token %}
-        {{ date_form.as_p }}
-        <button type="submit">日付検索</button>
+      {% csrf_token %}
+      {{ date_form.as_p }}
+      <button type="submit" class="btn btn-primary">日付検索</button>
     </form>
+  </div>
+</div>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe.min.css"
+  integrity="sha512-aKJqqX25Ch6C/Gae4xBq5gDKhUS2QcNrPoAxqy4fbLr9CqGq7uo/i0aRuti1TUYpZxjXuOr90cTP/aD9WY8CLQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+<script type="module">
+  import PhotoSwipeLightbox from "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe-lightbox.esm.min.js";
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: "#photoGallery",
+    children: "a",
+    pswpModule: () =>
+      import(
+        "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe.esm.min.js"
+      ),
+      wheelToZoom: true,
+  });
+  lightbox.init();
+</script>
 
 
-  <!--  card  -->
-    <section id="cardlists">
-      {% if images %}
-      <div class="container">
+{% comment %} 
+<div class="search-forms">
+  <form method="post">
+    <div class="search_category">
+      {% csrf_token %}
+      <label for="{{form.itemname_tag.id_for_label}}">落としたもの</label>
+      <select name="category" id="{{form.itemname_tag.id_for_label}}"class="form-control">
+        {%for category in form.itemname_tag.field.queryset%}
+        <option value="{{category.id}}" {% if category.id == form.itemname_tag.value %}selected{% endif %}>
+          {{category.item_name}}
+        </option>
+        {%endfor%}
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div> 
+{% endcomment %}
 
-        <div class="row g-8 py-5">
-          {% for image in images %}
-          <div class="col-lg-3 col-sm-6 g-5">
-            <a class="card card-effect" href="#" data-bs-toggle="modal" data-bs-target="#modal{{ image.id }}">
-              <div class="card-img-area">
-                <img src="{{ image.image_path.url }}" class="card-img-top " alt="Item Image">
-              </div>
-                
-                
-              <div class="card-body">
-                <ul>
-                <li class="card-text"><img class="card-icons" src="{% static "imgs/icons/CALENDAR I.png" %}">{{image.item.created_at|date:"Y/m/d"}}</li>
-                <li class="card-text"><img class="card-icons" src="{% static "imgs/icons/CATEGORY I.png" %}">{{ image.item.item_name.item_name }}</li>
-                <li class="card-text"><img class="card-icons" src="{% static 'imgs/icons/Component 1.png'%}">{{image.item.PorD_location}}</li>
-                </ul>
-              </div>
-            </a>
+<!--  card  -->
+<section id="cardlists">
+  {% if images %}
+  <div class="container">
+
+
+    <div class="row g-8 py-5">
+      {% for image in images %}
+      <div class="col-lg-3 col-sm-6 g-5">
+        <a class="card card-effect" href="#" data-bs-toggle="modal" data-bs-target="#modal{{ image.id }}">
+          <div class="card-img-area">
+            <img src="{{ image.image_path.url }}" class="card-img-top " alt="Item Image">
           </div>
+            
+            
+          <div class="card-body">
+            <ul>
+            <li class="card-text"><img class="card-icons" src="{% static "imgs/icons/CALENDAR I.png" %}">{{image.item.created_at|date:"Y/m/d"}}</li>
+            <li class="card-text"><img class="card-icons" src="{% static "imgs/icons/CATEGORY I.png" %}">{{ image.item.item_name.item_name }}</li>
+            <li class="card-text"><img class="card-icons" src="{% static 'imgs/icons/Component 1.png'%}">{{image.item.PorD_location}}</li>
+            </ul>
+          </div>
+        </a>
+      </div>
 
-          <!--  modal  -->
-          <div class="modal fade" id="modal{{ image.id }}" tabindex="-1" aria-labelledby="modalLabel{{ image.id }}" aria-hidden="true">
-            <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      <!--  modal  -->
+      <div class="modal fade" id="modal{{ image.id }}" tabindex="-1" aria-labelledby="modalLabel{{ image.id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered modal-dialog-scrollable">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class="row">
+                <div class="col-7">
+                  <img src="{{ image.image_path.url }}" class="detail-img img-fluid" alt="Item Image">
                 </div>
-                <div class="modal-body">
-                  <div class="row">
-                    <div class="col-7">
-                      <img src="{{ image.image_path.url }}" class="detail-img img-fluid" alt="Item Image">
-                    </div>
-                    <div class="col-5">
-                      <ul class="detail">
-                        <li class="detail-tag">物品ID　{{ image.item.item_id}}</li>
-                        <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">日時</li>
-                        <ul class="detail-content">
-                          <li class ="detail-content">{{ image.item.created_at|date:"Y/m/d"}}</li>
-                        </ul>
-                        <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/Component 1.png'%}">拾った場所</li>
-                        <ul class="detail-content">
-                          <li class ="detail-content">{{ image.item.PorD_location }}</li>
-                        </ul>
-                        <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/SENT.png'%}">届けた場所</li>
-                        <ul class="detail-content">
-                          <li class ="detail-content">{{ image.item.storage_location }}</li>
-                        </ul>
-                        <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CATEGORY I.png'%}">物品カテゴリー</li>
-                        <ul class="detail-content">
-                          <li class ="detail-content">{{ image.item.item_name.item_name }}</li>
-                        </ul>
-                        {% comment %} <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">色*</li>
-                        <ul class="detail-content">
-                          <li class ="detail-content">赤</li>
-                        </ul> {% endcomment %}
-                      </ul>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-12">
-                      <ul class="detail detail-content">
-                      <li class="detail">コメント</li>
-                      <li class ="detail-content">{{ image.item.description }}</li>
-                      </ul>
-                    </div>
-                  </div>
+                <div class="col-5">
+                  <ul class="detail">
+                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">落とし物ID</li>
+                    <ul class="detail-content">
+                      <li class ="detail-content">{{image.item.item_id}}</li>
+                    </ul>
+                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">届いた日時</li>
+                    <ul class="detail-content">
+                      <li class ="detail-content">{{image.item.created_at|date:"Y/m/d"}}</li>
+                    </ul>
+                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/Component 1.png'%}">拾った場所</li>
+                    <ul class="detail-content">
+                      <li class ="detail-content">{{ image.item.PorD_location }}</li>
+                    </ul>
+                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/SENT.png'%}">届いた場所</li>
+                    <ul class="detail-content">
+                      <li class ="detail-content">{{ image.item.storage_location }}</li>
+                    </ul>
+                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CATEGORY I.png'%}">物品カテゴリー</li>
+                    <ul class="detail-content">
+                      <li class ="detail-content">{{ image.item.item_name.item_name }}</li>
+                    </ul>
+                    {% comment %} <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">色*</li>
+                    <ul class="detail-content">
+                      <li class ="detail-content">赤</li>
+                    </ul> 
+                    {% endcomment %}
+                  </ul>
                 </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+              </div>
+              <div class="row">
+                <div class="col-12">
+                  <ul class="detail detail-content">
+                  <li class="detail-comment"><img class="detail-icons" src="{% static 'imgs/icons/Comment.png'%}">コメント</li>
+                  <li class ="detail-content">{{ image.item.description }}</li>
+                  </ul>
                 </div>
               </div>
             </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
           </div>
-          {% endfor %}
         </div>
-
-        
-
       </div>
-      {% else %}
-        <p>選択されたタグを持つ落とし物情報は見つかりませんでした</p>
-      {% endif %}
+      {% endfor %}
+    </div>
+
     
-      {% comment %}
-      <div class="d-flex justify-content-center">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item"><a class="page-link" href="#">2</a></li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item"><a class="page-link" href="#">Next</a></li>
-          </ul>
-        </nav>
-      </div>
-      {% endcomment %}
-    </section>
-    
+
+  </div>
+  {% else %}
+    <p>選択されたタグを持つ落とし物情報は見つかりませんでした</p>
+  {% endif %}
+
+  {% comment %}以下、ページネーションの実装{% endcomment %}
+  <div class="d-flex justify-content-center">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+        {% endif %}
+        {% for num in page_obj.paginator.page_range %}
+          {% if num == page_obj.number %}
+            <li class="page-item"><span class="page-link">{{ num }}</span></li>
+          {% elif num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+            <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
+          {% endif %}
+        {% endfor %}
+        {% if page_obj.has_next %}
+          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+</section>
+
+
+
 
 {% endblock content %}

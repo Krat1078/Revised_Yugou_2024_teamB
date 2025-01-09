@@ -19,7 +19,7 @@ def send_email_async(self, subject, to_emails, template_name, context=None, from
     except Exception as e:
         logger.error(f"Failed to send email to {to_emails}: {e}")
         logger.exception("Exception occurred while sending email")
-        raise self.retry(exc=e, countdown=60)  # 在 60 秒后重试
+        raise self.retry(exc=e, countdown=60)  # 在 60 秒后重试 # 60秒後に再試行
 
 
 # Send email directly

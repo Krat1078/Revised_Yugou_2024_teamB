@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-!=h=1#zx36nys&0lxm9gwr6(6rpg36l--t2q@jn8$3f69i3h+4
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -145,6 +145,8 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 
 # Path where uploaded media files are stored
+SITE_DOMAIN = "127.0.0.1:8000"
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media/')
 
@@ -186,7 +188,7 @@ CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
 
 CELERY_ENABLE_UTC = True
 CELERY_TIMEZONE = 'Asia/Tokyo'
-
+CELERY_BEAT_SCHEDULER = 'django_celery_beat.schedulers:DatabaseScheduler'
 
 # CELERY_BEAT_SCHEDULE = {
 #     'sample_task': {
@@ -194,3 +196,7 @@ CELERY_TIMEZONE = 'Asia/Tokyo'
 #         'schedule': crontab(minute='*/1'),  # 每分钟运行一次
 #     },
 # }
+
+# 这里是由于图片在Gmail上的展示问题，暂时使用GITHUB的图片展示，后面替换为项目的地址
+# こちらはGmailでの画像表示の問題による一時的な対応として、現在GitHubの画像リンクを使用しています。後ほどプロジェクトのアドレスに置き換える予定です。
+IMAGE_BASE_URL = 'https://raw.githubusercontent.com/Krat1078/Revised_Yugou_2024_teamB/refs/heads/main/LostItemproject/'

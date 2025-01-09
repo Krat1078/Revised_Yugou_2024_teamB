@@ -57,11 +57,11 @@ def register(request):
         form = UserRegistrationForm(request.POST)
         if form.is_valid():
             user = form.save(commit=False)
-            user.is_active = False  # 用户暂时不可用，等待激活
+            user.is_active = False  # 用户暂时不可用，等待激活 # ユーザーは一時的に利用できません。
             user.set_password(form.cleaned_data['password'])
             user.save()
 
-            # 发送激活邮件
+            # 发送激活邮件 # アクティベーションメールを送信する
             current_site = get_current_site(request)
             subject = "Activate Your Account"
             message = render_to_string('email/account_activation_email.html', {
