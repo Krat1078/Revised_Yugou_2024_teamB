@@ -86,6 +86,18 @@ Revised_Yugou_2024_teamB/
 │   │   ├── tests.py
 │   │   ├── urls.py
 │   │   ├── views.py
+|   |
+|   |── mypage
+│   │   ├── templates/ (html files)
+│   │   │   
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── forms.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   ├── views.py
+│
 │   │
 │   ├──media/ (Project image storage directory)
 │   │   ├──item_images/
@@ -98,7 +110,8 @@ Revised_Yugou_2024_teamB/
 │   │
 │   ├── db.sqlite3
 │   ├── manage.py
-│
+|
+|
 ├── assets/
 │   ├── images/
 │   │   ├── DatabaseStructure.png

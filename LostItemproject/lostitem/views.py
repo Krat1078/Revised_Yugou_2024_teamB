@@ -22,6 +22,7 @@ from django.contrib.auth.tokens import default_token_generator
 from django.contrib.sites.shortcuts import get_current_site
 from django.template.loader import render_to_string
 from django.core.mail import send_mail
+from django.core.mail import EmailMessage
 from django.contrib import messages
 
 from .forms import (
@@ -69,7 +70,12 @@ def register(request):
                 'token': default_token_generator.make_token(user),
             })
             # print(urlsafe_base64_encode(force_bytes(user.pk)))
-            send_mail(subject, message, '1528392308@qq.com', [user.email])
+            # send_mail(subject, message, '1528392308@qq.com', [user.email])
+
+            # html形式で送信されるようにする
+            email = EmailMessage(subject, message, "1528392308@qq.com", [user.email])
+            email.content_subtype = "html"
+            email.send()
 
             return render(request, 'email/check_email.html')
     else:
@@ -118,6 +124,7 @@ def tolostitemregister(request):
 def register_item(request):
     if request.method == 'POST':
         # 获取当前登录用户的 email
+        # 現在ログインしているユーザーのEメールを取得する
         user_email = request.user.email
         if not user_email:
             return JsonResponse({'status': 'error', 'errors': ['User email is not available.']}, status=400)

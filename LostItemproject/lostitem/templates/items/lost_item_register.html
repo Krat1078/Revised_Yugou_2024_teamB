@@ -82,12 +82,13 @@
     {% comment %}
         <script>
             document.addEventListener("DOMContentLoaded", function () {
-                const addFileBtn = document.getElementById("add-image-btn"); // 获取加号按钮
-                const fileInputsContainer = document.getElementById("images-inputs"); // 获取文件输入容器
+                const addFileBtn = document.getElementById("add-image-btn"); // 获取加号按钮 // プラスボタンを取得する
+                const fileInputsContainer = document.getElementById("images-inputs"); // 获取文件输入容器 // ファイル入力コンテナを取得する
 
                 // 验证允许的文件类型和大小
+                // 許可されるファイルの種類とサイズを確認する
                 function validateFile(file) {
-                    const allowedTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"]; // 允许的格式
+                    const allowedTypes = ["image/jpg", "image/jpeg", "image/png", "image/gif"]; // 允许的格式 // 許可されるフォーマット
                     const maxSize = 5 * 1024 * 1024; // 5MB
 
                     if (!allowedTypes.includes(file.type)) {
@@ -103,34 +104,34 @@
                     return true;
                 }
 
-                // 动态添加新的文件输入框
+                // 动态添加新的文件输入框 // 新しいファイル入力ボックスを動的に追加する
                 addFileBtn.addEventListener("click", function () {
                     const newFileInput = document.createElement("input");
                     newFileInput.type = "file";
-                    newFileInput.name = "images"; // 确保所有文件输入框使用相同的名称
-                    newFileInput.className = "form-control mt-2"; // 样式
+                    newFileInput.name = "images"; // 确保所有文件输入框使用相同的名称 // すべてのファイル入力ボックスが同じ名前を使うようにする。
+                    newFileInput.className = "form-control mt-2"; // 样式 // スタイル
 
-                    // 文件选择时验证格式和大小
+                    // 文件选择时验证格式和大小 // ファイル選択時にフォーマットとサイズを検証する
                     newFileInput.addEventListener("change", function (event) {
                         const file = event.target.files[0];
                         if (file && !validateFile(file)) {
-                            event.target.value = ""; // 清空无效输入
+                            event.target.value = ""; // 清空无效输入 // 無効な入力を消去する
                         }
                     });
                     if (fileInputsContainer.children.length >= 5) {
                         alert("最大アップロード数は5です");
                         return;
                     }
-                    // 将新文件输入框添加到容器中
+                    // 将新文件输入框添加到容器中 // コンテナに新しいファイル入力ボックスを追加する。
                     fileInputsContainer.appendChild(newFileInput);
                 });
 
-                // 为初始的文件输入框添加验证
+                // 为初始的文件输入框添加验证 // 初期ファイル入力ボックスにバリデーションを追加する
                 const initialFileInput = document.querySelector("#images");
                 initialFileInput.addEventListener("change", function (event) {
                     const file = event.target.files[0];
                     if (file && !validateFile(file)) {
-                        event.target.value = ""; // 清空无效输入
+                        event.target.value = ""; // 清空无效输入 // 無効な入力を消去する
                     }
                 });
             });

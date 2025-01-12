@@ -10,115 +10,113 @@
             <div class="row justify-content-between"> 
                 <h1 class="col-lg-8 col-sm-5 d-flex align-items-center fw-bold mb-4">拾得物登録</h1>
                 <img src="{% static 'imgs/illustrations/L-拾得物登録.png'%}" class="col-lg-3 col-sm-7 mb-4" alt="">
-                <form method="post" action="{% url 'founditem:register_item' %}" enctype="multipart/form-data"
-                    class="dropzone" id="itemsRegister">
             </div>
 
-                {% csrf_token %}
+            <form method="post" action="{% url 'founditem:register_item' %}" enctype="multipart/form-data" class="dropzone" id="itemsRegister">
 
-            <div class="row justify-content-between">    
-                <!-- 日時 --> 
-                <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                    <img src="{% static 'imgs/icons/CALENDAR I.png'%}" class="me-3" alt="" width="22" height="18">
-                    <label for="date" class="me-3 fw-bold">日時　　　　　</label>
-                    <div class="col">
-                        <input type="date" style="background-color: #53C3D233; color: #06343D;" name="data" id="date" class="form-control" value="2024-12-25">
+                {% csrf_token %}
+                <div class="row justify-content-between">    
+                    <!-- 日時 --> 
+                    <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
+                        <img src="{% static 'imgs/icons/CALENDAR I.png'%}" class="me-3" alt="" width="22" height="18">
+                        <label for="date" class="me-3 fw-bold">日時　　　　　</label>
+                        <div class="col">
+                            <input type="date" style="background-color: #53C3D233; color: #06343D;" name="data" id="date" class="form-control" value="2025-01-01">
+                        </div>
+                    </div>
+                        
+                    <!--拾った場所 -->
+                    <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
+                        <img src="{% static 'imgs/icons/Component 1.png'%}" class="me-3" alt="" width="22" height="20">
+                        <label for="location" class="me-3 fw-bold">拾った場所　　</label>
+                        <div class="col">
+                            <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
+                                <option value="">------</option>  <!-- 空欄 -->
+                                {% for pickedOrDroppedLocationsTag in pickedOrDroppedLocationsTags %}
+                                    <option value="{{ pickedOrDroppedLocationsTag.PorD_location_id }}">{{ pickedOrDroppedLocationsTag.picked_or_dropped_location_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between">
+                    <!--届けた場所 -->
+                    <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
+                        <img src="{% static 'imgs/icons/SENT.png'%}" class="me-3" alt="" width="22" height="24">
+                        <label for="location" class="me-3 fw-bold">届けた場所　　</label>
+                        <div class="col">
+                            <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
+                                <option value="">------</option>  <!-- 空欄 -->
+                                {% for location in locations %}
+                                    <option value="{{ location.storage_location_id }}">{{ location.storage_location_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- 物品カテゴリー -->
+                    <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
+                        <img src="{% static 'imgs/icons/CATEGORY I.png'%}" class="me-3" alt="" width="22" height="22">
+                        <label for="category" class="me-3 fw-bold">物品カテゴリー</label>
+                        <div class="col">
+                            <select id="category" style="background-color: #53C3D233; color: #06343D;" name="category" class="form-select">
+                                <option value="">------</option>  <!-- 空欄 -->
+                                {% for category in categories %}
+                                    <option value="{{ category.item_name_id }}">{{ category.item_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row justify-content-between">
+                    <!-- 写真 -->
+                    <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
+                        <img src="{% static 'imgs/icons/photo.png'%}" class="me-3" alt="" width="22" height="22">
+                        <label for="images-inputs" class="me-3 fw-bold">写真　　　　　</label>
+                        <div class="col">
+                            <div id="images-inputs">
+                                <input type="file" style="background-color: #53C3D233; color: #06343D;" class="form-control" id="images" name="images"
+                                    aria-describedby="inputGroupFileAddon04" aria-label="Upload">
+                            </div>
+                            <div class="d-flex justify-content-end">
+                                <button type="button" class="btn btn-outline-secondary custom-add mt-1" style= "color: #06343D; border-color: #06343D4B; border-width: 2px;" id="add-image-btn">+</button>
+                            </div>
+                        </div>
+                        <style>
+                            .custom-add:hover {
+                                background-color: #53C3D250; 
+                            }
+                        </style>
+                    </div>
+
+                    <!-- コメント -->
+                    <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
+                        <img src="{% static 'imgs/icons/Comment.png'%}" class="me-3" alt="" width="22" height="22">
+                        <label for="comment" style="color: #8E8E8E;" class="me-3 fw-bold">コメント　　　</label>
+                        <div class="col">
+                            <textarea id="comment" style="background-color: #53C3D233" name='comment' class="form-control" rows="3" placeholder="*細かな物品の種類や特徴を記入してください"></textarea>
+
+                        </div>
                     </div>
                 </div>
                     
-                <!--拾った場所 -->
-                <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                    <img src="{% static 'imgs/icons/Component 1.png'%}" class="me-3" alt="" width="22" height="20">
-                    <label for="location" class="me-3 fw-bold">拾った場所　　</label>
-                    <div class="col">
-                        <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
-
-                            {% for pickedOrDroppedLocationsTag in pickedOrDroppedLocationsTags %}
-                                <option value="{{ pickedOrDroppedLocationsTag.PorD_location_id }}">{{ pickedOrDroppedLocationsTag.picked_or_dropped_location_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row justify-content-between">
-                <!--届けた場所 -->
-                <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                    <img src="{% static 'imgs/icons/SENT.png'%}" class="me-3" alt="" width="22" height="24">
-                    <label for="location" class="me-3 fw-bold">届けた場所　　</label>
-                    <div class="col">
-                        <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
-
-                            {% for location in locations %}
-                                <option value="{{ location.storage_location_id }}">{{ location.storage_location_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-
-                <!-- 物品カテゴリー -->
-                <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                    <img src="{% static 'imgs/icons/CATEGORY I.png'%}" class="me-3" alt="" width="22" height="22">
-                    <label for="category" class="me-3 fw-bold">物品カテゴリー</label>
-                    <div class="col">
-                        <select id="category" style="background-color: #53C3D233; color: #06343D;" name="category" class="form-select">
-                            {% for category in categories %}
-                                <option value="{{ category.item_name_id }}">{{ category.item_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="row justify-content-between">
-                <!-- 写真 -->
-                <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                    <img src="{% static 'imgs/icons/photo.png'%}" class="me-3" alt="" width="22" height="22">
-                    <label for="images-inputs" class="me-3 fw-bold">写真　　　　　</label>
-                    <div class="col">
-                        <div id="images-inputs">
-                            <input type="file" style="background-color: #53C3D233; color: #06343D;" class="form-control" id="images" name="images"
-                                aria-describedby="inputGroupFileAddon04" aria-label="Upload">
-                        </div>
-                        <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-outline-secondary custom-add mt-1" style= "color: #06343D; border-color: #06343D4B; border-width: 2px;" id="add-image-btn">+</button>
-                        </div>
+        
+                    <!--登録ボタン -->
+                    <div class="text-center" >
+                        <button type="button" id="my-popover" class="col-lg-2 col-sm-4 btn btn-outline-secondary custom-button fw-bold" style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">登録</button>
                     </div>
                     <style>
-                        .custom-add:hover {
+                        .custom-button:hover {
                             background-color: #53C3D250; 
                         }
                     </style>
-                </div>
-
-                <!-- コメント -->
-                <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                    <img src="{% static 'imgs/icons/Comment.png'%}" class="me-3" alt="" width="22" height="22">
-                    <label for="comment" style="color: #8E8E8E;" class="me-3 fw-bold">コメント　　　</label>
-                    <div class="col">
-                        <textarea id="comment" style="background-color: #53C3D233" name='comment' class="form-control" rows="3" placeholder="*色などを記入してください"></textarea>
-
-                    </div>
-                </div>
-            </div>
-                
-    
-                <!--登録ボタン 
-                <div class="text-center" >
-                    <button type="button" id="my-popover" class="col-lg-2 col-sm-4 btn btn-outline-secondary custom-button fw-bold" style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">登録</button>
-                </div>
-                <style>
-                    .custom-button:hover {
-                        background-color: #53C3D250; 
-                    }
-                </style>
-                -->
-                
             </form>
         </div>
     </div>
 
-    <!-- モーダル 
+    <!-- モーダル -->
     <div class="modal" id="myModal" tabindex="-1">
         <div class="modal-dialog">
             <div class="modal-content" style="background-color: #F7FBF4;">
@@ -139,13 +137,14 @@
             </div>
         </div>
     </div>
-    -->
+    
 
-        <!-- 登録ボタン -->
+        <!-- 登録ボタン 
         {#                <div class="text-center">#}
             {#                    <button type="submit" class="btn btn-outline-success fw-bold " style="width: 140px; font-size: 20px; color: #0000004B; border-color: #0000004B; border-width: 2px; border-radius: 10px;">登録</button>#}
             {#                </div>#}
-            <!-- Submit Button -->
+        -->
+            <!-- Submit Button 
             <div class="text-center">
                 <button type="button" id="openQrModal" class="btn btn-outline-success fw-bold"
                         style="width: 140px; font-size: 20px;">
@@ -155,7 +154,10 @@
         </form>
     </div>
     </div>
-    <!-- Modal Window -->
+
+    -->
+
+    <!-- Modal Window 
     <div id="qrModal" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -174,6 +176,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
 
+    -->
 
     <script>
         document.addEventListener("DOMContentLoaded", function () { // HTMLの終わりから
@@ -251,6 +254,7 @@
             const modal = document.getElementById("myModal"); // モーダル
             const openModalBtn = document.getElementById("my-popover"); // 登録ボタン 
             const modalCloseBtn = document.getElementById("modalCloseBtn"); // 閉じるボタン
+            const form = document.getElementById("itemsRegister"); // formタグのID取得
 
             // 許可されたファイルの種類とサイズを確認する
             function validateFile(file) {
@@ -309,12 +313,14 @@
   
             // モーダル内の「閉じる」ボタンをクリックしたときにモーダルを非表示にする
             modalCloseBtn.addEventListener("click", function () {
+                form.submit();
                 modal.style.display = "none"; // モーダルを非表示にする
             });
   
             // モーダルの外側をクリックしたときにもモーダルを閉じる
             window.addEventListener("click", function (event) {
                 if (event.target === modal) {
+                    form.submit();
                     modal.style.display = "none"; // モーダルを非表示にする
                 }
             });

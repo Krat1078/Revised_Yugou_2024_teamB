@@ -1,4 +1,5 @@
 # 定时检查数据中可能登记或者时间超时（1个月）
+# タイムチェックデータの登録またはタイムアウトの可能性（1ヶ月間）
 import os
 from os.path import basename
 import base64
