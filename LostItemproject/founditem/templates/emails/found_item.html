@@ -1,25 +1,81 @@
 <html>
+<!--
+<head>
+<style>
+    table {
+        border-collapse: collapse;
+        border: 2px solid rgb(140 140 140);
+        font-family: sans-serif;
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+      
+    caption {
+        padding: 10px;
+        font-weight: bold;
+    }
+      
+    thead{
+        background-color: rgb(228 240 245);
+    }
+      
+    th,
+    td {
+        border: 1px solid rgb(160 160 160);
+        padding: 8px 10px;
+    }
+      
+    td:last-of-type {
+        text-align: center;
+    }
+      
+    tbody > tr:nth-of-type(even) {
+        background-color: rgb(237 238 242);
+    }
+</style>
+</head>
+-->
 <body>
-<h1>落とし物が見つかるかもしれない</h1>
+
+<p>落とし物管理アプリからのお知らせです。</p>
 
 {% if found_items %}
-    <p>以下の忘れ物が見つかりました(画像が表示されない場合は添付ファイルをご覧ください)：</p>
+    <p>あなたが登録した落とし物に<b>類似した落とし物</b>が大学に届けられました。確認してください。</p>
+    <p>（画像が表示されない場合は添付ファイルをご覧ください）</p>
+    <table border="1">
+        <caption>あなたが登録した落とし物</caption>
+        <thead>
+            <tr>
+                <th>物品カテゴリー</th>
+                <th>落とした場所</th>
+                <th>メモ</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ lost_item.item_name }}</td>
+                <td>{{ lost_item.lost_location }}</td>
+                <td>{{ lost_item.description }}</td>
+            </tr>
+        </tbody>
+    </table>
     <ul>
+        <p>届けられた落とし物情報</p>
         {% for item in found_items %}
             <li>
-                <h2>忘れ物名：{{ item.item_name }}</h2>
-                <p>忘れ物ID :{{ item.itemID }}</p>
-                <p>場所を見つける：{{ item.found_location }}</p>
-                <p>場所を保存する：{{ item.storage_location }}</p>
-                <p>コメント: {{ item.description }} </p>
+                <p><b>落とし物ID</b>　{{ item.itemID }}</p>
+                <p><b>物品カテゴリー</b>　{{ item.item_name }}</p>
+                <p><b>拾われた場所</b>　{{ item.found_location }}</p>
+                <p><b>現在の保管場所</b>　{{ item.storage_location }}</p>
+                <p><b>コメント</b>　{{ item.description }} </p>
 
                 {% if item.images %}
-                    <p>関連画像：</p>
+                    <p>落とし物画像：</p>
                     {% for image in item.images %}
                         <img src="{{ image }}" alt="Item Image"
                              style="max-width: 200px; max-height: 200px; margin: 5px;">
                     {% endfor %}
-                    <p>もし画像が表示されない場合は、添付ファイルをご確認ください!</p>
+                    <p><small>もし画像が表示されない場合は、添付ファイルをご確認ください</small></p>
 
                 {% else %}
                     <p>画像はありません。</p>
@@ -33,5 +89,10 @@
     <p>現在、見つかるアイテムはありません。</p>
 {% endif %}
 </body>
+
+<p>自分の物であることをよく確認して、自分の物であった場合は保管場所まで取りに来てください</p>
+<p><small>※学生センターA棟以外の保管場所だと約1ヶ月後に保管場所が学生センターA棟に変更されます</small></p>
+<p><small>※保管場所に関わらず、3ヶ月後には処分されます</small></p>
+
 </html>
 

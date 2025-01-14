@@ -10,6 +10,7 @@ from .models import get_item_model, get_item_image_model, get_items_name_tag_mod
     get_picked_or_dropped_locations_tag_model, get_storage_locations_tag_model
 from utils import email_utils, item_utils
 import pprint
+import redis
 
 
 @shared_task
@@ -30,6 +31,9 @@ def send_periodic_email():
                                  context={"item_name": "財布", "found_location": "図書館", "storage_location": "図書館"},
                                  attachments=None)
 
+redis_client = redis.StrictRedis.from_url(settings.CELERY_BROKER_URL, decode_responses=True) # redisのクライアントサーバーを設定
+# redisのデータベースにメール送信済み情報（遺失物ID, 拾得物ID）を格納 -> 追加されるとその後ろに追記？
+# これによって、一度メール通知したマッチングする拾得物情報はメール送信しない
 
 @shared_task
 def match_items_scheduled_task():
@@ -52,14 +56,31 @@ def match_items_scheduled_task():
             print('email of lost_item is null')
             continue
 
+        # 登録した遺失物情報をメール本文htmlに渡す
+        lost_context = { 
+            "item_name": str(itemNameTag.objects.get(item_name_id=lost_item.item_name_id)),
+            "lost_location": str(pickedOrDroppedLocationsTag.objects.get(PorD_location_id=lost_item.PorD_location_id)),
+            "description": str(lost_item.description),
+        }
+        
+        # redisデータベースにメール送信する遺失物IDを登録する（pythonで言う辞書形式）
+        # 遺失物IDをキーとして、拾得物IDをvalueとする
+        redis_key = f"sent_emails:lost_item_ID:{lost_item.item_id}"
+        sent_found_item_ids = redis_client.smembers(redis_key)
+
         match_found_items = item_utils.match_found_items(lost_item.item_id)
         if match_found_items and match_found_items != []:
 
-            print("lost item:", lost_item)
-            print("deal with lost item :", match_found_items)
+            print(f"lost item:{lost_item}")
+            print(f"deal with lost item :{match_found_items}", )
             contexts = []
             attachments = []
             for found_item in match_found_items:
+
+                # 登録したキーからvalueを検索して、redisデータベースに記録されていればメールのcontextに追加しない
+                if str(found_item.item_id) in sent_found_item_ids:
+                    print(f"Found item {found_item.item_id} already processed for lost item {lost_item.item_id}. Skipping.")
+                    continue
 
                 itemName = itemNameTag.objects.get(item_name_id=found_item.item_name_id)
                 pickedOrDroppedLocations = pickedOrDroppedLocationsTag.objects.get(
@@ -104,10 +125,14 @@ def match_items_scheduled_task():
 
                 contexts.append(context)
 
-            email_utils.send_email_async.delay(
-                subject="落とし物が見つかるかもしれない",
-                to_emails=[to_email],
-                template_name="emails/found_item.html",
-                context={'found_items': contexts, 'domain': settings.SITE_DOMAIN,},
-                attachments=attachments,
-            )
+                # メールに追加した拾得物をIDで、valueとして追加する
+                redis_client.sadd(redis_key, found_item.item_id)
+
+            if contexts:
+                email_utils.send_email_async.delay(
+                    subject="【確認】類似した落とし物が届きました！",
+                    to_emails=[to_email],
+                    template_name="emails/found_item.html",
+                    context={'found_items': contexts, 'domain': settings.SITE_DOMAIN, 'lost_item': lost_context},
+                    attachments=attachments,
+                )
