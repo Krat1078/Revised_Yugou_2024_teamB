@@ -14,7 +14,7 @@ class UserRegisterForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
-            raise ValidationError("This email is already in use.")
+            raise ValidationError("このメールアドレスは既に登録されています")
         return email
 
     # def clean_password2(self):
@@ -27,8 +27,8 @@ class UserRegisterForm(UserCreationForm):
 
 
 class UserRegistrationForm(forms.ModelForm):
-    password = forms.CharField(widget=forms.PasswordInput, label="Password")
-    password2 = forms.CharField(widget=forms.PasswordInput, label="Confirm Password")
+    password = forms.CharField(widget=forms.PasswordInput, label="パスワード")
+    password2 = forms.CharField(widget=forms.PasswordInput, label="パスワードの再入力")
     # captcha = CaptchaField()  # 添加验证码字段
 
     class Meta:
@@ -38,12 +38,12 @@ class UserRegistrationForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exists():
-            raise ValidationError("This email is already in use.")
+            raise ValidationError("このメールアドレスは既に登録されています")
         return email
 
     def clean_password2(self):
         password = self.cleaned_data.get('password')
         password2 = self.cleaned_data.get('password2')
         if password != password2:
-            raise ValidationError("Passwords do not match.")
+            raise ValidationError("パスワードが一致しません")
         return password2

@@ -48,7 +48,7 @@ class SignUpView(SuccessMessageMixin, CreateView):
     form_class = UserRegisterForm
     success_url = reverse_lazy('lostitem:login')
     template_name = 'users/signup.html'
-    success_message = "Now you are registered, try to log in!"
+    success_message = "登録が完了しました。ログインしてみましょう！"
 
 
 def register(request):
@@ -62,7 +62,7 @@ def register(request):
 
             # 发送激活邮件 # アクティベーションメールを送信する
             current_site = get_current_site(request)
-            subject = "Activate Your Account"
+            subject = "アカウント確認メール"
             message = render_to_string('email/account_activation_email.html', {
                 'user': user,
                 'domain': current_site.domain,
@@ -94,7 +94,7 @@ def activate(request, uidb64, token):
     if user is not None and default_token_generator.check_token(user, token):
         user.is_active = True
         user.save()
-        messages.success(request, 'Your account has been activated successfully! You can now log in.')
+        messages.success(request, '登録完了！ログインしましょう')
         return redirect('lostitem:login')  # redirect to 'login'
     else:
         return HttpResponse('Activation link is invalid!')
