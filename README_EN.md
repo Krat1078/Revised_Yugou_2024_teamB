@@ -109,7 +109,7 @@ Revised_Yugou_2024_teamB/
 │   ├──templates/ (Basic HTML file storage directory, such as base.html, footer.html)
 │   │
 │   ├── db.sqlite3
-|   ├── dump.rdb
+|   ├── dump.rdb ------> Redis database files. Do not delete them.
 │   ├── manage.py
 |
 |
