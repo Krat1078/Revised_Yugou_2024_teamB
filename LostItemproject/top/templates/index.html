@@ -20,73 +20,81 @@
         <div class="emojis d-none d-md-inline-flex justify-content-end my-0 py-0">
           <img src="{% static "imgs/illustrations/Glass emoji-fixed.png" %}" class="img-fluid mt-0 emoji_megane" alt="illustration" width="23%" loading="lazy">
         </div>
-        <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseExample">
-          タグ検索
+        <button class="btn top-tag-search-button col-12 mt-3" justifyContent="flex-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseExample" id="collapsebutton">
+          <img class="tagsearch-icon" src="{% static 'imgs/icons/SEARCH I.png'%}">タグ検索
+          <img class="tagsearch-icon-arrow rotate-icon ms-auto" src="{% static 'imgs/icons/SCROLL ARROW -down.png'%}" id="arrowIcon">
         </button>
       </div>
     </div>
   </div>
 </div>
 
-<div class="top-forms collapse row pt-4" id="collapseSearch">
+<div class="container top-forms collapse col-12 row pt-4 gap-4 justify-content-start" id="collapseSearch">
   <div class="search_pulldown col-lg-4 col-sm-12 px-5">
     <form method="post">
       {% csrf_token %}
-      落とした物：
-      <select name="item" id="tag">
-        <option value="">------</option>  <!-- 空欄 -->
-        {% for itemname in itemnametags %}
-          <option value="{{ itemname.item_name_id }}">{{ itemname.item_name }}</option>
-        {% endfor %}
-      </select>
-      落とした場所：
-      <select name="location" id="tag">
-        <option value="">------</option>  <!-- 空欄 -->
-        {% for location in locationtags %}
-          <option value="{{ location.PorD_location_id }}">{{ location.picked_or_dropped_location_name }}</option>
-        {% endfor %}
-      </select>
-      保管場所：
-      <select name="storage" id="tag">
-        <option value="">------</option>  <!-- 空欄 -->
-        {% for storage in storagetags %}
-        <option value="{{ storage.storage_location_id }}">{{ storage.storage_location_name}}</option>
-        {% endfor %}
-      </select>
-      <button type="submit" class="btn btn-primary">検索</button>
-    </form>
-  </div>
-  {% comment %}
-  <div class="search_pulldown col-lg-4 col-sm-12 px-5">
-    <form method="post">
-      {% csrf_token %}
-
-      {{ form.as_p }}
-      <button type="submit" class="btn btn-primary">検索</button>
-    </form>
-  </div>
-  {% endcomment %}
-  <div class="col-lg-4 col-sm-12">
-    岩手大学のマップはこちら
-    <div class="gallery" id="photoGallery">
+      <div class="top-droppeditemTag col-12">
+        <div class="top-itemTagnames p-1 col-lg-12 col-sm-12">
+          落とした物
+        </div>
+        <div class="top-droppedlocationTag-dropdownmenu col-lg-12 col-sm-12">
+          <select name="item" class="form-select" id="tag">
+            <option selected="">------</option>  <!-- 空欄 -->
+            {% for itemname in itemnametags %}
+              <option value="{{ itemname.item_name_id }}">{{ itemname.item_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="top-droppedlocationTag col-12 my-3">
+        <div class="top-itemTagnames p-1 col-lg-12 col-sm-12">
+          落とした場所
+        </div>
+        <div class="top-droppedlocationTag-dropdownmenu col-lg-12 col-sm-12">
+          <select name="location" class="form-select" id="tag">
+            <option value="">------</option>  <!-- 空欄 -->
+            {% for location in locationtags %}
+              <option value="{{ location.PorD_location_id }}">{{ location.picked_or_dropped_location_name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="top-storagelocationTag col-12">
+        <div class="top-itemTagnames p-1 col-lg-12 col-sm-12">
+          保管場所
+        </div>
+        <div class="top-droppedlocationTag-dropdownmenu col-lg-12 col-sm-12">
+          <select name="storage" class="form-select" id="tag">
+            <option value="">------</option>  <!-- 空欄 -->
+            {% for storage in storagetags %}
+            <option value="{{ storage.storage_location_id }}">{{ storage.storage_location_name}}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="gallery" id="photoGallery">
       
-      <a href="{% static 'imgs/iwate_university_map.jpg' %}" data-pswp-width="1298" data-pswp-height="1080" target="_blank">
-        <button type="button" class="btn btn-primary">岩手大学マップ</button>
-        <!--
-        <img src="{% static 'imgs/iwate_university_map.jpg' %}" class="img-fluid" alt="岩手大学マップ" loading="lazy" width="1298" height="1080">
-        -->
-      </a>
-    </div>
-    <!-- Button to Trigger Modal -->
+        <a href="{% static 'imgs/iwate_university_map.jpg' %}" data-pswp-width="1298" data-pswp-height="1080" target="_blank">
+          <button type="button" class="top-seach-btn my-2 ms-auto">岩手大学マップはこちら</button>
+          <!--
+          <img src="{% static 'imgs/iwate_university_map.jpg' %}" class="img-fluid" alt="岩手大学マップ" loading="lazy" width="1298" height="1080">
+          -->
+        </a>
+      </div>
+      <!-- Button to Trigger Modal -->
+      <button type="submit" class="top-seach-btn col-12 my-2 p-2">検索</button>
+    </form>
   </div>
-  <div class="search_date col-lg-4 col-sm-12">
+
+  <div class="search_date col-lg-4 col-sm-12 px-5">
     <form method="post">
       {% csrf_token %}
       {{ date_form.as_p }}
-      <button type="submit" class="btn btn-primary">日付検索</button>
+      <button type="submit" class="top-seach-btn col-12 my-2 p-2">日付検索</button>
     </form>
   </div>
 </div>
+
 <link
   rel="stylesheet"
   href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe.min.css"
@@ -110,32 +118,42 @@
 </script>
 
 
-{% comment %} 
-<div class="search-forms">
-  <form method="post">
-    <div class="search_category">
-      {% csrf_token %}
-      <label for="{{form.itemname_tag.id_for_label}}">落としたもの</label>
-      <select name="category" id="{{form.itemname_tag.id_for_label}}"class="form-control">
-        {%for category in form.itemname_tag.field.queryset%}
-        <option value="{{category.id}}" {% if category.id == form.itemname_tag.value %}selected{% endif %}>
-          {{category.item_name}}
-        </option>
-        {%endfor%}
-      </select>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
-</div> 
-{% endcomment %}
+<!--タグ検索の横の矢印アイコンの動作-->
+<script>
+  // ボタンと折りたたみコンテンツを取得
+  const toggleButton = document.getElementById('collapsebutton');
+  const collapseElement = document.getElementById('collapseSearch');
+  const arrowIcon = document.getElementById('arrowIcon');
+
+  // collapseインスタンスを生成（初期状態でトグルしない）
+  const collapse = new bootstrap.Collapse(collapseElement, {
+      toggle: false // 初期状態では展開しない
+  });
+
+  // ボタンがクリックされた時に折りたたみ/展開を切り替える
+  toggleButton.addEventListener('click', function () {
+      // 折りたたみのトグル
+      collapse.toggle();
+  });
+
+  // 展開される時に矢印を回転
+  collapseElement.addEventListener('show.bs.collapse', function () {
+      arrowIcon.style.transform = 'rotate(180deg)';
+  });
+
+  // 折りたたまれる時に矢印を元に戻す
+  collapseElement.addEventListener('hide.bs.collapse', function () {
+      arrowIcon.style.transform = 'rotate(0deg)';
+  });
+</script>
+
+
 
 <!--  card  -->
 <section id="cardlists">
   {% if images %}
   <div class="container">
-
-
-    <div class="row g-8 py-5">
+    <div class="row g-8 py-3">
       {% for image in images %}
       <div class="col-lg-3 col-sm-6 g-5">
         <a class="card card-effect" href="#" data-bs-toggle="modal" data-bs-target="#modal{{ image.id }}">
@@ -162,60 +180,71 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <div class="row">
-                <div class="col-7">
+              <div class="row px-1">
+                <div class="col-lg-7 col-sm-12">
                   <img src="{{ image.image_path.url }}" class="detail-img img-fluid" alt="Item Image">
                 </div>
-                <div class="col-5">
-                  <ul class="detail">
-                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">落とし物ID</li>
-                    <ul class="detail-content">
-                      <li class ="detail-content">{{image.item.item_id}}</li>
-                    </ul>
-                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">届いた日時</li>
-                    <ul class="detail-content">
-                      <li class ="detail-content">{{image.item.created_at|date:"Y/m/d"}}</li>
-                    </ul>
-                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/Component 1.png'%}">拾った場所</li>
-                    <ul class="detail-content">
-                      <li class ="detail-content">{{ image.item.PorD_location }}</li>
-                    </ul>
-                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/SENT.png'%}">届いた場所</li>
-                    <ul class="detail-content">
-                      <li class ="detail-content">{{ image.item.storage_location }}</li>
-                    </ul>
-                    <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CATEGORY I.png'%}">物品カテゴリー</li>
-                    <ul class="detail-content">
-                      <li class ="detail-content">{{ image.item.item_name.item_name }}</li>
-                    </ul>
-                    {% comment %} <li class="detail-tag"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">色*</li>
-                    <ul class="detail-content">
-                      <li class ="detail-content">赤</li>
-                    </ul> 
-                    {% endcomment %}
-                  </ul>
+                <div class="col-lg-5 col-sm-12">
+
+                  <div class="row py-3">
+                    <div class="detail-tag col-lg-12 col-sm-5 py-0 my-0">
+                      <p class="py-0 my-0"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">落とし物ID</p>
+                    </div>
+                    <div class="col-lg-11 col-sm-7 ps-lg-5 py-0 my-0">
+                      <p class="detail-content py-0 my-0">{{image.item.item_id}}</p>
+                    </div>
+                  </div>
+                  <div class="row pb-3">
+                    <div class="detail-tag col-lg-12 col-sm-5 py-0 my-0">
+                      <p class="py-0 my-0"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">届いた日時</p>
+                    </div>
+                    <div class="col-lg-11 col-sm-7 ps-lg-5 py-0 my-0 ">
+                      <p class="detail-content py-0 my-0">{{image.item.created_at|date:"Y/m/d"}}</p>
+                    </div>
+                  </div>
+                  <div class="row pb-3">
+                    <div class="detail-tag col-lg-12 col-sm-5 py-0 my-0">
+                      <p class="py-0 my-0"><img class="detail-icons" src="{% static 'imgs/icons/Component 1.png'%}">拾った場所</p>
+                    </div>
+                    <div class="col-lg-11 col-sm-7 ps-lg-5 py-0 my-0 ">
+                      <p class="detail-content py-0 my-0">{{ image.item.PorD_location }}</p>
+                    </div>
+                  </div>
+                  <div class="row pb-3">
+                    <div class="detail-tag col-lg-12 col-sm-5 py-0 my-0">
+                      <p class="py-0 my-0"><img class="detail-icons" src="{% static 'imgs/icons/SENT.png'%}">届いた場所</p>
+                    </div>
+                    <div class="col-lg-11 col-sm-7 ps-lg-5 py-0 my-0 ">
+                      <p class="detail-content py-0 my-0">{{ image.item.storage_location }}</p>
+                    </div>
+                  </div>
+                  <div class="row pb-3">
+                    <div class="detail-tag col-lg-12 col-sm-5 py-0 my-0">
+                      <p class="py-0 my-0"><img class="detail-icons" src="{% static 'imgs/icons/CATEGORY I.png'%}">物品カテゴリー</p>
+                    </div>
+                    <div class="col-lg-11 col-sm-7 ps-lg-5 py-0 my-0 ">
+                      <p class="detail-content py-0 my-0">{{ image.item.item_name.item_name }}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-12">
-                  <ul class="detail detail-content">
-                  <li class="detail-comment"><img class="detail-icons" src="{% static 'imgs/icons/Comment.png'%}">コメント</li>
-                  <li class ="detail-content">{{ image.item.description }}</li>
-                  </ul>
+
+
+              <div class="row pb-3">
+                <div class="detail-tag col-lg-12 col-sm-5 py-0 my-0">
+                  <p class="py-0 my-0"><img class="detail-icons" src="{% static 'imgs/icons/Comment.png'%}">コメント</p>
+                </div>
+                <div class="col-lg-11 col-sm-7 ps-lg-5 py-0 my-0 ">
+                  <p class="detail-content py-0 my-0">{{ image.item.description }}</p>
                 </div>
               </div>
             </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            </div>
+
           </div>
         </div>
       </div>
       {% endfor %}
     </div>
-
-    
-
   </div>
   {% else %}
     <p>選択されたタグを持つ落とし物情報は見つかりませんでした</p>
@@ -226,17 +255,25 @@
     <nav aria-label="Page navigation example">
       <ul class="pagination">
         {% if page_obj.has_previous %}
-          <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Previous</a></li>
+          <li class="page-item PreviousAndNext">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
         {% endif %}
         {% for num in page_obj.paginator.page_range %}
           {% if num == page_obj.number %}
-            <li class="page-item"><span class="page-link">{{ num }}</span></li>
+            <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
           {% elif num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
             <li class="page-item"><a class="page-link" href="?page={{ num }}">{{ num }}</a></li>
           {% endif %}
         {% endfor %}
         {% if page_obj.has_next %}
-          <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Next</a></li>
+          <li class="page-item PreviousAndNext">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
         {% endif %}
       </ul>
     </nav>
