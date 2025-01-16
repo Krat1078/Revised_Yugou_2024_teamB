@@ -6,6 +6,7 @@ from django.template.loader import render_to_string
 from django.conf import settings
 from smtplib import SMTPException
 import logging
+import re
 import base64
 
 
@@ -72,3 +73,7 @@ def send_email(subject, to_emails, template_name, context=None, from_email=None,
 #     context={"item_name": "財布", "found_location": "図書館", "storage_location": "図書館"},
 #     attachments=[("item.jpg", image_content, "image/jpeg")]
 # )
+
+def is_valid_email_format(email):
+    pattern = r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+    return re.match(pattern, email) is not None

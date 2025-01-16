@@ -7,7 +7,7 @@
     <div class="container" style="desply: flex;">
         <div class="mx-auto" flex="" style="max-width: 950px; margin-top: 14vh;">
             <!-- タイトル -->
-            <div class="row justify-content-between"> 
+            <div class="row justify-content-between">
                 <h1 class="col-lg-8 col-sm-5 d-flex align-items-center fw-bold mb-4">拾得物登録</h1>
                 <img src="{% static 'imgs/illustrations/L-拾得物登録.png'%}" class="col-lg-3 col-sm-7 mb-4" alt="">
             </div>
@@ -15,16 +15,16 @@
             <form method="post" action="{% url 'founditem:register_item' %}" enctype="multipart/form-data" class="dropzone" id="itemsRegister">
 
                 {% csrf_token %}
-                <div class="row justify-content-between">    
-                    <!-- 日時 --> 
+                <div class="row justify-content-between">
+                    <!-- 日時 -->
                     <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
                         <img src="{% static 'imgs/icons/CALENDAR I.png'%}" class="me-3" alt="" width="22" height="18">
                         <label for="date" class="me-3 fw-bold">日時　　　　　</label>
                         <div class="col">
-                            <input type="date" style="background-color: #53C3D233; color: #06343D;" name="data" id="date" class="form-control" value="2025-01-01">
+                            <input type="date" style="background-color: #53C3D233; color: #06343D;" name="data" id="date" class="form-control">
                         </div>
                     </div>
-                        
+
                     <!--拾った場所 -->
                     <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
                         <img src="{% static 'imgs/icons/Component 1.png'%}" class="me-3" alt="" width="22" height="20">
@@ -80,13 +80,13 @@
                                 <input type="file" style="background-color: #53C3D233; color: #06343D;" class="form-control" id="images" name="images"
                                     aria-describedby="inputGroupFileAddon04" aria-label="Upload">
                             </div>
-                            <div class="d-flex justify-content-end">
-                                <button type="button" class="btn btn-outline-secondary custom-add mt-1" style= "color: #06343D; border-color: #06343D4B; border-width: 2px;" id="add-image-btn">+</button>
-                            </div>
+{#                            <div class="d-flex justify-content-end">#}
+{#                                <button type="button" class="btn btn-outline-secondary custom-add mt-1" style= "color: #06343D; border-color: #06343D4B; border-width: 2px;" id="add-image-btn">+</button>#}
+{#                            </div>#}
                         </div>
                         <style>
                             .custom-add:hover {
-                                background-color: #53C3D250; 
+                                background-color: #53C3D250;
                             }
                         </style>
                     </div>
@@ -101,15 +101,15 @@
                         </div>
                     </div>
                 </div>
-                    
-        
+
+
                     <!--登録ボタン -->
                     <div class="text-center" >
-                        <button type="button" id="my-popover" class="col-lg-2 col-sm-4 btn btn-outline-secondary custom-button fw-bold" style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">登録</button>
+                        <button type="button" id="openQrModal" class="col-lg-2 col-sm-4 btn btn-outline-secondary custom-button fw-bold" style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">登録</button>
                     </div>
                     <style>
                         .custom-button:hover {
-                            background-color: #53C3D250; 
+                            background-color: #53C3D250;
                         }
                     </style>
             </form>
@@ -126,25 +126,28 @@
                             <img src="{% static 'imgs/illustrations/拾得物登録―成功.png'%}" class="col-8" alt="">
                         </div>
                         <div class="row justify-content-center mb-3">
-                            <h5 class="col-12 text-center fw-bold">登録完了しました</h5>
-                            <h5 class="col-12 text-center fw-bold">ありがとうございました</h5>
+                            <h5 class="col-12 text-center fw-bold" id="modalMessage">登録完了しました</h5>
+                            <h5 class="col-12 text-center fw-bold" id="modalSubMessage">ありがとうございました</h5>
                         </div>
                         <div class="row justify-content-center mb-4">
-                            <button type="button" id="modalCloseBtn" class="col-4 btn btn-outline-secondary custom-button fw-bold" style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">閉じる</button>
+                            <button type="button" id="modalCloseBtn" class="col-4 btn btn-outline-secondary custom-button fw-bold"
+                                    style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                                閉じる
+                            </button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    
 
-        <!-- 登録ボタン 
+
+        <!-- 登録ボタン
         {#                <div class="text-center">#}
             {#                    <button type="submit" class="btn btn-outline-success fw-bold " style="width: 140px; font-size: 20px; color: #0000004B; border-color: #0000004B; border-width: 2px; border-radius: 10px;">登録</button>#}
             {#                </div>#}
         -->
-            <!-- Submit Button 
+            <!-- Submit Button
             <div class="text-center">
                 <button type="button" id="openQrModal" class="btn btn-outline-success fw-bold"
                         style="width: 140px; font-size: 20px;">
@@ -157,7 +160,7 @@
 
     -->
 
-    <!-- Modal Window 
+    <!-- Modal Window-->
     <div id="qrModal" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -174,18 +177,42 @@
         </div>
     </div>
     </div>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html5-qrcode/2.3.8/html5-qrcode.min.js"></script>
+    <script src="{% static "js/html5-qrcode.min.js" %}"></script>
 
-    -->
+
 
     <script>
-        document.addEventListener("DOMContentLoaded", function () { // HTMLの終わりから
-            const openQrModalBtn = document.getElementById("openQrModal"); // モーダルを開くボタンのオブジェクト
-            const qrModal = new bootstrap.Modal(document.getElementById("qrModal")); // モーダルを開くオブジェクト
-            let qrScanner;
+        document.addEventListener("DOMContentLoaded", function () {
+            // 设置当前日期
+            const today = new Date();
+            const formattedDate = today.toISOString().split('T')[0];
+            document.getElementById('date').value = formattedDate;
 
-            openQrModalBtn.addEventListener("click", function () { // ボタンがクリックされたとき
-                qrModal.show(); // モーダル表示
+            const openQrModalBtn = document.getElementById("openQrModal");
+            const qrModal = new bootstrap.Modal(document.getElementById("qrModal"));
+            let qrScanner;
+            let isSubmitting = false; // 添加标志防止重复提交
+
+            openQrModalBtn.addEventListener("click", function () {
+                // 表单验证
+                const pickedLocation = document.querySelector('select[name="location"]').value;
+                const storageLocation = document.querySelectorAll('select[name="location"]')[1].value;
+                const category = document.querySelector('select[name="category"]').value;
+
+                if (!pickedLocation) {
+                    alert('拾った場所を選択してください。');
+                    return;
+                }
+                if (!storageLocation) {
+                    alert('届けた場所を選択してください。');
+                    return;
+                }
+                if (!category) {
+                    alert('物品カテゴリーを選択してください。');
+                    return;
+                }
+
+                qrModal.show();
                 const qrError = document.getElementById("qrError"); // エラーメッセージのオブジェクト
                 const qrReaderContainer = document.getElementById("reader"); // QRコードをスキャンするオブジェクト
 
@@ -199,7 +226,7 @@
                 // カメラのスキャンを開始する
                 qrScanner = new Html5Qrcode("reader");
                 Html5Qrcode.getCameras().then(cameras => { // 利用可能なカメラの取得
-                    if (cameras.length > 0) { 
+                    if (cameras.length > 0) {
                         // cameras.length -> 利用可能なカメラの数
                         const rearCamera = cameras.find(cam => cam.label.toLowerCase().includes("back")); // 背面にあるカメラを探す
                         const cameraId = rearCamera ? rearCamera.id : cameras[0].id; // 背面のカメラが見つからない場合、最初のカメラを選択
@@ -208,7 +235,7 @@
                             cameraId,
                             {fps: 10, qrbox: 250}, // 毎秒10フレームスキャン、250pxの製法領域でスキャン
                             (decodedText) => { // 成功時
-                                validateQrCode(decodedText); 
+                                validateQrCode(decodedText);
                             },
                             (errorMessage) => { // 成功していない時
                                 qrError.textContent = "QRコード読み取り中...";
@@ -223,6 +250,9 @@
             });
 
             function validateQrCode(qrData) {
+                if (isSubmitting) return; // 如果正在提交，直接返回
+                isSubmitting = true; // 设置提交标志
+
                 console.log("QR Code scanned:", qrData);
                 fetch("{% url 'founditem:validate_qr_code' %}", {
                     method: "POST",
@@ -232,27 +262,74 @@
                     },
                     body: JSON.stringify({qr_code: qrData})
                 })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.status === "success") {
-                            qrModal.hide();
-                            alert("QRコードが有効です。データを送信します。");
-                            document.getElementById("itemsRegister").submit();
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === "success") {
+                        qrModal.hide();
+                        // QRコード検証成功後、フォームを送信
+                        const form = document.getElementById("itemsRegister");
+                        const formData = new FormData(form);
+
+                        return fetch("{% url 'founditem:register_item' %}", {
+                            method: "POST",
+                            body: formData
+                        });
+                    } else {
+                        isSubmitting = false; // 重置提交标志
+                        alert("QRコードが無効です。" + data.message);
+                    }
+                })
+                .then(response => {
+                    if (response) return response.json();
+                })
+                .then(result => {
+                    if (result) {
+
+
+                        const modalMessage = document.getElementById("modalMessage");
+                        const modalSubMessage = document.getElementById("modalSubMessage");
+                        const myModal = new bootstrap.Modal(document.getElementById("myModal"));
+
+                        if (result.status === "success") {
+                            modalMessage.textContent = "登録完了しました";
+                            modalSubMessage.textContent = "ありがとうございました";
+                            modalMessage.style.color = "#06343D";
                         } else {
-                            alert("QRコードが無効です。" + data.message);
+                            modalMessage.textContent = "登録に失敗しました";
+                            modalSubMessage.textContent = result.errors.join("\n");
+                            modalMessage.style.color = "#dc3545";
                         }
-                    })
-                    .catch(() => {
-                        alert("QRコードの検証中にエラーが発生しました。");
-                    });
+                        myModal.show();
+                    }
+                })
+                .catch(error => {
+                    isSubmitting = false; // 重置提交标志
+                    alert("データの送信中にエラーが発生しました：" + error);
+                });
             }
+
+            // 修改模态框关闭按钮的处理
+            document.getElementById("modalCloseBtn").addEventListener("click", function() {
+                const myModal = bootstrap.Modal.getInstance(document.getElementById("myModal"));
+                myModal.hide();
+                // 只在成功时刷新页面，不再重复提交表单
+                if (document.getElementById("modalMessage").style.color !== "#dc3545") {
+                    window.location.reload();
+                }
+                isSubmitting = false;
+            });
+
+            // 如果用户通过其他方式关闭模态框，也要重置提交标志
+            document.getElementById("myModal").addEventListener('hidden.bs.modal', function () {
+                isSubmitting = false;
+            });
         });
 
         document.addEventListener("DOMContentLoaded", function () {
             const addFileBtn = document.getElementById("add-image-btn"); // プラスボタン
             const fileInputsContainer = document.getElementById("images-inputs"); // ファイル入力コンテナの取得
             const modal = document.getElementById("myModal"); // モーダル
-            const openModalBtn = document.getElementById("my-popover"); // 登録ボタン 
+            {#const openModalBtn = document.getElementById("my-popover"); // 登録ボタン #}
             const modalCloseBtn = document.getElementById("modalCloseBtn"); // 閉じるボタン
             const form = document.getElementById("itemsRegister"); // formタグのID取得
 
@@ -274,29 +351,8 @@
                 return true;
             }
 
-            // 新しいファイル入力ボックスを動的に追加する
-            addFileBtn.addEventListener("click", function () {
-                const newFileInput = document.createElement("input");
-                newFileInput.type = "file";
-                newFileInput.name = "images"; // すべてのファイル入力ボックスに同じ名前が使われていることを確認する。
-                newFileInput.className = "form-control mt-2"; // タイプ
-                newFileInput.style = "background-color: #53C3D233; color: #06343D";
 
-                // ファイル選択時にフォーマットとサイズを検証
-                newFileInput.addEventListener("change", function (event) {
-                    const file = event.target.files[0];
-                    if (file && !validateFile(file)) {
-                        event.target.value = ""; // 無効な入力をクリアする
-                    }
-                });
-                if (fileInputsContainer.children.length >= 5) {
-                    alert("最大アップロード数は5です");
-                    return;
-                }
-                // コンテナに新しいファイル入力ボックスを追加する
-                fileInputsContainer.appendChild(newFileInput);
-            });
-
+            {##}
             // 初期ファイル入力ボックスにバリデーションを追加
             const initialFileInput = document.querySelector("#images");
             initialFileInput.addEventListener("change", function (event) {
@@ -306,25 +362,22 @@
                 }
             });
 
-            // 登録ボタンがクリックされたときにモーダルを表示
-            openModalBtn.addEventListener("click", function (event) {
-                modal.style.display = "flex"; // モーダルを表示
-            });
-  
             // モーダル内の「閉じる」ボタンをクリックしたときにモーダルを非表示にする
             modalCloseBtn.addEventListener("click", function () {
-                form.submit();
+                // form.submit();
                 modal.style.display = "none"; // モーダルを非表示にする
             });
-  
+
             // モーダルの外側をクリックしたときにもモーダルを閉じる
             window.addEventListener("click", function (event) {
                 if (event.target === modal) {
-                    form.submit();
+                    // form.submit();
                     modal.style.display = "none"; // モーダルを非表示にする
                 }
             });
+
         });
+
     </script>
 
 
