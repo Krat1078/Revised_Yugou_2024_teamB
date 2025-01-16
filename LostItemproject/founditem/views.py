@@ -2,15 +2,20 @@ from PIL import Image, UnidentifiedImageError
 import hashlib
 from datetime import datetime
 import json
+import io
+import base64
 
 from django.http import JsonResponse, HttpResponse, FileResponse
 from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from django.utils.dateparse import parse_date
 from django.views.decorators.csrf import csrf_exempt
-from utils import email_utils, item_utils, QR_utils
+from django.contrib.auth.decorators import user_passes_test
+from django.core.exceptions import PermissionDenied
 
+from utils import email_utils, item_utils, QR_utils
 from . import models
+
 
 @csrf_exempt
 def validate_qr_code(request):
@@ -39,6 +44,7 @@ def validate_qr_code(request):
                 return JsonResponse({"status": "error", "message": message})
         except Exception as e:
             return JsonResponse({"status": "error", "message": str(e)})
+
 
 # Create your views here.
 def index(request):
@@ -85,8 +91,6 @@ def register_item(request):
             errors.append("item category is required.")
         if not location:
             errors.append("Location is required.")
-        if not category:
-            errors.append("Category is required.")
         if description and len(description) > 500:
             errors.append("Description length must not exceed 500 characters.")
 
@@ -200,3 +204,59 @@ def get_image(request, id):
         # 他の例外をキャッチしてエラーメッセージを返す
         errors = [str(e)]  # 捕获并返回异常信息 # 例外メッセージをキャッチして返す
         return JsonResponse({'status': 'error', 'errors': errors}, status=400)
+
+
+@user_passes_test(lambda u: u.is_superuser, login_url=None)
+def generate_qr_code(request):
+    if not request.user.is_superuser:
+        raise PermissionDenied("管理者権限が必要です。")
+
+    if request.method == "POST":
+        try:
+            data = json.loads(request.body)
+            admin_id = request.user.id
+
+            # 从请求中获取有效期，如果没有则使用默认值7
+            validity_days = data.get('validity_days', 7)
+
+            # 验证有效期范围
+            try:
+                validity_days = int(validity_days)
+                if not (1 <= validity_days <= 30):
+                    return JsonResponse({
+                        'status': 'error',
+                        'message': '有効期限は1〜30日の間で設定してください。'
+                    })
+            except ValueError:
+                return JsonResponse({
+                    'status': 'error',
+                    'message': '有効期限は数値で入力してください。'
+                })
+
+            # 生成QR码数据
+            qr_data = QR_utils.generate_qr_code_data(admin_id, validity_days)
+
+            # 生成QR码图片
+            qr_image = QR_utils.generate_qr_code_image(qr_data)
+
+            # 转换图片为base64
+            buffer = io.BytesIO()
+            qr_image.save(buffer, format='PNG')
+            qr_image_base64 = base64.b64encode(buffer.getvalue()).decode()
+
+            return JsonResponse({
+                'status': 'success',
+                'qr_code_url': f'data:image/png;base64,{qr_image_base64}',
+                # 'created_at': qr_data['created_at'],
+                # 'validity_days': validity_days
+            })
+
+        except Exception as e:
+            return JsonResponse({
+                'status': 'error',
+                'message': str(e)
+            })
+    return JsonResponse({
+        'status': 'error',
+        'message': 'Invalid request method'
+    })
