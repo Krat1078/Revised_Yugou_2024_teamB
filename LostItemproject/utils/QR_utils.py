@@ -1,67 +1,132 @@
 import json
-import time
-import hashlib
-import hmac
 import base64
-import json
-import time
 import hashlib
 import hmac
+from datetime import datetime, timedelta
+import qrcode
+from PIL import Image
 
-SECRET_KEY = "admin"  # 用于签名验证的密钥 # 署名検証用キー
-QR_VALIDITY_PERIOD = 7 * 24 * 60 * 60  # 7天，单位：秒 # 7日間を秒単位で
+SECRET_KEY = "admin"  # 用于签名验证的密钥
+QR_VALIDITY_PERIOD = 7 * 24 * 60 * 60  # 7天，单位：秒
 
-def generate_qr_code_data(admin_id):
+
+def generate_qr_code_data(admin_id, validity_days=7):
     """
-    生成管理员二维码内容，有效期为一周
-    1週間有効の管理者用QRコードコンテンツを生成する
+    生成管理员二维码内容
+    Args:
+        admin_id: 管理员ID
+        validity_days: QR码的有效天数（默认7天）
+    Returns:
+        dict: 包含管理员信息、有效期和签名的数据字典
     """
-    timestamp = int(time.time())  # 当前时间戳 # 現在のタイムスタンプ
+    current_time = datetime.now()
+    expiry_time = current_time + timedelta(days=int(validity_days))
+
+    # 构造数据
     data = {
         "admin_id": admin_id,
-        "session_token": f"admin-{admin_id}-{timestamp}",  # 唯一token # ユニークトークン
-        "timestamp": timestamp  # 二维码生成的时间戳 # QRコード生成のタイムスタンプ
+        "session_token": f"admin-{admin_id}-{int(current_time.timestamp())}",
+        "created_at": current_time.strftime("%Y-%m-%d %H:%M:%S"),  # 转换为字符串存储
+        "validity_days": validity_days,
+        "timestamp": int(current_time.timestamp())
     }
-    # 使用签名进行验证 # 署名による認証
-    data_string = json.dumps(data)
-    signature = hmac.new(SECRET_KEY.encode(), data_string.encode(), hashlib.sha256).hexdigest()
-    data["signature"] = signature
-    return data
 
-def validate_qr_code(data):
+    # 将数据转换为 JSON 字符串
+    data_string = json.dumps(data)
+
+    # Base64编码
+    encoded_data = base64.b64encode(data_string.encode()).decode()
+
+    # 生成签名
+    signature = hmac.new(SECRET_KEY.encode(), encoded_data.encode(), hashlib.sha256).hexdigest()
+
+    # 返回最终的数据结构
+    final_data = {
+        "data": encoded_data,
+        "signature": signature
+    }
+
+    return final_data
+
+
+def generate_qr_code_image(qr_data) -> Image:
+    """
+    生成QR码图片
+    Args:
+        qr_data: 要编码到QR码中的数据（字典格式）
+    Returns:
+        Image: PIL Image对象
+    """
+    qr = qrcode.QRCode(
+        version=1,
+        error_correction=qrcode.constants.ERROR_CORRECT_L,
+        box_size=10,
+        border=4,
+    )
+
+    # 将整个数据结构（包含加密数据和签名）转换为JSON字符串
+    qr.add_data(json.dumps(qr_data))
+    qr.make(fit=True)
+
+    return qr.make_image(fill_color="black", back_color="white")
+
+
+def validate_qr_code(encoded_data):
     """
     验证二维码内容，包括时限验证
-    時間制限の検証を含むQRコード・コンテンツの検証
     """
-    # SECRET_KEY = "your_secret_key"
-    # QR_VALIDITY_PERIOD = 7 * 24 * 60 * 60  # 7天，单位：秒 # 7日間を秒単位で
-
     try:
-        if isinstance(data, str):
-            # 将单引号替换为双引号，转换为标准 JSON 格式
-            # シングルクォートをダブルクォートに置き換え、標準的なJSONフォーマットに変換する。
-            if data.startswith("{") and data.endswith("}"):
-                qr_data = data.replace("'", '"')  # 替换单引号为双引号 # シングルクォートをダブルクォートに置き換える
-            qr_code = json.loads(data)  # 尝试解析为字典 # 辞書へのパースを試みる
+        # 检查输入数据类型
+        if isinstance(encoded_data, str):
+            qr_code = json.loads(encoded_data)
+        elif isinstance(encoded_data, dict):
+            qr_code = encoded_data
         else:
-            qr_code = data  # 已经是字典，直接使用 # dataはすでに辞書なので、それを直接使う
-        # 解析二维码数据 # QRコードデータの解析
-        signature = qr_code.pop("signature", "")
+            return False, "invalid data type"
 
-        # 重建签名 # 署名の再構築
-        data_string = json.dumps(qr_code)
-        expected_signature = hmac.new(SECRET_KEY.encode(), data_string.encode(), hashlib.sha256).hexdigest()
+        # 获取加密数据和签名
+        data = qr_code.get("data", "")
+        received_signature = qr_code.get("signature", "")
 
-        # 验证签名 # 署名を検証する
-        if signature != expected_signature:
+        # 验证签名
+        expected_signature = hmac.new(SECRET_KEY.encode(), data.encode(), hashlib.sha256).hexdigest()
+        if received_signature != expected_signature:
             return False, "signature mismatch"
 
-        # 验证时间戳是否过期 # タイムスタンプが期限切れでないことを確認する。
-        timestamp = qr_code.get("timestamp")
-        current_time = int(time.time())
-        if current_time - int(timestamp) > QR_VALIDITY_PERIOD:
-            return False, "QR Code Expired"
+        # Base64解码数据
+        try:
+            decoded_data = base64.b64decode(data).decode()
+            qr_data = json.loads(decoded_data)
+        except Exception:
+            return False, "invalid data format"
+
+        # 验证时间是否过期
+        created_at = datetime.strptime(qr_data.get("created_at"), "%Y-%m-%d %H:%M:%S")
+        validity_days = int(qr_data.get("validity_days"))
+        expires_at = created_at + timedelta(days=validity_days)
+
+        current_time = datetime.now()
+
+        if current_time > expires_at:
+            return False, "QR Code expired"
 
         return True, "validation successful"
     except Exception as e:
         return False, f"validation error: {str(e)}"
+
+
+# 示例测试代码
+if __name__ == "__main__":
+    # 生成 QR 码数据
+    qr_data = generate_qr_code_data(admin_id=1)
+    print("Generated QR Data:", qr_data)
+
+    # 生成 QR 码图片
+    qr_image = generate_qr_code_image(qr_data)
+    qr_image.save("admin_qr_code.png")
+    print("QR Code image saved as 'admin_qr_code.png'")
+
+    # 验证 QR 码数据
+    validation_result, validation_message = validate_qr_code(qr_data)
+    print("Validation Result:", validation_result)
+    print("Validation Message:", validation_message)
