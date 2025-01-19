@@ -20,16 +20,18 @@
         <div class="emojis d-none d-md-inline-flex justify-content-end my-0 py-0">
           <img src="{% static "imgs/illustrations/Glass emoji-fixed.png" %}" class="img-fluid mt-0 emoji_megane" alt="illustration" width="23%" loading="lazy">
         </div>
-        <button class="btn top-tag-search-button col-12 mt-3" justifyContent="flex-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseExample" id="collapsebutton">
-          <img class="tagsearch-icon" src="{% static 'imgs/icons/SEARCH I.png'%}">タグ検索
-          <img class="tagsearch-icon-arrow rotate-icon ms-auto" src="{% static 'imgs/icons/SCROLL ARROW -down.png'%}" id="arrowIcon">
-        </button>
+        <div id="tag-search">
+          <button class="btn top-tag-search-button col-12 mt-3" justifyContent="flex-start" type="button" data-bs-toggle="collapse" data-bs-target="#collapseSearch" aria-expanded="false" aria-controls="collapseExample" id="collapsebutton">
+            <img class="tagsearch-icon" src="{% static 'imgs/icons/SEARCH I.png'%}">タグ検索
+            <img class="tagsearch-icon-arrow rotate-icon ms-auto" src="{% static 'imgs/icons/SCROLL ARROW -down.png'%}" id="arrowIcon">
+          </button>
+        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div class="container top-forms collapse col-12 row pt-4 gap-4 justify-content-start" id="collapseSearch">
+<div class="top-forms collapse col-12 row pt-4 gap-4 justify-content-start" id="collapseSearch">
   <div class="search_pulldown col-lg-4 col-sm-12 px-5">
     <form method="post">
       {% csrf_token %}
@@ -251,7 +253,7 @@
   {% endif %}
 
   {% comment %}以下、ページネーションの実装{% endcomment %}
-  <div class="d-flex justify-content-center">
+  <div class="d-flex justify-content-center mt-3">
     <nav aria-label="Page navigation example">
       <ul class="pagination">
         {% if page_obj.has_previous %}

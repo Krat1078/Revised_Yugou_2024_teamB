@@ -1,4 +1,4 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap'); */
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100..900&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
 
 /* @media (min-width: 992px) {
@@ -13,10 +13,10 @@
 
 
 body{
-  font-family: "Noto Sans JP", sans-serif !important;
+  font-family: "Inter","Noto Sans JP", sans-serif !important;
   font-optical-sizing: auto;
-  /* font-weight: <weight>;
-  font-style: normal; */
+  /* font-weight: <weight>; */
+  /* font-style: normal; */
   color:var(--textcolor) !important;
   /* background-image: url("../imgs/haikei2.png") !important; */
   /* background-size: cover;
@@ -27,13 +27,17 @@ body{
   padding-top:60px;
   padding-bottom:60px;
 } */
-footer{
-  background-color: #06343D !important;
-  color: var(--background);
+
+.navbar.hidden {
+  top: -60px; /* ヘッダーの高さに合わせて調整 */
+  opacity: 0;  /* 非表示状態 */
 }
 .navbar{
   background-color: #FFFFFF !important;
   box-shadow: 0 5px 8px rgba(77, 77, 77, 0.204);
+  
+  transition: top 0.3s, opacity 0.3s; /* topとopacityに対してアニメーションを適用 */
+  opacity: 1; /* 初期状態は完全に表示 */
 }
 .navbar .navbar-brand{
   color: var(--primary) !important;
@@ -41,5 +45,32 @@ footer{
   font-weight: 700;
 }
 .navbar-collapse {
-  text-align: right;
+  text-align: right!important;
+  justify-content: flex-end!important;
 }
+
+footer{
+  background-color: #06343D !important;
+  color: var(--background);
+}
+
+footer a{
+  text-decoration: none;
+  color: var(--background);
+}
+footer a:hover{
+  color:var(--primary);
+}
+.footer-brand{
+  font-size:1.5rem!important;
+}
+
+.footerlogo img{
+  width: 1em;  /* 画像の幅を文字の大きさに合わせる */
+  height: 1em; /* 画像の高さを文字の大きさに合わせる */
+  margin-right: 5px; /*アイコンと文字の間にスペース*/
+  vertical-align: auto;
+}
+/* .footer-contents{
+  justify-content: end!important;
+} */

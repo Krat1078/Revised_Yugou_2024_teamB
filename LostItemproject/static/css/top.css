@@ -48,6 +48,9 @@
     transition: 0.1s;   
 } */
 
+.card-body{
+    text-decoration: none !important;
+}
 .card-body li{
     display: flex;
     align-items: center; /* アイコンとテキストを垂直中央揃え */
