@@ -41,7 +41,7 @@
         </div>
         <div class="top-droppedlocationTag-dropdownmenu col-lg-12 col-sm-12">
           <select name="item" class="form-select" id="tag">
-            <option selected="">------</option>  <!-- 空欄 -->
+            <option value="">------</option>  <!-- 空欄 -->
             {% for itemname in itemnametags %}
               <option value="{{ itemname.item_name_id }}">{{ itemname.item_name }}</option>
             {% endfor %}
