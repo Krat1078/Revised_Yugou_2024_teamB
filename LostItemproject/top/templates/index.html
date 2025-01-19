@@ -31,12 +31,12 @@
   </div>
 </div>
 
-<div class="top-forms collapse col-12 row pt-4 gap-4 justify-content-start" id="collapseSearch">
+<div class="top-forms collapse col-12 row pt-4 gap-4 justify-content-center align-items-center" id="collapseSearch">
   <div class="search_pulldown col-lg-4 col-sm-12 px-5">
     <form method="post">
       {% csrf_token %}
       <div class="top-droppeditemTag col-12">
-        <div class="top-itemTagnames p-1 col-lg-12 col-sm-12">
+        <div class="top-itemTagnames py-1 col-lg-12 col-sm-12">
           落とした物
         </div>
         <div class="top-droppedlocationTag-dropdownmenu col-lg-12 col-sm-12">
@@ -48,9 +48,19 @@
           </select>
         </div>
       </div>
-      <div class="top-droppedlocationTag col-12 my-3">
-        <div class="top-itemTagnames p-1 col-lg-12 col-sm-12">
-          落とした場所
+      <div class="top-droppedlocationTag col-12 mt-3">
+        <div class="col-12 py-1">
+          <div class="top-itemTagnames">
+            落とした場所
+          </div>
+          <div class="gallery mx-0 px-0" id="photoGallery">
+            <a href="{% static 'imgs/iwate_university_map.jpg' %}" data-pswp-width="1298" data-pswp-height="1080" target="_blank">
+              <button type="button" class="top-seach-btn ms-auto">岩手大学マップ</button>
+              <!--
+              <img src="{% static 'imgs/iwate_university_map.jpg' %}" class="img-fluid" alt="岩手大学マップ" loading="lazy" width="1298" height="1080">
+              -->
+            </a>
+          </div>
         </div>
         <div class="top-droppedlocationTag-dropdownmenu col-lg-12 col-sm-12">
           <select name="location" class="form-select" id="tag">
@@ -61,8 +71,8 @@
           </select>
         </div>
       </div>
-      <div class="top-storagelocationTag col-12">
-        <div class="top-itemTagnames p-1 col-lg-12 col-sm-12">
+      <div class="top-storagelocationTag col-12 py-1">
+        <div class="top-itemTagnames py-1 col-lg-12 col-sm-12">
           保管場所
         </div>
         <div class="top-droppedlocationTag-dropdownmenu col-lg-12 col-sm-12">
@@ -74,15 +84,7 @@
           </select>
         </div>
       </div>
-      <div class="gallery" id="photoGallery">
       
-        <a href="{% static 'imgs/iwate_university_map.jpg' %}" data-pswp-width="1298" data-pswp-height="1080" target="_blank">
-          <button type="button" class="top-seach-btn my-2 ms-auto">岩手大学マップはこちら</button>
-          <!--
-          <img src="{% static 'imgs/iwate_university_map.jpg' %}" class="img-fluid" alt="岩手大学マップ" loading="lazy" width="1298" height="1080">
-          -->
-        </a>
-      </div>
       <!-- Button to Trigger Modal -->
       <button type="submit" class="top-seach-btn col-12 my-2 p-2">検索</button>
     </form>
