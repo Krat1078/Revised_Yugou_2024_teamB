@@ -4,12 +4,15 @@
 {% block content %}
 
 <body>
-    <div class="container" style="desply: flex;">
-        <div class="mx-auto" flex="" style="max-width: 950px; margin-top: 14vh;">
+    <div class="container" style="desply: flex">
+        <div class="mx-auto" style="max-width: 950px;">
             <!-- タイトル -->
-            <div class="row justify-content-between">
-                <h1 class="col-lg-8 col-sm-5 d-flex align-items-center fw-bold mb-4">拾得物登録</h1>
-                <img src="{% static 'imgs/illustrations/L-拾得物登録.png'%}" class="col-lg-3 col-sm-7 mb-4" alt="">
+            <div class="row justify-content-between"> 
+                <h1 class="col-lg-8 col-sm-5 d-flex align-items-center fw-bold my-4">
+                    拾得物登録
+                </h1>
+                <img src="{% static 'imgs/illustrations/L-拾得物登録.png'%}" class="col-lg-3 col-sm-7 my-4" alt=""></img>
+                <form method="post" action="{% url 'founditem:register_item' %}" enctype="multipart/form-data" class="dropzone" id="itemsRegister"></form>
             </div>
 
             <form method="post" action="{% url 'founditem:register_item' %}" enctype="multipart/form-data" class="dropzone" id="itemsRegister">
