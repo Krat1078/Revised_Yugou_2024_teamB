@@ -4,14 +4,15 @@
 {% block content %}
 
 <body>
-    <div class="container" style="desply: flex;">
-        <div class="mx-auto" flex="" style="max-width: 950px; margin-top: 14vh;">
+    <div class="container" style="desply: flex">
+        <div class="mx-auto" style="max-width: 950px;">
             <!-- タイトル -->
             <div class="row justify-content-between"> 
-                <h1 class="col-lg-8 col-sm-5 d-flex align-items-center fw-bold mb-4">拾得物登録</h1>
-                <img src="{% static 'imgs/illustrations/L-拾得物登録.png'%}" class="col-lg-3 col-sm-7 mb-4" alt="">
-                <form method="post" action="{% url 'founditem:register_item' %}" enctype="multipart/form-data"
-                    class="dropzone" id="itemsRegister">
+                <h1 class="col-lg-8 col-sm-5 d-flex align-items-center fw-bold my-4">
+                    拾得物登録
+                </h1>
+                <img src="{% static 'imgs/illustrations/L-拾得物登録.png'%}" class="col-lg-3 col-sm-7 my-4" alt=""></img>
+                <form method="post" action="{% url 'founditem:register_item' %}" enctype="multipart/form-data" class="dropzone" id="itemsRegister"></form>
             </div>
 
                 {% csrf_token %}
@@ -105,14 +106,35 @@
     
                 <!--登録ボタン 
                 <div class="text-center" >
-                    <button type="button" id="my-popover" class="col-lg-2 col-sm-4 btn btn-outline-secondary custom-button fw-bold" style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">登録</button>
+                    <button type="button" id="my-popover" class="col-lg-2 col-sm-4 btn btn-outline-secondary custom-button fw-bold" style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                        登録
+                    </button>
                 </div>
                 <style>
                     .custom-button:hover {
                         background-color: #53C3D250; 
                     }
-                </style>
-                -->
+                </style> -->
+
+            <!-- 登録ボタン 
+                <div class="text-center">
+                    <button type="submit" class="btn btn-outline-success fw-bold " style="width: 140px; font-size: 20px; color: #0000004B; border-color: #0000004B; border-width: 2px; border-radius: 10px;">
+                        登録
+                    </button>
+                </div> -->
+            <!-- Submit Button -->
+            <div class="text-center">
+                <button type="button" id="openQrModal" class="col-lg-2 col-sm-4 btn btn-outline-secondary custom-button fw-bold mb-3" style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                    登録
+                </button>
+            </div>
+            <style>
+                .custom-button:hover {
+                    background-color: #53C3D250; 
+                }
+            </style>
+
+
                 
             </form>
         </div>
@@ -138,23 +160,8 @@
                 </div>
             </div>
         </div>
-    </div>
-    -->
+    </div> -->
 
-        <!-- 登録ボタン -->
-        {#                <div class="text-center">#}
-            {#                    <button type="submit" class="btn btn-outline-success fw-bold " style="width: 140px; font-size: 20px; color: #0000004B; border-color: #0000004B; border-width: 2px; border-radius: 10px;">登録</button>#}
-            {#                </div>#}
-            <!-- Submit Button -->
-            <div class="text-center">
-                <button type="button" id="openQrModal" class="btn btn-outline-success fw-bold"
-                        style="width: 140px; font-size: 20px;">
-                    登録
-                </button>
-            </div>
-        </form>
-    </div>
-    </div>
     <!-- Modal Window -->
     <div id="qrModal" class="modal fade" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
