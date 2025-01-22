@@ -24,8 +24,8 @@ def generate_qr_code_data(admin_id, validity_days=7):
 
     # 构造数据
     data = {
-        "admin_id": admin_id,
-        "session_token": f"admin-{admin_id}-{int(current_time.timestamp())}",
+        # "admin_id": admin_id,
+        # "session_token": f"admin-{admin_id}-{int(current_time.timestamp())}",
         "created_at": current_time.strftime("%Y-%m-%d %H:%M:%S"),  # 转换为字符串存储
         "validity_days": validity_days,
         "timestamp": int(current_time.timestamp())
