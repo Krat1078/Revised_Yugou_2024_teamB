@@ -68,13 +68,12 @@
 
     <div class="col-lg-8 col-sm-12 mt-3" id="main-content">       
 
-        {% if useritems %}
+        {% if useritems %}            
 
-            {% for item in useritems %}
+            <!--画面が狭いときに表示-->
+            <div id="content-mobile">
 
-                <!--画面が狭いときに表示-->
-                <div id="content-mobile">
-                    
+                {% for item in useritems %}
 
                     <!-- アイテムごとに枠を囲むためのdiv -->
                     <div class="border  my-2 rounded">
@@ -92,10 +91,10 @@
                             <!-- 入力情報のリスト -->
                             <div class="col-8 my-2">
                                 <ul class="list-group list-group-flush no-underline">
-                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.item_id }}</li>
                                     <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.item_name }}</li>
-                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.item_name }}</li>
-                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">abcdefghijklmnopqrstuvwyz</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.created_at | date:"Y/m/d" }}</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.PorD_location }}</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.description }}</li>
                                 </ul>
                             </div>
             
@@ -103,11 +102,11 @@
                             <div class="col-12 col-md-3 my-2 d-flex align-items-start justify-content-center">
                                 <button type="button" class="btn btn-outline-secondary custom-red fw-bold mb-4" 
                                     style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px" 
-                                    data-bs-toggle="modal" data-bs-target="#deleteModal{{ item.item_id }}">
+                                    data-bs-toggle="modal" data-bs-target="#deleteModal_mobil_{{ item.item_id }}">
                                     削除
                                 </button>
                                 <!-- モーダル -->
-                                <div class="modal fade" id="deleteModal{{ item.item_id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                <div class="modal fade" id="deleteModal_mobil_{{ item.item_id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
                                     <div class="modal-dialog">
                                         <div class="modal-content">
 
@@ -131,13 +130,12 @@
                             </div>
                         </div>
                     </div> <!-- アイテムの枠終了 -->
-                </div>
+                {% endfor %}    
+            </div>
             
-                <!--画面が広いときに表示-->
-                <div id="content-desktop">
-                    {% comment %}
-                    {% for item in useritems %}
-                    {% endcomment %} 
+            <!--画面が広いときに表示-->
+            <div id="content-desktop">
+                {% for item in useritems %}
 
                     <!-- アイテムごとに枠を囲むためのdiv -->
                     <div class="border  my-2 rounded">
@@ -146,7 +144,7 @@
                             <div class="col-12 col-md-3 my-2">
                                 <ul class="list-group list-group-flush no-underline">
                                     <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">物品名</li>
-                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:20px">{{ item.item_name }}</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.item_name }}</li>
                                 </ul>
                             </div>
             
@@ -154,7 +152,7 @@
                             <div class="col-12 col-md-3 my-2">
                                 <ul class="list-group list-group-flush no-underline">
                                     <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">日時</li>
-                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:20px">{{ item.item_name }}</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.created_at | date:"Y/m/d" }}</li>
                                 </ul>
                             </div>
             
@@ -162,7 +160,7 @@
                             <div class="col-12 col-md-3 my-2">
                                 <ul class="list-group list-group-flush no-underline">
                                     <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">落とした場所</li>
-                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:20px">{{ item.item_name }}</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.PorD_location }}</li>
                                 </ul>
                             </div>
 
@@ -170,7 +168,7 @@
                             <div class="col-12 col-md-9 my-2">
                                 <ul class="list-group list-group-flush no-underline">
                                     <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">コメント</li>
-                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">abcdefghijklmnopqrstuvwyz</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.description }}</li>
                                 </ul>
                             </div>
             
@@ -206,16 +204,13 @@
                             </div>
                         </div>
                     </div> <!-- アイテムの枠終了 -->
-                </div>
-
-            {% endfor %}
-            
+                {% endfor %}
+            </div>           
 
         {% else %}
             <p>遺失物は登録されていません</p>
         {% endif %}
-        
-            
+           
     </div>
 </div>
 
