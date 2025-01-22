@@ -2,17 +2,265 @@
 {% load static %}
 {% block content %}
 
-<h1>{{ user.username }}さんのマイページ</h1>
+<div class="Student container-fluid row mx-1" style="width:100%">
 
-{% if useritems %}
-    {% for item in useritems %}
-        <li>{{ item.item_name.item_name }}</li>
-        <form action="{% url 'mypage:student_delete' item.item_id %}" method="POST">
-            {% csrf_token %}
-            <button type="submit" onclick="return confirm('この登録を解除してよろしいですか？');">削除</button>
-        </form>
-    {% endfor %}
-{% else %}
-    <p>遺失物は登録されていません</p>
-{% endif %}
+    <div class="col-lg-3 col-sm-12 text-center "style="background-color: #67CAD6" id="sidebar">
+        <h4 class="fw-bold mt-4 mb-2">{{ user.username }}</h4>
+        <h6>{{ user.username }}@iwate-u.ac.jp</h6>
+
+        <!-- changeボタン 
+        <div class="d-flex justify-content-end">
+            <button type="button" class="btn btn-light btn-sm custom-add fw-bold mt-1" 
+            style="color: #06343D90; width: 80px; border-radius: 20px; margin-right: 15px">
+                change
+            </button>
+        </div> -->
+        
+        <!-- リストタグ -->
+        <div class="list row d-flex align-items-center mt-5" style="color: #06343D90; background-color: #FFFFFF; margin-bottom:60px">
+            <img src="{% static 'imgs\icons\LIST.png' %}" class="col-2" style="width:auto; height:1em; float: left">
+            <h4 class="my-3 col-8 fw-bold" style="font-size: 20px;">遺失物リスト</h4>
+            <img id="list-image" src="{% static 'imgs\icons\SCROLL ARROW side.png' %}" class="col-1" style="width:auto; height:auto" >
+        </div>
+        <style>
+            /* 画面広いとき
+            @media (min-width: 600px) {
+                #list-image {
+                    transform: rotate(90deg);
+                    transition: transform 0.3s ease;
+                }
+            } */
+        
+            /* 画面狭いとき */
+            @media (max-width: 599px) {
+                #list-image {
+                    transform: rotate(90deg);
+                    transition: transform 0.3s ease;
+                }
+            }
+        </style>
+
+        <!-- ログアウトボタン -->
+        <a class="navbar-brand" href="{% url 'lostitem:logout' %}">
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-light fw-bold custom-add col-6 mb-5" style="color: #06343D90; width: 140px">
+                    logout
+                    <img src="{% static 'imgs\icons\logout.png' %}" style="width:auto; height:1em">
+                </button>
+            </div>
+            <style>
+                .custom-add:hover {
+                    background-color: #C1D881;
+                    border-width: 0px;
+                }
+            </style>
+        </a>
+
+    </div>
+
+    <div class="col-1">
+        <!-- ボタンを追加 -->
+            <button id="toggle-sidebar" style="border: none; background: none;">
+                <img src="{% static 'imgs/icons/change.png.' %}" 
+                style="width: 30px; height: 30px;">
+            </button>
+    </div>
+
+    <div class="col-lg-8 col-sm-12 mt-3" id="main-content">       
+
+        {% if useritems %}
+
+            {% for item in useritems %}
+
+                <!--画面が狭いときに表示-->
+                <div id="content-mobile">
+                    
+
+                    <!-- アイテムごとに枠を囲むためのdiv -->
+                    <div class="border  my-2 rounded">
+                        <div class="row" style="background-color: #FFFFFF;">
+                            <!-- カテゴリーのリスト -->
+                            <div class="col-4 my-2">
+                                <ul class="list-group list-group-flush no-underline">
+                                    <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">物品名</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">日時</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">落とした場所</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">コメント</li>
+                                </ul>
+                            </div>
+            
+                            <!-- 入力情報のリスト -->
+                            <div class="col-8 my-2">
+                                <ul class="list-group list-group-flush no-underline">
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.item_id }}</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.item_name }}</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">{{ item.item_name }}</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">abcdefghijklmnopqrstuvwyz</li>
+                                </ul>
+                            </div>
+            
+                            <!-- 削除ボタン -->
+                            <div class="col-12 col-md-3 my-2 d-flex align-items-start justify-content-center">
+                                <button type="button" class="btn btn-outline-secondary custom-red fw-bold mb-4" 
+                                    style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px" 
+                                    data-bs-toggle="modal" data-bs-target="#deleteModal{{ item.item_id }}">
+                                    削除
+                                </button>
+                                <!-- モーダル -->
+                                <div class="modal fade" id="deleteModal{{ item.item_id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <!-- モーダル本文 -->
+                                            <div class="modal-body text-center">
+                                                本当にこのアイテムを削除しますか？
+                                            </div>
+
+                                            <!-- モーダルフッター -->
+                                            <div class="modal-footer d-flex justify-content-center">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">いいえ</button>
+                                                <form action="{% url 'mypage:student_delete' item.item_id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">はい</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div> <!-- アイテムの枠終了 -->
+                </div>
+            
+                <!--画面が広いときに表示-->
+                <div id="content-desktop">
+                    {% comment %}
+                    {% for item in useritems %}
+                    {% endcomment %} 
+
+                    <!-- アイテムごとに枠を囲むためのdiv -->
+                    <div class="border  my-2 rounded">
+                        <div class="row" style="background-color: #FFFFFF;">
+                            <!-- 物品名のリスト -->
+                            <div class="col-12 col-md-3 my-2">
+                                <ul class="list-group list-group-flush no-underline">
+                                    <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">物品名</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:20px">{{ item.item_name }}</li>
+                                </ul>
+                            </div>
+            
+                            <!-- 日時のリスト -->
+                            <div class="col-12 col-md-3 my-2">
+                                <ul class="list-group list-group-flush no-underline">
+                                    <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">日時</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:20px">{{ item.item_name }}</li>
+                                </ul>
+                            </div>
+            
+                            <!-- 落とした場所のリスト -->
+                            <div class="col-12 col-md-3 my-2">
+                                <ul class="list-group list-group-flush no-underline">
+                                    <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">落とした場所</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:20px">{{ item.item_name }}</li>
+                                </ul>
+                            </div>
+
+                            <!-- コメントのリスト -->
+                            <div class="col-12 col-md-9 my-2">
+                                <ul class="list-group list-group-flush no-underline">
+                                    <li class="list-group-item fw-bold" style="color: #06343D90; font-size:15px">コメント</li>
+                                    <li class="list-group-item fw-bold" style="color: #06343D; font-size:15px">abcdefghijklmnopqrstuvwyz</li>
+                                </ul>
+                            </div>
+            
+                            <!-- 削除ボタン -->
+                            <div class="col-12 col-md-3 my-2 d-flex align-items-start justify-content-center">
+                                <button type="button" class="btn btn-outline-secondary custom-red fw-bold mb-4" 
+                                    style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px" 
+                                    data-bs-toggle="modal" data-bs-target="#deleteModal{{ item.item_id }}">
+                                    削除
+                                </button>
+                                <!-- モーダル -->
+                                <div class="modal fade" id="deleteModal{{ item.item_id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+
+                                            <!-- モーダル本文 -->
+                                            <div class="modal-body text-center">
+                                                本当にこのアイテムを削除しますか？
+                                            </div>
+
+                                            <!-- モーダルフッター -->
+                                            <div class="modal-footer d-flex justify-content-center">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">いいえ</button>
+                                                <form action="{% url 'mypage:student_delete' item.item_id %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <button type="submit" class="btn btn-danger">はい</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </div> <!-- アイテムの枠終了 -->
+                </div>
+
+            {% endfor %}
+            
+
+        {% else %}
+            <p>遺失物は登録されていません</p>
+        {% endif %}
+        
+            
+    </div>
+</div>
+
+<script>
+    // サイドバーとボタンのDOMを取得
+    const sidebar = document.getElementById('sidebar');
+    const toggleButton = document.getElementById('toggle-sidebar');
+
+    // サイドバーの表示/非表示を切り替える関数
+    function toggleSidebar() {
+        // サイドバーが表示されていれば非表示に、非表示であれば表示する
+        if (sidebar.style.display === 'none' || sidebar.style.display === '') {
+            sidebar.style.display = 'block';  // サイドバーを表示
+        } else {
+            sidebar.style.display = 'none';   // サイドバーを非表示
+        }
+    }
+
+    // ボタンがクリックされたときにtoggleSidebar関数を呼び出す
+    toggleButton.addEventListener('click', toggleSidebar);
+</script>
+
+<script>
+    function checkScreenSize() {
+        const mobileContent = document.getElementById("content-mobile");
+        const desktopContent = document.getElementById("content-desktop");
+
+        if (window.innerWidth <= 600) {
+            // 画面が狭いときに表示
+            mobileContent.style.display = "block";
+            desktopContent.style.display = "none";
+        } else {
+            // 画面が広いときに表示
+            desktopContent.style.display = "block";
+            mobileContent.style.display = "none";
+            
+        }
+    }
+
+    // ページロード時に画面サイズをチェック
+    checkScreenSize();
+
+    // 画面サイズ変更時に再度チェック
+    window.addEventListener("resize", checkScreenSize);
+</script>
+
+
 {% endblock content %}
