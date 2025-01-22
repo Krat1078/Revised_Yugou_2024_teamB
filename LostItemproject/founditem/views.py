@@ -216,10 +216,12 @@ def generate_qr_code(request):
             data = json.loads(request.body)
             admin_id = request.user.id
 
-            # 从请求中获取有效期，如果没有则使用默认值7
+            # 从请求中获取有效期，如果没有则使用默认值7  
+            # リクエストから有効期限を取得する。
             validity_days = data.get('validity_days', 7)
 
             # 验证有效期范围
+            # バリデーション有効範囲
             try:
                 validity_days = int(validity_days)
                 if not (1 <= validity_days <= 30):
@@ -233,13 +235,13 @@ def generate_qr_code(request):
                     'message': '有効期限は数値で入力してください。'
                 })
 
-            # 生成QR码数据
+            # 生成QR码数据 # QRコードデータを生成する
             qr_data = QR_utils.generate_qr_code_data(admin_id, validity_days)
 
-            # 生成QR码图片
+            # 生成QR码图片 # QR コード画像を生成する
             qr_image = QR_utils.generate_qr_code_image(qr_data)
 
-            # 转换图片为base64
+            # 转换图片为base64 # 画像をbase64に変換
             buffer = io.BytesIO()
             qr_image.save(buffer, format='PNG')
             qr_image_base64 = base64.b64encode(buffer.getvalue()).decode()

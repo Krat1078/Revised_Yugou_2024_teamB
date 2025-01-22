@@ -186,7 +186,7 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            // 设置当前日期
+            // 设置当前日期 // 设置当前日期
             const today = new Date();
             const formattedDate = today.toISOString().split('T')[0];
             document.getElementById('date').value = formattedDate;
@@ -194,10 +194,10 @@
             const openQrModalBtn = document.getElementById("openQrModal");
             const qrModal = new bootstrap.Modal(document.getElementById("qrModal"));
             let qrScanner;
-            let isSubmitting = false; // 添加标志防止重复提交
+            let isSubmitting = false; // 添加标志防止重复提交 // 重複投稿を防ぐためのフラグを追加する
 
             openQrModalBtn.addEventListener("click", function () {
-                // 表单验证
+                // 表单验证 // フォームバリデーション
                 const pickedLocation = document.querySelector('select[name="location"]').value;
                 const storageLocation = document.querySelectorAll('select[name="location"]')[1].value;
                 const category = document.querySelector('select[name="category"]').value;
@@ -253,8 +253,8 @@
             });
 
             function validateQrCode(qrData) {
-                if (isSubmitting) return; // 如果正在提交，直接返回
-                isSubmitting = true; // 设置提交标志
+                if (isSubmitting) return; // 如果正在提交，直接返回 // もし送信されるなら、次のように返す。
+                isSubmitting = true; // 设置提交标志 // コミットフラグの設定
 
                 console.log("QR Code scanned:", qrData);
                 fetch("{% url 'founditem:validate_qr_code' %}", {
@@ -278,7 +278,7 @@
                             body: formData
                         });
                     } else {
-                        isSubmitting = false; // 重置提交标志
+                        isSubmitting = false; // 重置提交标志 // コミットフラグをリセットする
                         alert("QRコードが無効です。" + data.message);
                     }
                 })
@@ -287,7 +287,6 @@
                 })
                 .then(result => {
                     if (result) {
-
 
                         const modalMessage = document.getElementById("modalMessage");
                         const modalSubMessage = document.getElementById("modalSubMessage");
@@ -311,11 +310,11 @@
                 });
             }
 
-            // 修改模态框关闭按钮的处理
+            // 修改模态框关闭按钮的处理 // モーダルボックスを閉じるボタンの処理を修正する
             document.getElementById("modalCloseBtn").addEventListener("click", function() {
                 const myModal = bootstrap.Modal.getInstance(document.getElementById("myModal"));
                 myModal.hide();
-                // 只在成功时刷新页面，不再重复提交表单
+                // 只在成功时刷新页面，不再重复提交表单 // 成功時のみページを更新し、フォーム送信を繰り返さない。
                 if (document.getElementById("modalMessage").style.color !== "#dc3545") {
                     window.location.reload();
                 }
@@ -323,6 +322,7 @@
             });
 
             // 如果用户通过其他方式关闭模态框，也要重置提交标志
+            // ユーザーが他の方法でモーダルボックスを閉じた場合、送信フラグもリセットします
             document.getElementById("myModal").addEventListener('hidden.bs.modal', function () {
                 isSubmitting = false;
             });

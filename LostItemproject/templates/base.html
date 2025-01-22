@@ -73,9 +73,9 @@
                             <a class="nav-link" href="{% url 'founditem:tofounditemregister' %}">拾得物登録</a>
                         </li>
                     {% endif %}
-                    <!-- 在导航栏中添加按钮（仅管理员可见） -->
+                    <!-- 在导航栏中添加按钮（仅管理员可见）ナビゲーションバーにボタンを追加（管理者のみ表示可能） -->
                     {% if user.is_authenticated and user.is_superuser %}
-                        <!-- ... 其他管理员菜单项 ... -->
+                        <!-- ... 其他管理员菜单项 ...  その他の管理者メニュー ... -->
                          <div align="right">
                         <li class="nav-item mx-3">
                             <button class="nav-link btn btn-link" id="generateQrBtn">QRコード生成</button>
@@ -120,7 +120,7 @@
             <p>This is the default content.</p>
         {% endblock %}
     </div>
-    <!-- 在body末尾添加QR码生成模态框 -->
+    <!-- 在body末尾添加QR码生成模态框 本文の最後にQRコードを追加してモーダルボックスを生成する -->
     {% if user.is_authenticated and user.is_superuser %}
         <div class="modal fade" id="qrGenerateModal" tabindex="-1">
             <div class="modal-dialog">
