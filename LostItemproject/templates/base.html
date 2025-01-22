@@ -19,7 +19,7 @@
 </head>
 <body>
 <main>
-    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar fixed-top navbar-expand-lg navbar-light bg-light" id="header">
         <div class="container">
             <a class="navbar-brand" href="{% url 'top:home' %}">
                 <img src="{% static 'imgs/illustrations/1. FINAL logo png.png' %}" alt="" width="30" height="24"
@@ -33,7 +33,7 @@
             <!-- <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
             </button> -->
-            <div class="collapse navbar-collapse justify-content-end" id="navbarXL">
+            <div class="collapse navbar-collapse" id="navbarXL" align="right">
                 <ul class="navbar-nav ml-auto">
                     {% if user.is_superuser %}<!--管理者アカウントかどうか-->
                         <li class="nav-item">
@@ -76,9 +76,11 @@
                     <!-- 在导航栏中添加按钮（仅管理员可见） -->
                     {% if user.is_authenticated and user.is_superuser %}
                         <!-- ... 其他管理员菜单项 ... -->
+                         <div align="right">
                         <li class="nav-item mx-3">
                             <button class="nav-link btn btn-link" id="generateQrBtn">QRコード生成</button>
                         </li>
+                        </div>
                     {% endif %}
 
                 </ul>
@@ -92,7 +94,28 @@
             </div>
         </div>
     </nav>
-    <div style="margin-top: 84px;">
+
+    <script>
+        let lastScrollTop = 0; // 最後のスクロール位置
+        const header = document.getElementById('header');
+        window.addEventListener('scroll', function() {
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            // スクロールが上方向の場合、ヘッダーを表示
+            if (currentScroll < lastScrollTop) {
+                header.classList.remove('hidden');
+            } 
+            // スクロールが下方向の場合、ヘッダーを非表示
+            else {
+                header.classList.add('hidden');
+            }
+
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // ページ上部での位置調整
+        })
+
+    </script>    
+
+    <div style="margin-top: 55px;">
         {% block content %}
             <p>This is the default content.</p>
         {% endblock %}
@@ -136,14 +159,75 @@
     {% endif %}
 </main>
 </body>
+
 <footer>
-    <div class="container py-3 mt-3">
-        <p class="float-end mb-1">
-            <a href="#">Back to top</a>
-        </p>
-        <p class="mb-1">ここはフッターです</p>
-        <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a
-                href="/docs/5.0/getting-started/introduction/">getting started guide</a>.</p>
+    <div class="row px-4 py-4 mt-0 mx-4 d-flex justify-content-center">
+        <div class="footerlogo col-lg-4 col-sm-12 mb-4">
+            <a class="footer-brand" href="{% url 'top:home' %}"><img src="{% static "imgs/illustrations/1. FINAL logo png.png" %}">落とし物管理アプリ</a>
+        </div>
+        <div class="footer-contents col-lg-8 col-sm-12 row">
+            <div class="col-lg-3 col-sm-12 mb-3">
+                <a class="footer-link" href="{% url 'top:home' %}#tag-search">タグ検索</a>
+            </div>
+            {% if user.is_superuser %}<!--管理者アカウントかどうか-->
+                <div class="col-lg-3 col-sm-12 row mb-3">
+                    <div class="col-12">
+                        <a class="footer-link" href="{% url 'founditem:tofounditemregister' %}">拾得物登録</a>
+                    </div>
+                    <div class="col-12">
+                        <a class="footer-link" href="{% url 'lostitem:tolostitemregister' %}">遺失物登録</a>
+                    </div>
+                </div>
+
+                <div class="col-lg-3 col-sm-12 mb-3">
+                    <div class="col-12">
+                        <a class="footer-link" href="{% url 'mypage:admin_mypage' %}">マイページ</a>
+                    </div>
+                    <div class="col-12">
+                        <a class="footer-link" href="{% url 'lostitem:logout' %}">ログアウト</a>
+                    </div>
+
+                </div>
+
+            {% elif user.is_authenticated %}<!--そうでないアカウントの場合-->
+                <div class="col-lg-3 col-sm-12 row">
+                    <div class="col-12">
+                        <a class="footer-link" href="{% url 'founditem:tofounditemregister' %}">拾得物登録</a>
+                    </div>
+                    <div class="col-12">
+                        <a class="footer-link" href="{% url 'lostitem:tolostitemregister' %}">遺失物登録</a>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-sm-12">
+                    <div class="col-12">
+                        <a class="footer-link" href="{% url 'mypage:admin_mypage' %}">マイページ</a>
+                    </div>
+                    <div class="col-12">
+                        <a class="footer-link" href="{% url 'lostitem:logout' %}">ログアウト</a>
+                    </div>
+                </div>
+
+            {% else %}<!--ログインしていない場合-->
+                <div class="col-lg-3 col-sm-12">
+                    <a class="footer-link" href="{% url 'founditem:tofounditemregister' %}">拾得物登録</a>
+                </div>
+                <div class="col-lg-3 col-sm-12">
+                    <a class="footer-link" href="{% url 'lostitem:login' %}">ログイン</a>
+                </div>
+            {% endif %}
+            <div class="col-lg-3 col-sm-12 row">
+                <div class="col-12">
+                    <a class="footer-link" href="https://www.iwate-u.ac.jp/">岩手大学HP</a>
+                </div>
+                <div class="col-12">
+                    <a class="footer-link" href="https://ia2.iwate-u.ac.jp/websyllabus/login/slbsCtlLogin.php">アイアシスタント</a>
+                </div>
+            </div>
+
+            {% comment %} <p class="float-end mb-1">
+                <a href="#">Back to top</a>
+            </p> {% endcomment %}
+        </div>
     </div>
 </footer>
 
@@ -198,5 +282,5 @@
             });
         });
     {% endif %}
-</script>
+    </script>
 </html>

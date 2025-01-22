@@ -4,6 +4,7 @@
     --body:#cef1f7;
     --background:#F7FBF4;
     --box-shadow:0 8px 22px rgba(77, 77, 77, 0.204);
+    --textcolor:#06343D;
   }
 
 .hero{
@@ -32,6 +33,24 @@
     font-weight: 500;
 }
 
+.top-tag-search-button{
+    color:#575757 !important;
+    background-color: #e8e8e8 !important;
+    font-size: 1.5rem !important;
+    display: flex !important;
+    align-items: center !important;  /* 垂直方向の中央揃え */
+    justify-content: left !important;  /* 水平方向 */
+    border-radius: 100vh !important;
+}
+
+/* .top-tag-search-button:active .tagsearch-icon-arrow{
+    transform:rotate(180deg);  
+    transition: 0.1s;   
+} */
+
+.card-body{
+    text-decoration: none !important;
+}
 .card-body li{
     display: flex;
     align-items: center; /* アイコンとテキストを垂直中央揃え */
@@ -96,20 +115,69 @@ ul.detail{
 ul.detail-content{
     list-style:none;
 }
-li.detail-content{
+.detail-content{
     background-color: #D9D9D9;
     border-radius:5px;
     overflow-wrap:break-word;
+    padding: 2px;
 }
+/* .top-forms{
+    justify-content: center !important; 
+} */
 .top-forms .form-select{
-    background-color: #53c3d220 !important;
+    background-color: #ECF8FA !important;
+    /* border-radius:100vh !important; */
     /* margin-left: 50%; */
 }
 
 .top-forms .form-date{
-    background-color: #53c3d220 !important;
-}
-.top-forms .search_pulldown{
-    background-color: #E8E8E8;
+    background-color: #c8e1e520 !important;
 }
 
+.top-seach-btn{
+    border: 2px solid #8e8e8e;
+	color:#8e8e8e;
+    background:var(--background);
+    border-radius: 100vh;
+}
+.top-seach-btn:hover{
+    color: var(--background);
+	background: #8e8e8e;
+}
+/* .top-itemTagnames{
+    background-color: #e8e8e8 !important;
+    border-radius:100vh !important;
+} */
+
+/* .top-forms .search_pulldown{
+    background-color: #E8E8E8;
+} */
+
+.pagination{
+    background-color: #ffffff !important; /* 背景色 */
+    border-radius: 50px !important; /* アクティブボタンも丸く */
+    padding: 3px !important;/*上右下左*/
+    box-shadow:2px 2px 4px rgba(128, 128, 128, 0.371) ;
+}
+.pagination .page-item .page-link {
+    color: var(--textcolor) !important; /* リンクの文字色 */
+    border: none !important; /* 境界線の色 */
+    border-radius: 50px !important; /* アクティブボタンも丸く */
+}
+/* .pagenation .Previous-icon{
+    transform:rotate(180deg);
+} */
+
+.pagination .page-item.active .page-link {
+    background-color:#b0e6fd7b !important; /* アクティブページの背景色 */
+    
+    border-radius: 50px !important; /* アクティブボタンも丸く */
+    box-shadow:2px 2px 4px rgba(128, 128, 128, 0.371) ;
+}
+.pagination .page-item.PreviousAndNext .page-link{
+    background-color:#e8e8e8!important; /* アクティブページの背景色 */
+    border-radius: 50px !important; /* アクティブボタンも丸く */
+}
+.rotate-icon {
+    transition: transform 0.4s ease; /* スムーズな回転 */
+}

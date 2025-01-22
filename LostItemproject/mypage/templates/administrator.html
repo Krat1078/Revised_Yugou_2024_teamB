@@ -1,14 +1,244 @@
 {% extends "base.html" %}
+{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
 
-<h1>{{ user.username }}さんのマイページ</h1>
+<body>
+    <div class="container row" style="display: flex;">
 
-{% if founditems %}
-    {% for item in founditems %}
-        <li>{{ item.item_name.item_name }}, {{ item.storage_location.storage_location_name }}, {{ item.created_at | date:"Y/m/d" }}</li>
-    {% endfor %}
-{% else %}
-    <p>拾得物は登録されていません</p>
-{% endif %}
+        <!-- サイドメニュー -->
+        <div class="col-lg-3 col-sm-5 text-center "style="background-color: #67CAD6">
+            
+            <!-- 学籍番号 -->
+            <h4 class="fw-bold mt-5">{{ user.username }}</h4>
+        
+            <!-- メールアドレス -->
+            <h6>{{ user.username }}@iwat-u.ac.jp</h6>
+        
+            <!-- changeボタン -->
+            <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-light btn-sm custom-add fw-bold mt-1" style="color: #06343D90; width: 80px; border-radius: 20px; margin-right: 15px">
+                    change
+                </button>
+            </div>
+        
+            <!-- リストタグ -->
+            <div class="list row d-flex align-items-center mt-5" style="color: #06343D90; background-color: #FFFFFF; margin-bottom:60px;">
+                <img src="{% static 'imgs\icons\LIST.png' %}" class="col-2">
+                <h4 class="my-3 col-8 fw-bold" style="font-size: 20px;">拾得物リスト</h4>
+                <img src="{% static 'imgs\icons\SCROLL ARROW side.png' %}" class="col-1" style="width:auto; height:2em">
+            </div>
+        
+            <!-- ログアウトボタン -->
+            <div class="d-flex justify-content-center">
+                <button type="button" class="btn btn-light fw-bold custom-add col-6 mb-5" style="color: #06343D90; width: 140px">
+                    logout　
+                    <img src="{% static 'imgs\icons\logout.png' %}" style="width:auto; height:1em">
+                </button>
+            </div>
+            <style>
+                .custom-add:hover {
+                    background-color: #c1d881; 
+                    border-width: 0px;
+                }
+            </style>
+
+        </div>
+
+        <!-- 空間 -->
+        <div class="col"></div>
+
+        <!-- 本体 -->
+        <div class="col-8">
+
+            <!-- 全体の削除、場所変更ボタン -->
+            <div class="d-flex justify-content-end my-3">
+                <button type="button" class="btn btn-outline-secondary custom-red fw-bold me-3" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                    削除
+                </button>
+                <button type="button" data-bs-toggle="modal" data-bs-target="#MovingMdl" class="btn btn-outline-secondary custom-green fw-bold" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                    場所変更
+                </button>
+            </div>
+            <style>
+                .custom-red:hover {
+                    background-color: #ff000080; 
+                }
+            </style>
+            <style>
+                .custom-green:hover {
+                    background-color: #98fb98; 
+                }
+            </style>
+
+            <!-- 拾得物リスト -->
+            <div class="list row d-flex align-items-center my-2" style="color: #06343D90; background-color: #FFFFFF; border: 2px solid #06343DAA; border-radius: 10px;">
+                <!-- 拾得物の画像 -->
+                <img src="{% static 'imgs\illustrations\L-拾得物登録.png' %}" class="col-3 mx-3 my-2">
+                
+                <!-- 物品名などのリスト -->
+                <ul class="list-group list-group-flush no-underline col-3 my-2">
+                    <li class="list-group-item fw-bold" style="color: #06343D90">物品名</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D90">日時</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D90">落とした場所</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D90">登録後の日数</li>
+                </ul>
+                <ul class="list-group list-group-flush no-underline col-3 my-2">
+                    <li class="list-group-item fw-bold" style="color: #06343D">文房具</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D">2025/11/11</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D">理工学部</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D">30日</li>
+                </ul>
+                <style>
+                    .no-underline .list-group-item {
+                      border: none; 
+                    }
+                </style>
+
+                <!-- チェックボックス、ボタン -->
+                <div class="d-flex flex-column align-items-start col-2">
+                    <div class="d-flex justify-content-end align-items-start col-12 mb-4">
+                        <input type="checkbox" class="large-checkbox">
+                    </div>
+                    <button type="button" class="btn btn-outline-secondary custom-red fw-bold mb-4" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                        削除
+                    </button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#MovingMdl" class="btn btn-outline-secondary custom-green fw-bold" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                        場所変更
+                    </button>
+                </div>
+                <style>
+                    .large-checkbox {
+                      transform: scale(1.8); 
+                    }
+                </style>
+            </div>
+
+            <!-- 2つ目 -->
+            <div class="list row d-flex align-items-center my-2" style="color: #06343D90; background-color: #FFFFFF; border: 2px solid #06343DAA; border-radius: 10px;">
+                <!-- 拾得物の画像 -->
+                <img src="{% static 'imgs\illustrations\L-遺失物登録.png' %}" class="col-3 mx-3 my-2">
+                
+                <!-- 物品名などのリスト -->
+                <ul class="list-group list-group-flush no-underline col-3 my-2">
+                    <li class="list-group-item fw-bold" style="color: #06343D90">物品名</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D90">日時</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D90">落とした場所</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D90">登録後の日数</li>
+                </ul>
+                <ul class="list-group list-group-flush no-underline col-3 my-2">
+                    <li class="list-group-item fw-bold" style="color: #06343D">カバン</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D">2025/12/24</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D">教育学部</li>
+                    <li class="list-group-item fw-bold" style="color: #06343D">10日</li>
+                </ul>
+                <style>
+                    .no-underline .list-group-item {
+                      border: none; 
+                    }
+                </style>
+
+                <!-- チェックボックス、ボタン -->
+                <div class="d-flex flex-column align-items-start col-2">
+                    <div class="d-flex justify-content-end align-items-start col-12 mb-4">
+                        <input type="checkbox" class="large-checkbox">
+                    </div>
+                    <button type="button" class="btn btn-outline-secondary custom-red fw-bold mb-4" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                        削除
+                    </button>
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#MovingMdl" class="btn btn-outline-secondary custom-green fw-bold" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                        場所変更
+                    </button>
+                </div>
+                <style>
+                    .large-checkbox {
+                      transform: scale(1.8); 
+                    }
+                </style>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- モーダル --> 
+    <div class="modal" id="MovingMdl" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content" style="background-color: #F7FBF4;">
+            <div class="modal-body">
+                <div class="container-fluid">
+
+                    <div class="row justify-content-center mx-4 my-3">
+                        <h4 class="col text-center fw-bold">移動した場所を選択してください</h4>
+                    </div>
+
+                    <div class="col d-flex align-items-center mx-4 my-4">
+                        <img src="{% static 'imgs/icons/Component 1.png'%}" class="me-3" alt="" width="22" height="20">
+                        <label for="location" class="me-4 fw-bold">現在地　　　</label>
+                        <div class="col">
+                            <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
+    
+                                {% for pickedOrDroppedLocationsTag in pickedOrDroppedLocationsTags %}
+                                    <option value="{{ pickedOrDroppedLocationsTag.PorD_location_id }}">{{ pickedOrDroppedLocationsTag.picked_or_dropped_location_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col d-flex align-items-center mx-4 my-4">
+                        <img src="{% static 'imgs/icons/SENT.png'%}" class="me-3" alt="" width="22" height="24">
+                        <label for="location" class="me-4 fw-bold">移動した場所</label>
+                        <div class="col">
+                            <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
+    
+                                {% for location in locations %}
+                                    <option value="{{ location.storage_location_id }}">{{ location.storage_location_name }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-evenly my-4">
+                        <button type="button" data-bs-dismiss="modal" class="btn btn-outline-secondary custom-red fw-bold me-3" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                            やめる
+                        </button>
+
+                        <!-- idを入れると機能を実装できる -->
+                        <button type="button" id="" class="btn btn-outline-secondary custom-green fw-bold" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                            はい
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+    </div> 
+
+</body>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const modal = document.getElementById("MovingMdl"); // モーダル
+        // const openModalBtn = document.getElementById("MovingBtn"); // 場所変更ボタン (不要)
+        // const modalCloseBtn = document.getElementById("CancelBtn"); // キャンセルボタン (不要)
+
+        // 場所変更ボタンがクリックされたときにモーダルを表示 (現在は不要)
+        openModalBtn.addEventListener("click", function (event) {
+            modal.style.display = "flex"; // モーダルを表示
+        });
+
+        // モーダル内の「キャンセル」ボタンをクリックしたときにモーダルを非表示にする (現在は不要)
+        modalCloseBtn.addEventListener("click", function () {
+            modal.style.display = "none"; // モーダルを非表示にする
+        });
+
+        // モーダルの外側をクリックしたときにもモーダルを閉じる
+        window.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none"; // モーダルを非表示にする
+            }
+        });
+    });
+</script>
+
 {% endblock content %}
