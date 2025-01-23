@@ -1,198 +1,312 @@
 {% extends "base.html" %}
-{% load crispy_forms_tags %}
 {% load static %}
 {% block content %}
 
 <body>
-    <div class="container row" style="display: flex;">
+    <div class="container-fluid row mx-1" style="display: flex; width: 100%">
 
         <!-- サイドメニュー -->
-        <div class="col-lg-3 col-sm-5 text-center "style="background-color: #67CAD6">
+        <div class="col-lg-3 col-sm-12 text-center" id="sidebar" style="background-color: #67CAD6">
             
             <!-- 学籍番号 -->
             <h4 class="fw-bold mt-5">{{ user.username }}</h4>
         
             <!-- メールアドレス -->
-            <h6>{{ user.username }}@iwat-u.ac.jp</h6>
-        
-            <!-- changeボタン -->
-            <div class="d-flex justify-content-end">
-                <button type="button" class="btn btn-light btn-sm custom-add fw-bold mt-1" style="color: #06343D90; width: 80px; border-radius: 20px; margin-right: 15px">
-                    change
-                </button>
-            </div>
+            <h6 class="mb-5">{{ user.username }}@iwat-u.ac.jp</h6>
         
             <!-- リストタグ -->
-            <div class="list row d-flex align-items-center mt-5" style="color: #06343D90; background-color: #FFFFFF; margin-bottom:60px;">
-                <img src="{% static 'imgs\icons\LIST.png' %}" class="col-2">
+            <div class="list row d-flex justify-content-center align-items-center mt-5" style="color: #06343D90; background-color: #FFFFFF; margin-bottom:60px;">
+                <img src="{% static 'imgs\icons\LIST.png' %}" class="col-1" style="width: auto; height: 1em"></img>
                 <h4 class="my-3 col-8 fw-bold" style="font-size: 20px;">拾得物リスト</h4>
-                <img src="{% static 'imgs\icons\SCROLL ARROW side.png' %}" class="col-1" style="width:auto; height:2em">
+                <img src="{% static 'imgs\icons\SCROLL ARROW side.png' %}" id="list-arrow" class="col-1" style="width: auto; height: auto"></img>
             </div>
+            <style>
+                /* 画面狭いとき */
+                @media (max-width: 599px) {
+                    #list-arrow {
+                        transform: rotate(90deg);
+                        transition: transform 0.3s ease;
+                    }
+                } 
+            </style>
         
             <!-- ログアウトボタン -->
-            <div class="d-flex justify-content-center">
-                <button type="button" class="btn btn-light fw-bold custom-add col-6 mb-5" style="color: #06343D90; width: 140px">
-                    logout　
-                    <img src="{% static 'imgs\icons\logout.png' %}" style="width:auto; height:1em">
-                </button>
-            </div>
-            <style>
-                .custom-add:hover {
-                    background-color: #c1d881; 
-                    border-width: 0px;
-                }
-            </style>
+            <a class="navbar-brand" href="{% url 'lostitem:logout' %}">
+                <div class="d-flex justify-content-center">
+                    <button type="button" class="btn btn-light fw-bold custom-add col-6 mb-5" style="color: #06343D90; width: 140px">
+                        logout
+                        <img src="{% static 'imgs\icons\logout.png' %}" style="width:auto; height:1em">
+                    </button>
+                </div>
+                <style>
+                    .custom-add:hover {
+                        background-color: #C1D881;
+                        border-width: 0px;
+                    }
+                </style>
+            </a>
 
         </div>
+        <style>
+            #sidebar.closed {
+                transform: translateX(-106%); /* 横に隠す */
+            }
 
-        <!-- 空間 -->
-        <div class="col"></div>
+            #sidebar {
+                transform: translateX(0); /* 横に表示 */
+                transition: transform 0.3s ease;
+            }
+
+            #toggle-btn.closed {
+                transform: translateX(-820%); /* 横に隠す */
+            }
+
+            #toggle-btn {
+                transform: translateX(0); /* 横に表示 */
+                transition: transform 0.3s ease;
+            }            
+        
+            /* 小さい画面のとき */
+            @media (max-width: 599px) {
+                #sidebar.closed {
+                    transform: translateY(-99%); /* 上に隠す */
+                }
+                #sidebar {
+                    transform: translateY(0); /* 上に表示 */
+                    transition: transform 0.3s ease;
+                }
+
+                #toggle-btn.closed {
+                    transform: translateY(-865%); /* 上に隠す */
+                }
+                #toggle-btn {
+                    transform: translateY(0); /* 上に表示 */
+                    transition: transform 0.3s ease;
+                }
+
+                #main-content.closed {
+                    transform: translateY(-200%); /* 上に行く */
+                }
+
+                #main-content {
+                    transform: translateY(0); /* 上に表示 */
+                    transition: transform 0.3s ease;
+                }
+            }
+
+            /* さらに小さい画面のとき */
+            @media (max-width: 570px) {
+                #sidebar.closed {
+                    transform: translateY(-99%); /* 上に隠す */
+                }
+                #sidebar {
+                    transform: translateY(0); /* 上に表示 */
+                }
+
+                #main-content.closed {
+                    transform: translateY(-160%); /* 上に行く */
+                }
+
+                #main-content {
+                    transform: translateY(0); /* 上に表示 */
+                    transition: transform 0.3s ease;
+                }
+            }
+        </style>
+
+        <button id="toggle-btn" class="btn btn-primary btn-sm side-btn fw-bold">
+            <img src="{% static 'imgs/icons/Component 3.png' %}" id="pls-btn" style="width: 22px; height: 22px;">
+        </button>
+        <style>
+            .side-btn {
+                border-radius: 0 50px 50px 0; /* 右側に丸みをつける */
+                background-color: #67cad6; 
+                color: #06343d; 
+                border: 0px solid #06343d80;
+                width: 40px;
+                height: 40px;
+            }
+
+            @media (max-width: 599px) {
+                .side-btn {
+                    border-radius: 0 0 50px 50px; /* 上側に丸みをつける */
+                    
+                }
+            }
+        </style>
 
         <!-- 本体 -->
-        <div class="col-8">
+        <div class="col-lg-8 col-sm-12 mx-3 mt-2" id="main-content">
 
-            <!-- 全体の削除、場所変更ボタン -->
-            <div class="d-flex justify-content-end my-3">
-                <button type="button" class="btn btn-outline-secondary custom-red fw-bold me-3" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
-                    削除
-                </button>
-                <button type="button" data-bs-toggle="modal" data-bs-target="#MovingMdl" class="btn btn-outline-secondary custom-green fw-bold" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
-                    場所変更
-                </button>
-            </div>
-            <style>
-                .custom-red:hover {
-                    background-color: #ff000080; 
-                }
-            </style>
-            <style>
-                .custom-green:hover {
-                    background-color: #98fb98; 
-                }
-            </style>
+            <!-- 検索欄、全体の削除・場所変更ボタン -->
+             <div class="d-flex justify-content-between my-3">
+                <div class="d-flex align-items-center">
+                    <img src="{% static 'imgs\icons\SEARCH I.png' %}" class="me-3" width="22" height="22">
+                    <input type="text" id="searchBox" class="form-control me-3" placeholder="-----" style="width: 200px;" onkeyup="searchButtons()">
+                </div>
 
-            <!-- 拾得物リスト -->
-            <div class="list row d-flex align-items-center my-2" style="color: #06343D90; background-color: #FFFFFF; border: 2px solid #06343DAA; border-radius: 10px;">
-                <!-- 拾得物の画像 -->
-                <img src="{% static 'imgs\illustrations\L-拾得物登録.png' %}" class="col-3 mx-3 my-2">
-                
-                <!-- 物品名などのリスト -->
-                <ul class="list-group list-group-flush no-underline col-3 my-2">
-                    <li class="list-group-item fw-bold" style="color: #06343D90">物品名</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D90">日時</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D90">落とした場所</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D90">登録後の日数</li>
-                </ul>
-                <ul class="list-group list-group-flush no-underline col-3 my-2">
-                    <li class="list-group-item fw-bold" style="color: #06343D">文房具</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D">2025/11/11</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D">理工学部</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D">30日</li>
-                </ul>
-                <style>
-                    .no-underline .list-group-item {
-                      border: none; 
-                    }
-                </style>
-
-                <!-- チェックボックス、ボタン -->
-                <div class="d-flex flex-column align-items-start col-2">
-                    <div class="d-flex justify-content-end align-items-start col-12 mb-4">
-                        <input type="checkbox" class="large-checkbox">
-                    </div>
-                    <button type="button" class="btn btn-outline-secondary custom-red fw-bold mb-4" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-outline-secondary custom-red fw-bold me-3" 
+                            style="width: 100px; color: #ff0000; border-color: #06343D; border-width: 2px; border-radius: 10px" 
+                            data-bs-toggle="modal" data-bs-target="#deleteModal">
                         削除
                     </button>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#MovingMdl" class="btn btn-outline-secondary custom-green fw-bold" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                    <button type="button" data-bs-toggle="modal" data-bs-target="#MovingMdl" class="btn btn-outline-secondary custom-green fw-bold" style="width: 100px; color: #8ac75a; border-color: #06343D; border-width: 2px; border-radius: 10px;">
                         場所変更
                     </button>
                 </div>
                 <style>
-                    .large-checkbox {
-                      transform: scale(1.8); 
+                    .custom-red:hover {
+                        background-color: #53C3D250; 
                     }
                 </style>
+                <style>
+                    .custom-green:hover {
+                        background-color: #53C3D250; 
+                    }
+                </style>        
             </div>
 
-            <!-- 2つ目 -->
-            <div class="list row d-flex align-items-center my-2" style="color: #06343D90; background-color: #FFFFFF; border: 2px solid #06343DAA; border-radius: 10px;">
-                <!-- 拾得物の画像 -->
-                <img src="{% static 'imgs\illustrations\L-遺失物登録.png' %}" class="col-3 mx-3 my-2">
-                
-                <!-- 物品名などのリスト -->
-                <ul class="list-group list-group-flush no-underline col-3 my-2">
-                    <li class="list-group-item fw-bold" style="color: #06343D90">物品名</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D90">日時</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D90">落とした場所</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D90">登録後の日数</li>
-                </ul>
-                <ul class="list-group list-group-flush no-underline col-3 my-2">
-                    <li class="list-group-item fw-bold" style="color: #06343D">カバン</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D">2025/12/24</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D">教育学部</li>
-                    <li class="list-group-item fw-bold" style="color: #06343D">10日</li>
-                </ul>
-                <style>
-                    .no-underline .list-group-item {
-                      border: none; 
-                    }
-                </style>
+            <!-- 画面が広いときに表示 -->
+            <div id="content-desktop" style="display:none;"> 
 
-                <!-- チェックボックス、ボタン -->
-                <div class="d-flex flex-column align-items-start col-2">
-                    <div class="d-flex justify-content-end align-items-start col-12 mb-4">
-                        <input type="checkbox" class="large-checkbox">
+                <!-- アイテムごとに枠を囲むためのdiv -->
+                <div class="border my-2 rounded">
+                    <div class="row" style="background-color: #FFFFFF;">
+                        <!-- 拾得物の画像 -->
+                        <img src="{% static 'imgs\illustrations\L-拾得物登録.png' %}" class="col-2 my-2">
+
+                        <!-- IDのリスト -->
+                        <div class="col my-2">
+                            <ul class="list-group list-group-flush no-underline">
+                                <li class="list-group-item fw-bold" style="color: #06343D90">ID</li>
+                                <li class="list-group-item fw-bold" style="color: #06343D">1234567</li>
+                            </ul>
+                        </div>
+        
+                        <!-- 日時のリスト -->
+                        <div class="col my-2">
+                            <ul class="list-group list-group-flush no-underline">
+                                <li class="list-group-item fw-bold" style="color: #06343D90">日時</li>
+                                <li class="list-group-item fw-bold" style="color: #06343D">2025/01/11</li>
+                            </ul>
+                        </div>
+        
+                        <!-- 落とした場所のリスト -->
+                        <div class="col my-2">
+                            <ul class="list-group list-group-flush no-underline">
+                                <li class="list-group-item fw-bold" style="color: #06343D90">落とした場所</li>
+                                <li class="list-group-item fw-bold" style="color: #06343D">理工学部</li>
+                            </ul>
+                        </div>
+
+                        <!-- コメントのリスト -->
+                        <div class="col my-2">
+                            <ul class="list-group list-group-flush no-underline">
+                                <li class="list-group-item fw-bold" style="color: #06343D90">経過日数</li>
+                                <li class="list-group-item fw-bold" style="color: #06343D">30日</li>
+                            </ul>
+                        </div>
+
+                        <!-- チェックボックス、ボタン -->
+                         <div class="d-flex align-items-start justify-content-end col-1 mt-3">
+                            <input type="checkbox" class="large-checkbox">
+                        </div>
+                        <style>
+                            .large-checkbox {
+                            transform: scale(1.8); 
+                            }
+                        </style>
                     </div>
-                    <button type="button" class="btn btn-outline-secondary custom-red fw-bold mb-4" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
-                        削除
-                    </button>
-                    <button type="button" data-bs-toggle="modal" data-bs-target="#MovingMdl" class="btn btn-outline-secondary custom-green fw-bold" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
-                        場所変更
-                    </button>
                 </div>
-                <style>
-                    .large-checkbox {
-                      transform: scale(1.8); 
-                    }
-                </style>
             </div>
 
+            <!--画面が狭いときに表示-->
+            <div id="content-mobile" style="display:none;">
+                <!-- アイテムごとに枠を囲むためのdiv -->
+                <div class="border my-2 rounded">
+                    <div class="row" style="background-color: #FFFFFF;">
+                        <!-- IDのリスト -->
+                        <div class="col my-2">
+                            <ul class="list-group list-group-flush no-underline">
+                                <li class="list-group-item fw-bold" style="color: #06343D90; font-size: 10px">ID</li>
+                                <li class="list-group-item fw-bold" style="color: #06343D; font-size: 15px">1234567</li>
+                            </ul>
+                        </div>
+        
+                        <!-- 日時のリスト -->
+                        <div class="col my-2">
+                            <ul class="list-group list-group-flush no-underline">
+                                <li class="list-group-item fw-bold" style="color: #06343D90; font-size: 10px">日時</li>
+                                <li class="list-group-item fw-bold" style="color: #06343D; font-size: 15px">2025/01/11</li>
+                            </ul>
+                        </div>
+        
+                        <!-- 落とした場所のリスト -->
+                        <div class="col my-2">
+                            <ul class="list-group list-group-flush no-underline">
+                                <li class="list-group-item fw-bold" style="color: #06343D90; font-size: 10px">落とした場所</li>
+                                <li class="list-group-item fw-bold" style="color: #06343D; font-size: 15px">理工学部</li>
+                            </ul>
+                        </div>
+
+                        <!-- コメントのリスト -->
+                        <div class="col my-2">
+                            <ul class="list-group list-group-flush no-underline">
+                                <li class="list-group-item fw-bold" style="color: #06343D90; font-size: 10px">経過日数</li>
+                                <li class="list-group-item fw-bold" style="color: #06343D; font-size: 15px">30日</li>
+                            </ul>
+                        </div>
+
+                        <!-- チェックボックス、ボタン -->
+                         <div class="d-flex align-items-start justify-content-end col-1 mt-3">
+                            <input type="checkbox" class="large-checkbox">
+                        </div>
+                        <style>
+                            .large-checkbox {
+                            transform: scale(1.4); 
+                            }
+                        </style>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+</body>
 
-    <!-- モーダル --> 
-    <div class="modal" id="MovingMdl" tabindex="-1" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
+<!-- モーダル --> 
+<div class="modal" id="MovingMdl" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
         <div class="modal-content" style="background-color: #F7FBF4;">
             <div class="modal-body">
                 <div class="container-fluid">
-
                     <div class="row justify-content-center mx-4 my-3">
                         <h4 class="col text-center fw-bold">移動した場所を選択してください</h4>
                     </div>
-
                     <div class="col d-flex align-items-center mx-4 my-4">
-                        <img src="{% static 'imgs/icons/Component 1.png'%}" class="me-3" alt="" width="22" height="20">
+                        <img src="{% static 'imgs/icons/Component 1.png'%}" class="me-3" alt="" width="22" height="20"></img>
                         <label for="location" class="me-4 fw-bold">現在地　　　</label>
                         <div class="col">
                             <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
-    
+
                                 {% for pickedOrDroppedLocationsTag in pickedOrDroppedLocationsTags %}
                                     <option value="{{ pickedOrDroppedLocationsTag.PorD_location_id }}">{{ pickedOrDroppedLocationsTag.picked_or_dropped_location_name }}</option>
                                 {% endfor %}
+
                             </select>
                         </div>
                     </div>
 
                     <div class="col d-flex align-items-center mx-4 my-4">
-                        <img src="{% static 'imgs/icons/SENT.png'%}" class="me-3" alt="" width="22" height="24">
+                        <img src="{% static 'imgs/icons/SENT.png'%}" class="me-3" alt="" width="22" height="24"></img>
                         <label for="location" class="me-4 fw-bold">移動した場所</label>
                         <div class="col">
                             <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
-    
+
                                 {% for location in locations %}
                                     <option value="{{ location.storage_location_id }}">{{ location.storage_location_name }}</option>
                                 {% endfor %}
+
                             </select>
                         </div>
                     </div>
@@ -207,14 +321,30 @@
                             はい
                         </button>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
-    </div> 
+</div> 
 
-</body>
+<!-- モーダル -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- モーダル本文 -->
+            <div class="modal-body text-center">
+                本当にこのアイテムを削除しますか？
+            </div>
+
+            <!-- モーダルフッター -->
+            <div class="modal-footer d-flex justify-content-center">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">いいえ</button>
+                <button type="submit" class="btn btn-danger">はい</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -239,6 +369,50 @@
             }
         });
     });
+</script>
+
+<script>
+    document.getElementById("toggle-btn").addEventListener("click", function() {
+        var sidebar = document.getElementById("sidebar");
+        var sidebtn = document.getElementById("toggle-btn");
+        var contentMobile = document.getElementById("main-content");
+        const plsbtn = document.getElementById("pls-btn");
+
+        // サイドメニューとコンテンツの表示/非表示を切り替え
+        sidebar.classList.toggle("closed");
+        sidebtn.classList.toggle("closed");
+        contentMobile.classList.toggle("closed");
+
+        // 矢印の回転
+        if (plsbtn.style.transform === 'rotate(45deg)') {
+            plsbtn.style.transform = '';  // 回転をリセット
+        } else {
+            plsbtn.style.transform = 'rotate(45deg)';  // 45度回転
+        }
+    });
+</script>
+
+<script>
+    function checkScreenSize() {
+        const mobileContent = document.getElementById("content-mobile");
+        const desktopContent = document.getElementById("content-desktop");
+
+        if (window.innerWidth <= 600) {
+            // モバイルビュー
+            mobileContent.style.display = "block";
+            desktopContent.style.display = "none";
+        } else {
+            // デスクトップビュー
+            mobileContent.style.display = "none";
+            desktopContent.style.display = "block";
+        }
+    }
+
+    // ページロード時に画面サイズをチェック
+    checkScreenSize();
+
+    // 画面サイズ変更時に再度チェック
+    window.addEventListener("resize", checkScreenSize);
 </script>
 
 {% endblock content %}
