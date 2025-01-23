@@ -136,66 +136,8 @@
                     <img src="{% static 'imgs\illustrations\L-遺失物登録.png' %}" class="img-fluid">
                 </div>
             </div>
-        </div>        
+        </div> 
 
-        {% comment  %}
-        
-        <h1 class="text-start mb-5 fw-bold ">遺失物登録</h1>
-        <div class="col-lg-4 col-sm-12">
-            <img src="{% static 'imgs\illustrations\L-遺失物登録.png' %}" class="img-fluid">
-        </div>
-        <div class="col-lg-8 col-sm-12">
-            <form method="post" action="{% url 'lostitem:register_item' %}" enctype="multipart/form-data"
-                  class="dropzone" id="itemsRegister">
-                {% csrf_token %}
-                <!-- 日時 -->
-                <div class="Data row d-flex align-items-center mb-3">
-                    <img src="{% static 'imgs\icons\CALENDAR I.png' %}" class="col-1">
-                    <label for="date" class="col-4 col-form-label fw-bold">日時</label>
-                    <div class="col-sm-12 col-lg-7">
-                        <input type="date" style="background-color: #53C3D233; color: #06343D;" name="data" id="date" class="form-control">
-                    </div>
-                </div>
-
-                <!-- 落とした場所 -->
-                <div class="Location row d-flex align-items-center mb-3">
-                    <img src="{% static 'imgs\icons\Component 1.png' %}" class="col-1">
-                    <label for="location" class="col-4 col-form-label fw-bold">落とした場所</label>
-                    <div class="col-sm-12 col-lg-7">
-                        <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
-                            <option value="">------</option>  <!-- 空欄 -->
-                            {% for location in locations %}
-                                <option value="{{ location.PorD_location_id }}">{{ location.picked_or_dropped_location_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-
-                <!-- 物品カテゴリー -->
-                <div class="Category row d-flex align-items-center mb-3">
-                    <img src="{% static 'imgs\icons\CATEGORY I.png' %}" class="col-1">
-                    <label for="category" class="col-4 col-form-label fw-bold">物品カテゴリー</label>
-                    <div class="col-sm-12 col-lg-7">
-                        <select id="category" style="background-color: #53C3D233; color: #06343D;" name="category" class="form-select">
-                            <option value="">------</option>  <!-- 空欄 -->
-                            {% for category in categories %}
-                                <option value="{{ category.item_name_id }}">{{ category.item_name }}</option>
-                            {% endfor %}
-                        </select>
-                    </div>
-                </div>
-
-                <!-- memo -->
-                <div class="Comment row d-flex align-items-center mb-3">
-                    <img src="{% static 'imgs\icons\memo.png' %}" class="col-1">
-                    <label for="comment" class="col-4 col-form-label fw-bold">メモ</label>
-                    <div class="col-sm-12 col-lg-7">
-                        <textarea id="comment" style="background-color: #53C3D233; color: #06343D;" placeholder="*遺失物の特徴を記入してください" name='comment'
-                                  class="form-control" rows="3"></textarea>
-                    </div>
-                </div>
-            </form>
-        </div>
         <!-- 登録ボタン -->
         <div class="text-center">
             <button type="button" id="openmyModal" class="btn btn-outline-success fw-bold"style="width: 140px; font-size: 20px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
@@ -204,7 +146,7 @@
         </div>
     </div>
 
-    {% endcomment %}
+    
 
     <!-- モーダル -->
     <div class="modal" id="myModal" tabindex="-1">
