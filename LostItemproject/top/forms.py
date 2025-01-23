@@ -38,6 +38,6 @@ class TagFilterForm(forms.Form):
 class DateFilterForm(forms.Form):
     date = forms.DateField(
         required=False,
-        widget=forms.DateInput(attrs={"type": "date",'class': 'form-date'}),
-        label="落とした日（選択した月日以降を表示）"
+        widget=forms.DateInput(attrs={"type": "date",'class': 'form-date form-control'}),
+        label=""
     )

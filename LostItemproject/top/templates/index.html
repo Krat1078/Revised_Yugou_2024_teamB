@@ -91,6 +91,9 @@
   </div>
 
   <div class="search_date col-lg-4 col-sm-12 px-5">
+    <div class="top-itemTagnames py-1 col-lg-12 col-sm-12">
+      落とした日（選択した月日以降を表示）
+    </div>
     <form method="post">
       {% csrf_token %}
       {{ date_form.as_p }}
@@ -192,7 +195,7 @@
 
                   <div class="row py-3">
                     <div class="detail-tag col-lg-12 col-sm-5 py-0 my-0">
-                      <p class="py-0 my-0"><img class="detail-icons" src="{% static 'imgs/icons/CALENDAR I.png'%}">落とし物ID</p>
+                      <p class="py-0 my-0"><img class="detail-icons" src="{% static 'imgs/icons/Label.png'%}">落とし物ID</p>
                     </div>
                     <div class="col-lg-11 col-sm-7 ps-lg-5 py-0 my-0">
                       <p class="detail-content py-0 my-0">{{image.item.item_id}}</p>
