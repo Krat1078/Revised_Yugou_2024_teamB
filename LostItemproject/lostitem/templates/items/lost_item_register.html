@@ -3,8 +3,8 @@
 {% load static %}
 {% block content %}
 
-
-    <div class="LostItemRegister container row mx-auto flex-lg-row-reverse " style="max-width: 920px;">
+<div class="container">
+    <div class="LostItemRegister row mx-auto flex-lg-row-reverse " style="max-width: 920px;">
 
         <!--画面が狭いときに表示-->
         <div id="content-mobile">
@@ -23,8 +23,11 @@
                     {% csrf_token %}
                     <!-- 日時 -->
                     <div class="Data row align-items-center mb-3">
-                        <img src="{% static 'imgs\icons\CALENDAR I.png' %}" class="col-1" style="width:auto; height:1em">
-                        <label for="date" class="col-4 col-form-label fw-bold">日時</label>
+                        <div class="row col-5">
+                            <label for="date" class="col-form-label fw-bold">
+                                <img src="{% static 'imgs\icons\CALENDAR I.png' %}" class="me-3" style="width:auto; height:1.2em">日時
+                            </label>
+                        </div>
                         <div class="col-7">
                             <input type="date" style="background-color: #53C3D233; color: #06343D;" name="data" id="date"
                                    class="form-control">
@@ -32,9 +35,21 @@
                     </div>
     
                     <!-- 落とした場所 -->
-                    <div class="Location row  align-items-center mb-3">
-                        <img src="{% static 'imgs\icons\Component 1.png' %}" class="col-1" style="width:auto; height:1em">
-                        <label for="location" class="col-4 col-form-label fw-bold">落とした場所</label>
+                    <div class="Location row  d-flex justify-content-start align-items-center mb-3">
+                        
+                        <div class="col-5 row d-flex justify-content-start align-items-center">
+                            <label for="location" class="col-auto col-form-label fw-bold me-0 pe-0">
+                                <img src="{% static 'imgs\icons\Component 1.png' %}" class="me-3" style="width:auto; height:1.2em">落とした場所
+                            </label>
+                            <div class="gallery col-auto ms-sm-4 ms-lg-0 mx-0 me-auto" id="photoGallery">
+                                <a href="{% static 'imgs/iwate_university_map.jpg' %}" data-pswp-width="1298" data-pswp-height="1080" target="_blank">
+                                <button type="button" class="top-seach-btn mx-0">岩手大学マップ</button>
+                                <!--
+                                <img src="{% static 'imgs/iwate_university_map.jpg' %}" class="img-fluid" alt="岩手大学マップ" loading="lazy" width="1298" height="1080">
+                                -->
+                                </a>
+                            </div>
+                        </div>
                         <div class="col-7">
                             <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
                                 <option value="">------</option>  <!-- 空欄 -->
@@ -47,8 +62,11 @@
     
                     <!-- 物品カテゴリー -->
                     <div class="Category row d-flex align-items-center mb-3">
-                        <img src="{% static 'imgs\icons\CATEGORY I.png' %}" class="col-1" style="width:auto; height:1em">
-                        <label for="category" class="col-4 col-form-label fw-bold">物品カテゴリー</label>
+                        <div class="col-5 row">
+                            <label for="category" class="col-auto col-form-label fw-bold">
+                                <img src="{% static 'imgs\icons\CATEGORY I.png' %}" class="me-3" style="width:auto; height:1.2em">物品カテゴリー
+                            </label>
+                        </div>
                         <div class="col-7">
                             <select id="category" style="background-color: #53C3D233; color: #06343D;" name="category"
                                     class="form-select">
@@ -62,8 +80,11 @@
     
                     <!-- memo -->
                     <div class="Comment row d-flex align-items-center mb-3">
-                        <img src="{% static 'imgs\icons\memo.png' %}" class="col-1" style="width:auto; height:1em">
-                        <label for="comment" class="col-4 col-form-label fw-bold">メモ</label>
+                        <div class="col-5 row">
+                            <label for="comment" class="col-auto col-form-label fw-bold">
+                                <img src="{% static 'imgs\icons\memo.png' %}" class="me-3" style="width:auto; height:1.2em">メモ
+                            </label>
+                        </div>
                         <div class="col-7">
                             <textarea id="comment" style="background-color: #53C3D233; color: #06343D;" placeholder="*遺失物の特徴を記入してください" name='comment'
                                       class="form-control" rows="3"></textarea>
@@ -83,8 +104,10 @@
                         {% csrf_token %}
                         <!-- 日時 -->
                         <div class="Data row align-items-center mb-3">
-                            <img src="{% static 'imgs\icons\CALENDAR I.png' %}" class="col-1" style="width:auto; height:1em">
-                            <label for="date" class="col-4 col-form-label fw-bold">日時</label>
+                            
+                            <label for="date" class="col-5 col-form-label fw-bold">
+                                <img src="{% static 'imgs\icons\CALENDAR I.png' %}" class="me-3" style="width:auto; height:1.2em">日時
+                            </label>
                             <div class="col-7">
                                 <input type="date" style="background-color: #53C3D233; color: #06343D;" name="data" id="date"
                                     class="form-control">
@@ -93,8 +116,22 @@
         
                         <!-- 落とした場所 -->
                         <div class="Location row  align-items-center mb-3">
-                            <img src="{% static 'imgs\icons\Component 1.png' %}" class="col-1" style="width:auto; height:1em">
-                            <label for="location" class="col-4 col-form-label fw-bold">落とした場所</label>
+                            {% comment %} <img src="{% static 'imgs\icons\Component 1.png' %}" class="col-1" style="width:auto; height:1em"> {% endcomment %}
+                            <div class="col-5 ">
+                            
+                            
+                                <label for="location" class="col-auto col-form-label fw-bold me-0 pe-0" >
+                                    <img src="{% static 'imgs\icons\Component 1.png' %}" class="me-3" style="width:auto; height:1.2em">落とした場所
+                                </label>
+                                <div class="gallery col-auto ms-4" id="photoGallery">
+                                    <a href="{% static 'imgs/iwate_university_map.jpg' %}" data-pswp-width="1298" data-pswp-height="1080" target="_blank">
+                                    <button type="button" class="top-seach-btn ms-auto mx-0 px-0" style="font-size: 0.8rem">岩手大学マップ</button>
+                                    <!--
+                                    <img src="{% static 'imgs/iwate_university_map.jpg' %}" class="img-fluid" alt="岩手大学マップ" loading="lazy" width="1298" height="1080">
+                                    -->
+                                    </a>
+                                </div>
+                            </div>
                             <div class="col-7">
                                 
                                 <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
@@ -108,8 +145,10 @@
         
                         <!-- 物品カテゴリー -->
                         <div class="Category row d-flex align-items-center mb-3">
-                            <img src="{% static 'imgs\icons\CATEGORY I.png' %}" class="col-1" style="width:auto; height:1em">
-                            <label for="category" class="col-4 col-form-label fw-bold">物品カテゴリー</label>
+                            
+                            <label for="category" class="col-5 col-form-label fw-bold">
+                                <img src="{% static 'imgs\icons\CATEGORY I.png' %}" class="me-3" style="width:auto; height:1.2em">物品カテゴリー
+                            </label>
                             <div class="col-7">
                                 <select id="category" style="background-color: #53C3D233; color: #06343D;" name="category"
                                         class="form-select">
@@ -123,8 +162,10 @@
         
                         <!-- memo -->
                         <div class="Comment row d-flex align-items-center mb-3">
-                            <img src="{% static 'imgs\icons\memo.png' %}" class="col-1" style="width:auto; height:1em">
-                            <label for="comment" class="col-4 col-form-label fw-bold">メモ</label>
+                            
+                            <label for="comment" class="col-5 col-form-label fw-bold">
+                                <img src="{% static 'imgs\icons\memo.png' %}" class="me-3" style="width:auto; height:1.2em">メモ
+                            </label>
                             <div class="col-7">
                                 <textarea id="comment" style="background-color: #53C3D233; color: #06343D;" placeholder="*遺失物の特徴を記入してください" name='comment'
                                         class="form-control" rows="3"></textarea>
@@ -140,13 +181,39 @@
 
         <!-- 登録ボタン -->
         <div class="text-center">
-            <button type="button" id="openmyModal" class="btn btn-outline-success fw-bold"style="width: 140px; font-size: 20px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+            <button type="button" id="openmyModal" class="btn btn-outline-success custom-button fw-bold mb-3"style="width: 140px; font-size: 20px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
                 登録
             </button>
+            <style>
+                .custom-button:hover {
+                    background-color: #53C3D250;
+                }
+            </style>
         </div>
     </div>
+</div>
 
-    
+    <link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe.min.css"
+  integrity="sha512-aKJqqX25Ch6C/Gae4xBq5gDKhUS2QcNrPoAxqy4fbLr9CqGq7uo/i0aRuti1TUYpZxjXuOr90cTP/aD9WY8CLQ=="
+  crossorigin="anonymous"
+  referrerpolicy="no-referrer"
+/>
+
+<script type="module">
+  import PhotoSwipeLightbox from "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe-lightbox.esm.min.js";
+  const lightbox = new PhotoSwipeLightbox({
+    gallery: "#photoGallery",
+    children: "a",
+    pswpModule: () =>
+      import(
+        "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe.esm.min.js"
+      ),
+      wheelToZoom: true,
+  });
+  lightbox.init();
+</script>
 
     <!-- モーダル -->
     <div class="modal" id="myModal" tabindex="-1">
@@ -249,14 +316,14 @@
             const mobileContent = document.getElementById("content-mobile");
             const desktopContent = document.getElementById("content-desktop");
     
-            if (window.innerWidth <= 600) {
+            if (window.innerWidth <= 800) {
                 // 画面が狭いときに表示
                 mobileContent.style.display = "block";
                 desktopContent.style.display = "none";
             } else {
                 // 画面が広いときに表示
-                mobileContent.style.display = "none";
-                desktopContent.style.display = "block";
+                mobileContent.style.display = "block";
+                desktopContent.style.display = "none";
             }
         }
     

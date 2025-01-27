@@ -139,6 +139,8 @@ ul.detail-content{
 	color:#8e8e8e;
     background:var(--background);
     border-radius: 100vh;
+    text-align: center;
+    font-size: 0.8rem !important;
 }
 .top-seach-btn:hover{
     color: var(--background);

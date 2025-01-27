@@ -3,11 +3,11 @@
 {% load static %}
 {% block content %}
 
-<body>
-    <div class="container" style="desply: flex;">
-        <div class="mx-auto" flex="" style="max-width: 950px; margin-top: 14vh;">
+
+    <div class="container row mx-auto mb-5" ><!--style="desply: flex;"-->
+        <div class="mx-auto mt-5" flex="" style="max-width: 950px; ">
             <!-- タイトル -->
-            <div class="row justify-content-between">
+            <div class="row justify-content-center d-flex">
                 <h1 class="col-lg-8 col-sm-5 d-flex align-items-center fw-bold mb-4">拾得物登録</h1>
                 <img src="{% static 'imgs/illustrations/L-拾得物登録.png'%}" class="col-lg-3 col-sm-7 mb-4" alt="">
             </div>
@@ -18,18 +18,32 @@
                 <div class="row justify-content-between">
                     <!-- 日時 -->
                     <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                        <img src="{% static 'imgs/icons/CALENDAR I.png'%}" class="me-3" alt="" width="22" height="18">
-                        <label for="date" class="me-3 fw-bold">日時　　　　　</label>
-                        <div class="col">
+                        <div class="row col-5">
+                            <label for="date" class="col-auto me-3 fw-bold">
+                                <img src="{% static 'imgs/icons/CALENDAR I.png'%}" class="me-3" style="width:auto; height:1.2em">日時
+                            </label>
+                        </div>
+                        <div class="col-7">
                             <input type="date" style="background-color: #53C3D233; color: #06343D;" name="data" id="date" class="form-control">
                         </div>
                     </div>
 
                     <!--拾った場所 -->
                     <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                        <img src="{% static 'imgs/icons/Component 1.png'%}" class="me-3" alt="" width="22" height="20">
-                        <label for="location" class="me-3 fw-bold">拾った場所　　</label>
-                        <div class="col">
+                        <div class="col-5 row">
+                            <label for="location" class="col-auto fw-bold">
+                                <img src="{% static 'imgs/icons/Component 1.png'%}" class="me-3" style="width:auto; height:1.2em">拾った場所
+                            </label>
+                            <div class="gallery col-auto ms-sm-4" id="photoGallery">
+                                <a href="{% static 'imgs/iwate_university_map.jpg' %}" data-pswp-width="1298" data-pswp-height="1080" target="_blank">
+                                <button type="button" class="top-seach-btn me-2" style="font-size: 0.8rem;">岩手大学マップ</button>
+                                <!--
+                                <img src="{% static 'imgs/iwate_university_map.jpg' %}" class="img-fluid" alt="岩手大学マップ" loading="lazy" width="1298" height="1080">
+                                -->
+                                </a>
+                            </div>
+                        </div>
+                        <div class="col-7">
                             <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
                                 <option value="">------</option>  <!-- 空欄 -->
                                 {% for pickedOrDroppedLocationsTag in pickedOrDroppedLocationsTags %}
@@ -43,9 +57,12 @@
                 <div class="row justify-content-between">
                     <!--届けた場所 -->
                     <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                        <img src="{% static 'imgs/icons/SENT.png'%}" class="me-3" alt="" width="22" height="24">
-                        <label for="location" class="me-3 fw-bold">届けた場所　　</label>
-                        <div class="col">
+                        <div class="row col-5">
+                            <label for="location" class="me-3 fw-bold">
+                                <img src="{% static 'imgs/icons/SENT.png'%}" class="me-3" style="width:auto; height:1.2em">届けた場所
+                            </label>
+                        </div>
+                        <div class="col-7">
                             <select id="location" style="background-color: #53C3D233; color: #06343D;" name="location" class="form-select">
                                 <option value="">------</option>  <!-- 空欄 -->
                                 {% for location in locations %}
@@ -57,9 +74,12 @@
 
                     <!-- 物品カテゴリー -->
                     <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                        <img src="{% static 'imgs/icons/CATEGORY I.png'%}" class="me-3" alt="" width="22" height="22">
-                        <label for="category" class="me-3 fw-bold">物品カテゴリー</label>
-                        <div class="col">
+                        <div class="row col-5">
+                            <label for="category" class="me-3 fw-bold">
+                                <img src="{% static 'imgs/icons/CATEGORY I.png'%}" class="me-3" style="width:auto; height:1.2em">物品カテゴリー
+                            </label>
+                        </div>
+                        <div class="col-7">
                             <select id="category" style="background-color: #53C3D233; color: #06343D;" name="category" class="form-select">
                                 <option value="">------</option>  <!-- 空欄 -->
                                 {% for category in categories %}
@@ -73,9 +93,12 @@
                 <div class="row justify-content-between">
                     <!-- 写真 -->
                     <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                        <img src="{% static 'imgs/icons/photo.png'%}" class="me-3" alt="" width="22" height="22">
-                        <label for="images-inputs" class="me-3 fw-bold">写真　　　　　</label>
-                        <div class="col">
+                        <div class="row col-5">
+                            <label for="images-inputs" class="me-3 fw-bold">
+                                <img src="{% static 'imgs/icons/photo.png'%}" class="me-3" alt="" width="22" height="22">写真
+                            </label>
+                        </div>
+                        <div class="col-7">
                             <div id="images-inputs">
                                 <input type="file" style="background-color: #53C3D233; color: #06343D;" class="form-control" id="images" name="images"
                                     aria-describedby="inputGroupFileAddon04" aria-label="Upload">
@@ -93,9 +116,12 @@
 
                     <!-- コメント -->
                     <div class="col-lg-6 col-sm-12 d-flex align-items-center mb-4">
-                        <img src="{% static 'imgs/icons/Comment.png'%}" class="me-3" alt="" width="22" height="22">
-                        <label for="comment" class="me-3 fw-bold">コメント　　　</label>
-                        <div class="col">
+                        <div class="row col-5">
+                            <label for="comment" class="me-3 fw-bold">
+                                <img src="{% static 'imgs/icons/Comment.png'%}" class="me-3" style="width:auto; height:1.2em">コメント
+                            </label>
+                        </div>
+                        <div class="col-7">
                             <textarea id="comment" style="background-color: #53C3D233" name='comment' class="form-control" rows="3" placeholder="*細かな物品の種類や特徴を記入してください"></textarea>
 
                         </div>
@@ -105,7 +131,7 @@
 
                     <!--登録ボタン -->
                     <div class="text-center" >
-                        <button type="button" id="openQrModal" class="col-lg-2 col-sm-4 btn btn-outline-secondary custom-button fw-bold mb-3" style="font-size: 18px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">登録</button>
+                        <button type="button" id="openQrModal" class="col-lg-2 col-sm-4 btn btn-outline-secondary custom-button fw-bold mb-3" style="width: 140px; font-size: 20px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">登録</button>
                     </div>
                     <style>
                         .custom-button:hover {
@@ -115,7 +141,28 @@
             </form>
         </div>
     </div>
-
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe.min.css"
+    integrity="sha512-aKJqqX25Ch6C/Gae4xBq5gDKhUS2QcNrPoAxqy4fbLr9CqGq7uo/i0aRuti1TUYpZxjXuOr90cTP/aD9WY8CLQ=="
+    crossorigin="anonymous"
+    referrerpolicy="no-referrer"
+  />
+  
+  <script type="module">
+    import PhotoSwipeLightbox from "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe-lightbox.esm.min.js";
+    const lightbox = new PhotoSwipeLightbox({
+      gallery: "#photoGallery",
+      children: "a",
+      pswpModule: () =>
+        import(
+          "https://cdnjs.cloudflare.com/ajax/libs/photoswipe/5.2.2/photoswipe.esm.min.js"
+        ),
+        wheelToZoom: true,
+    });
+    lightbox.init();
+  </script>
+  
     <!-- モーダル -->
     <div class="modal" id="myModal" tabindex="-1">
         <div class="modal-dialog">
@@ -379,7 +426,5 @@
 
     </script>
 
-
-    </body>
 
 {% endblock content %}
