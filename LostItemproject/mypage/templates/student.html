@@ -10,7 +10,7 @@
             <h6>{{ user.username }}@iwate-u.ac.jp</h6>
             
             <!-- リストタグ -->
-            <div class="list row d-flex align-items-center mt-5" style="color: #06343D90; background-color: #FFFFFF; margin-bottom:60px">
+            <div class="list row d-flex justify-content-center align-items-center mt-5" style="color: #06343D90; background-color: #FFFFFF; margin-bottom:60px">
                 <img src="{% static 'imgs\icons\LIST.png' %}" class="col-2" style="width:auto; height:1em; float: left">
                 <h4 class="my-3 col-8 fw-bold" style="font-size: 20px;">遺失物リスト</h4>
                 <img id="list-image" src="{% static 'imgs\icons\SCROLL ARROW side.png' %}" class="col-1" style="width:auto; height:auto" >
@@ -328,6 +328,8 @@
                 sidebtn.style.transform = `translateX(0)`;  
                 contentMobile.style.transform = `translateX(0)`;  
             }
+
+            contentMobile.style.transform = `translateY(0)`;  // main-contentが上に隠れたままにしない
         }
     });
 </script>
