@@ -5,141 +5,84 @@
 <form method="POST">
     {% csrf_token %}
     <body>
-        <div class="container-fluid row mx-1" style="display: flex; width: 100%">
+        <div class="container-fluid row" style="display: flex; width: 100%">
 
-            <!-- サイドメニュー -->
-            <div class="col-lg-3 col-sm-12 text-center" id="sidebar" style="background-color: #67CAD6">
-                
-                <!-- 学籍番号 -->
-                <h4 class="fw-bold mt-5">{{ user.username }}</h4>
+        <!-- サイドメニュー -->
+        <div class="col-xl-3 col-sm-12 text-center" id="sidebar" style="background-color: #67CAD6">
             
-                <!-- メールアドレス -->
-                <h6 class="mb-5">{{ user.email }}</h6>
-            
-                <!-- リストタグ -->
-                <div class="list row d-flex justify-content-center align-items-center mt-5" style="color: #06343D90; background-color: #FFFFFF; margin-bottom:60px;">
-                    <img src="{% static 'imgs\icons\LIST.png' %}" class="col-1" style="width: auto; height: 1em"></img>
-                    <h4 class="my-3 col-8 fw-bold" style="font-size: 20px;">拾得物リスト</h4>
-                    <img src="{% static 'imgs\icons\SCROLL ARROW side.png' %}" id="list-arrow" class="col-1" style="width: auto; height: auto"></img>
-                </div>
-                <style>
-                    /* 画面狭いとき */
-                    @media (max-width: 599px) {
-                        #list-arrow {
-                            transform: rotate(90deg);
-                            transition: transform 0.3s ease;
-                        }
-                    } 
-                </style>
-            
-                <!-- ログアウトボタン -->
-                <a class="navbar-brand" href="{% url 'lostitem:logout' %}">
-                    <div class="d-flex justify-content-center">
-                        <button type="button" class="btn btn-light fw-bold custom-add col-6 mb-5" style="color: #06343D90; width: 140px">
-                            logout
-                            <img src="{% static 'imgs\icons\logout.png' %}" style="width:auto; height:1em">
-                        </button>
-                    </div>
-                    <style>
-                        .custom-add:hover {
-                            background-color: #C1D881;
-                            border-width: 0px;
-                        }
-                    </style>
-                </a>
-
+            <!-- 学籍番号 -->
+            <h4 class="fw-bold mt-5">{{ user.username }}</h4>
+        
+            <!-- メールアドレス -->
+            <h6 class="mb-5">{{ user.username }}@iwat-u.ac.jp</h6>
+        
+            <!-- リストタグ -->
+            <div class="list row d-flex justify-content-center align-items-center mt-5" style="color: #06343D90; background-color: #FFFFFF; margin-bottom:60px;">
+                <img src="{% static 'imgs\icons\LIST.png' %}" class="col-1" style="width: auto; height: 1em"></img>
+                <h4 class="my-3 col-8 fw-bold" style="font-size: 20px;">拾得物リスト</h4>
+                <img src="{% static 'imgs\icons\SCROLL ARROW side.png' %}" id="list-arrow" class="col-1" style="width: auto; height: auto"></img>
             </div>
             <style>
-                #sidebar.closed {
-                    transform: translateX(-106%); /* 横に隠す */
-                }
-
-                #sidebar {
-                    transform: translateX(0); /* 横に表示 */
-                    transition: transform 0.3s ease;
-                }
-
-                #toggle-btn.closed {
-                    transform: translateX(-820%); /* 横に隠す */
-                }
-
-                #toggle-btn {
-                    transform: translateX(0); /* 横に表示 */
-                    transition: transform 0.3s ease;
-                }            
-            
-                /* 小さい画面のとき */
-                @media (max-width: 599px) {
-                    #sidebar.closed {
-                        transform: translateY(-99%); /* 上に隠す */
+                /* 画面狭いとき */
+                @media (max-width: 1199px) {
+                    #list-arrow {
+                        transform: rotate(90deg);
+                        transition: transform 0.5s ease;
                     }
-                    #sidebar {
-                        transform: translateY(0); /* 上に表示 */
-                        transition: transform 0.3s ease;
-                    }
-
-                    #toggle-btn.closed {
-                        transform: translateY(-865%); /* 上に隠す */
-                    }
-                    #toggle-btn {
-                        transform: translateY(0); /* 上に表示 */
-                        transition: transform 0.3s ease;
-                    }
-
-                    #main-content.closed {
-                        transform: translateY(-200%); /* 上に行く */
-                    }
-
-                    #main-content {
-                        transform: translateY(0); /* 上に表示 */
-                        transition: transform 0.3s ease;
-                    }
-                }
-
-                /* さらに小さい画面のとき */
-                @media (max-width: 570px) {
-                    #sidebar.closed {
-                        transform: translateY(-99%); /* 上に隠す */
-                    }
-                    #sidebar {
-                        transform: translateY(0); /* 上に表示 */
-                    }
-
-                    #main-content.closed {
-                        transform: translateY(-160%); /* 上に行く */
-                    }
-
-                    #main-content {
-                        transform: translateY(0); /* 上に表示 */
-                        transition: transform 0.3s ease;
-                    }
-                }
+                } 
             </style>
-
-            <!--サイドメニューを隠すボタン-->
-            <button id="toggle-btn" class="btn btn-primary btn-sm side-btn fw-bold">
-                <img src="{% static 'imgs/icons/Component 3.png' %}" id="pls-btn" style="width: 22px; height: 22px;">
-            </button>
+        
+            <!-- ログアウトボタン -->
+            <a class="navbar-brand" href="{% url 'lostitem:logout' %}">             
+                <button type="button" class="btn btn-light fw-bold logout mb-5" style="color: #06343D90; width: 140px">
+                    logout
+                    <img src="{% static 'imgs\icons\logout.png' %}" style="width:auto; height:1em">
+                </button>     
+            </a>
             <style>
-                .side-btn {
-                    border-radius: 0 50px 50px 0; /* 右側に丸みをつける */
-                    background-color: #67cad6; 
-                    color: #06343d; 
-                    border: 0px solid #06343d80;
-                    width: 40px;
-                    height: 40px;
-                }
-
-                @media (max-width: 599px) {
-                    .side-btn {
-                        border-radius: 0 0 50px 50px; /* 上側に丸みをつける */
-                        
-                    }
+                .logout:hover {
+                    background-color: #C1D881;
+                    border-width: 0px;
                 }
             </style>
 
-            <!-- 本体 -->
-            <div class="col-lg-8 col-sm-12 mx-3 mt-2" id="main-content">
+        </div>
+        <style>
+            #sidebar, #toggle-btn, #main-content {
+                transition: transform 0.5s ease;  
+            }
+            
+            #sidebar.closed, #toggle-btn.closed, #main-content.closed {
+                transition: transform 0.5s ease; 
+            }
+
+            #pls-btn {
+                transition: transform 1.2s ease;  
+            }
+        </style>
+
+        <button id="toggle-btn" class="btn btn-info btn-sm side-btn fw-bold">
+            <img src="{% static 'imgs/icons/Component 3.png' %}" id="pls-btn" style="width: 22px; height: 22px;">
+        </button>
+        <style>
+            .side-btn {
+                border-radius: 0 50px 50px 0; /* 右側に丸みをつける */
+                background-color: #67CAD6; 
+                color: #06343d; 
+                border: 0px solid #06343d80;
+                width: 40px;
+                height: 40px;
+            }
+
+            @media (max-width: 1199px) {
+                .side-btn {
+                    border-radius: 0 0 50px 50px; /* 上側に丸みをつける */
+                }
+            }
+        </style>
+
+        <!-- 本体 -->
+        <div class="col-xl-8 col-sm-12 my-2" id="main-content">
 
                 <!-- 検索欄、全体の削除・場所変更ボタン -->
                 <div class="d-flex justify-content-between my-3">
@@ -400,9 +343,9 @@
 
 <script>
     document.getElementById("toggle-btn").addEventListener("click", function() {
-        var sidebar = document.getElementById("sidebar");
-        var sidebtn = document.getElementById("toggle-btn");
-        var contentMobile = document.getElementById("main-content");
+        const sidebar = document.getElementById("sidebar");
+        const sidebtn = document.getElementById("toggle-btn");
+        const contentMobile = document.getElementById("main-content");
         const plsbtn = document.getElementById("pls-btn");
 
         // サイドメニューとコンテンツの表示/非表示を切り替え
@@ -410,11 +353,76 @@
         sidebtn.classList.toggle("closed");
         contentMobile.classList.toggle("closed");
 
-        // 矢印の回転
+        // サイドバーの高さと幅を取得
+        const sidebarHeight = sidebar.offsetHeight;
+        const sidebarWidth = sidebar.offsetWidth;
+
+        // 画面の幅をチェックして、横方向または縦方向に隠すかを決定
+        const isMobileView = window.innerWidth <= 1199;
+
+        if (isMobileView) {
+            // モバイルビューでは縦方向に隠す
+            if (sidebar.classList.contains("closed")) {
+                sidebar.style.transform = `translateY(-${sidebarHeight}px)`;  
+                sidebtn.style.transform = `translateY(-${sidebarHeight}px)`;  
+                contentMobile.style.transform = `translateY(-${sidebarHeight}px)`;  
+            } else {
+                sidebar.style.transform = `translateY(0)`;  
+                sidebtn.style.transform = `translateY(0)`;  
+                contentMobile.style.transform = `translateY(0)`;  
+            }
+        } else {
+            // デスクトップビューでは横方向に隠す
+            if (sidebar.classList.contains("closed")) {
+                sidebar.style.transform = `translateX(-${sidebarWidth}px)`; 
+                sidebtn.style.transform = `translateX(-${sidebarWidth}px)`;  
+                contentMobile.style.transform = `translateX(0)`;
+            } else {
+                sidebar.style.transform = `translateX(0)`;  
+                sidebtn.style.transform = `translateX(0)`;  
+                contentMobile.style.transform = `translateX(0)`; 
+            }
+        }
+
+        // iconの回転
         if (plsbtn.style.transform === 'rotate(45deg)') {
             plsbtn.style.transform = '';  // 回転をリセット
         } else {
             plsbtn.style.transform = 'rotate(45deg)';  // 45度回転
+        }
+    });
+
+    // 画面サイズが変更されたときにサイドバーの状態を調整
+    window.addEventListener("resize", function() {
+        const sidebar = document.getElementById("sidebar");
+        const sidebtn = document.getElementById("toggle-btn");
+        const contentMobile = document.getElementById("main-content");
+
+        const sidebarHeight = sidebar.offsetHeight;
+        const sidebarWidth = sidebar.offsetWidth;
+        const isMobileView = window.innerWidth <= 1199;
+
+        // モバイルビューに切り替わったときにサイドバーが隠れている状態なら、表示させる
+        if (isMobileView) {
+            if (sidebar.classList.contains("closed")) {
+                sidebar.style.transform = `translateY(-${sidebarHeight}px)`;  
+                sidebtn.style.transform = `translateY(-${sidebarHeight}px)`;  
+                contentMobile.style.transform = `translateY(-${sidebarHeight}px)`;  
+            } else {
+                sidebar.style.transform = `translateY(0)`;  
+                sidebtn.style.transform = `translateY(0)`;  
+                contentMobile.style.transform = `translateY(0)`;  
+            }
+        } else {
+            // デスクトップビューに切り替わったときにサイドバーが隠れている状態なら、表示させる
+            if (sidebar.classList.contains("closed")) {
+                sidebar.style.transform = `translateX(-${sidebarWidth}px)`; 
+                sidebtn.style.transform = `translateX(-${sidebarWidth}px)`;  
+            } else {
+                sidebar.style.transform = `translateX(0)`;  
+                sidebtn.style.transform = `translateX(0)`;  
+                contentMobile.style.transform = `translateX(0)`;  
+            }
         }
     });
 </script>
@@ -424,7 +432,7 @@
         const mobileContent = document.getElementById("content-mobile");
         const desktopContent = document.getElementById("content-desktop");
 
-        if (window.innerWidth <= 600) {
+        if (window.innerWidth <= 990) {
             // モバイルビュー
             mobileContent.style.display = "block";
             desktopContent.style.display = "none";
