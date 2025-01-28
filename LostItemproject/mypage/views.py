@@ -6,13 +6,14 @@ from top.models import Item, ItemImage, StorageLocationsTag
 def student_mypage(request): # 表示用ビュー
     username = request.user.username # ユーザー名の取得
     useritems = Item.objects.filter(contact_email__startswith=username, item_type=1) 
-    return render(request, "student.html", {"useritems":useritems})
-
-def student_delete(request, item_id): # 削除用ビュー
     if request.method == "POST":
-        item = get_object_or_404(Item, item_id=item_id)
-        item.delete()
+        selected_ids = request.POST.getlist("selected_items") # チェックボックスで選択されたitem一覧
+        print(selected_ids)
+        Item.objects.filter(item_id__in=selected_ids).delete() # チェックボックスで選択したitemを削除
+            
         return redirect("mypage:student_mypage")
+    
+    return render(request, "student.html", {"useritems":useritems})
 
 
 def admin_mypage(request): # 未完成
@@ -35,7 +36,8 @@ def admin_mypage(request): # 未完成
             founditemimages = founditemimages.filter(item__item_id=search_ID)
 
         elif action == "delete": # データ削除機能
-            Item.objects.filter(item_id__in=selected_ids).delete() # チェックボックスで選択したitemを削除
+            print(selected_ids)
+            #Item.objects.filter(item_id__in=selected_ids).delete() # チェックボックスで選択したitemを削除
             
             return redirect("mypage:admin_mypage")
         
@@ -52,10 +54,13 @@ def admin_mypage(request): # 未完成
             return redirect("mypage:admin_mypage")
         
         """
-        各データに削除、場所変更ボタン用意
-        デザインの調整（画像をモーダル表示など）
-        経過日数の反映
-        
+        修正箇所
+        IDを入力しないで、ID検索ボタンを押すとValueErrorが起きる
+        保管場所でソートできるようにする
+        登録日時によって降順、昇順を選択できるようにする
+        ページネーションの実装
+        画面サイズを変えるとチェックボックスの選択内容が保持されない -> 各画面サイズによってチェックボックスの値を保持している状態である
+        画像の大きさによってセルの大きさが変化してしまっているので、モーダル表示などで対応したい
         """
         
 

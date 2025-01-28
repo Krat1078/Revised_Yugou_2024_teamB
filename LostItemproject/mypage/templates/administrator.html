@@ -7,100 +7,102 @@
     <body>
         <div class="container-fluid row" style="display: flex; width: 100%">
 
-        <!-- サイドメニュー -->
-        <div class="col-xl-3 col-sm-12 text-center" id="sidebar" style="background-color: #67CAD6">
+            <!-- サイドメニュー -->
+            <div class="col-xl-3 col-sm-12 text-center" id="sidebar" style="background-color: #67CAD6">
+                
+                <!-- 学籍番号 -->
+                <h4 class="fw-bold mt-5">{{ user.username }}</h4>
             
-            <!-- 学籍番号 -->
-            <h4 class="fw-bold mt-5">{{ user.username }}</h4>
-        
-            <!-- メールアドレス -->
-            <h6 class="mb-5">{{ user.username }}@iwat-u.ac.jp</h6>
-        
-            <!-- リストタグ -->
-            <div class="list row d-flex justify-content-center align-items-center mt-5" style="color: #06343D90; background-color: #FFFFFF; margin-bottom:60px;">
-                <img src="{% static 'imgs\icons\LIST.png' %}" class="col-1" style="width: auto; height: 1em"></img>
-                <h4 class="my-3 col-8 fw-bold" style="font-size: 20px;">拾得物リスト</h4>
-                <img src="{% static 'imgs\icons\SCROLL ARROW side.png' %}" id="list-arrow" class="col-1" style="width: auto; height: auto"></img>
+                <!-- メールアドレス -->
+                <h6 class="mb-5">{{ user.email }}</h6>
+            
+                <!-- リストタグ -->
+                <div class="list row d-flex justify-content-center align-items-center mt-5" style="color: #06343D90; background-color: #FFFFFF; margin-bottom:60px;">
+                    <img src="{% static 'imgs\icons\LIST.png' %}" class="col-1" style="width: auto; height: 1em"></img>
+                    <h4 class="my-3 col-8 fw-bold" style="font-size: 20px;">拾得物リスト</h4>
+                    <img src="{% static 'imgs\icons\SCROLL ARROW side.png' %}" id="list-arrow" class="col-1" style="width: auto; height: auto"></img>
+                </div>
+                <style>
+                    /* 画面狭いとき */
+                    @media (max-width: 1199px) {
+                        #list-arrow {
+                            transform: rotate(90deg);
+                            transition: transform 0.5s ease;
+                        }
+                    } 
+                </style>
+            
+                <!-- ログアウトボタン -->
+                <a class="navbar-brand" href="{% url 'lostitem:logout' %}">             
+                    <button type="button" class="btn btn-light fw-bold logout mb-5" style="color: #06343D90; width: 140px">
+                        logout
+                        <img src="{% static 'imgs\icons\logout.png' %}" style="width:auto; height:1em">
+                    </button>     
+                </a>
+                <style>
+                    .logout:hover {
+                        background-color: #C1D881;
+                        border-width: 0px;
+                    }
+                </style>
+
             </div>
             <style>
-                /* 画面狭いとき */
-                @media (max-width: 1199px) {
-                    #list-arrow {
-                        transform: rotate(90deg);
-                        transition: transform 0.5s ease;
-                    }
-                } 
+                #sidebar, #toggle-btn, #main-content {
+                    transition: transform 0.5s ease;  
+                }
+                
+                #sidebar.closed, #toggle-btn.closed, #main-content.closed {
+                    transition: transform 0.5s ease; 
+                }
+
+                #pls-btn {
+                    transition: transform 1.2s ease;  
+                }
             </style>
-        
-            <!-- ログアウトボタン -->
-            <a class="navbar-brand" href="{% url 'lostitem:logout' %}">             
-                <button type="button" class="btn btn-light fw-bold logout mb-5" style="color: #06343D90; width: 140px">
-                    logout
-                    <img src="{% static 'imgs\icons\logout.png' %}" style="width:auto; height:1em">
-                </button>     
-            </a>
+
+            <!--サイドメニューの表示-->
+            <button id="toggle-btn" class="btn btn-info btn-sm side-btn fw-bold">
+                <img src="{% static 'imgs/icons/Component 3.png' %}" id="pls-btn" style="width: 22px; height: 22px;">
+            </button>
             <style>
-                .logout:hover {
-                    background-color: #C1D881;
-                    border-width: 0px;
+                .side-btn {
+                    border-radius: 0 50px 50px 0; /* 右側に丸みをつける */
+                    background-color: #67CAD6; 
+                    color: #06343d; 
+                    border: 0px solid #06343d80;
+                    width: 40px;
+                    height: 40px;
+                }
+
+                @media (max-width: 1199px) {
+                    .side-btn {
+                        border-radius: 0 0 50px 50px; /* 上側に丸みをつける */
+                    }
                 }
             </style>
 
-        </div>
-        <style>
-            #sidebar, #toggle-btn, #main-content {
-                transition: transform 0.5s ease;  
-            }
-            
-            #sidebar.closed, #toggle-btn.closed, #main-content.closed {
-                transition: transform 0.5s ease; 
-            }
+            <!-- 本体 -->
+            <div class="col-xl-8 col-sm-12 my-2" id="main-content">
 
-            #pls-btn {
-                transition: transform 1.2s ease;  
-            }
-        </style>
-
-        <button id="toggle-btn" class="btn btn-info btn-sm side-btn fw-bold">
-            <img src="{% static 'imgs/icons/Component 3.png' %}" id="pls-btn" style="width: 22px; height: 22px;">
-        </button>
-        <style>
-            .side-btn {
-                border-radius: 0 50px 50px 0; /* 右側に丸みをつける */
-                background-color: #67CAD6; 
-                color: #06343d; 
-                border: 0px solid #06343d80;
-                width: 40px;
-                height: 40px;
-            }
-
-            @media (max-width: 1199px) {
-                .side-btn {
-                    border-radius: 0 0 50px 50px; /* 上側に丸みをつける */
-                }
-            }
-        </style>
-
-        <!-- 本体 -->
-        <div class="col-xl-8 col-sm-12 my-2" id="main-content">
-
+                <div class="container-fluid">
                 <!-- 検索欄、全体の削除・場所変更ボタン -->
-                <div class="d-flex justify-content-between my-3">
+                <div class="d-flex flex-wrap justify-content-between my-3 mb-3 mb-md-0">
                     <div class="d-flex align-items-center">
                         <img src="{% static 'imgs\icons\SEARCH I.png' %}" class="me-3" width="22" height="22">
                         <input type="text" id="searchBox" name="IDsearch"class="form-control me-3" placeholder="落とし物IDを入力" style="width: 200px;" onkeyup="searchButtons()">
-                        <button type="submit" class="top-seach-btn col-4 my-2 p-2" name="action" value="search">ID検索</button>
+                        <button type="submit" class="top-seach-btn col-4 my-2 p-2" name="action" value="search" style="white-space: nowrap;">ID検索</button>
                     </div>
                     
 
-                    <div class="d-flex justify-content-end">
+                    <div class="d-flex justify-content-end align-items-center">
                         <button type="button" class="btn btn-outline-secondary custom-red fw-bold me-3" 
-                                style="width: 100px; color: #ff0000; border-color: #06343D; border-width: 2px; border-radius: 10px" 
+                                style="width: 100px; height: 40px; color: #ff0000; border-color: #06343D; border-width: 2px; border-radius: 10px;" 
                                 data-bs-toggle="modal" data-bs-target="#deleteModal">
                             削除
                         </button>
                         <button type="button" data-bs-toggle="modal" data-bs-target="#MovingMdl" class="btn btn-outline-secondary custom-green fw-bold" 
-                                style="width: 100px; color: #8ac75a; border-color: #06343D; border-width: 2px; border-radius: 10px;">
+                                style="width: 100px; height: 40px; color: #8ac75a; border-color: #06343D; border-width: 2px; border-radius: 10px; font-size: 12px;">
                             保管場所変更
                         </button>
                     </div>
@@ -115,6 +117,9 @@
                         }
                     </style>        
                 </div>
+                </div>
+
+
 
                 {% if founditemimages %} 
 
@@ -152,11 +157,12 @@
                                         </ul>
                                     </div>
 
-                                    <!-- コメントのリスト -->
                                     <div class="col my-2">
                                         <ul class="list-group list-group-flush no-underline">
                                             <li class="list-group-item fw-bold" style="color: #06343D90">経過日数</li>
-                                            <li class="list-group-item fw-bold" style="color: #06343D">30日</li>
+                                            <li class="list-group-item fw-bold" style="color: #06343D">
+                                                <span class="elapsed-days" data-created-at="{{ image.item.created_at|date:"Y-m-d H:i:s" }}"></span>
+                                            </li>
                                         </ul>
                                     </div>
 
@@ -215,13 +221,15 @@
                                 <div class="col my-2">
                                     <ul class="list-group list-group-flush no-underline">
                                         <li class="list-group-item fw-bold" style="color: #06343D90; font-size: 10px">経過日数</li>
-                                        <li class="list-group-item fw-bold" style="color: #06343D; font-size: 15px">30日</li>
+                                        <li class="list-group-item fw-bold" style="color: #06343D; font-size: 15px">
+                                            <span class="elapsed-days" data-created-at="{{ image.item.created_at|date:"Y-m-d H:i:s" }}"></span>
+                                        </li>
                                     </ul>
                                 </div>
 
                                 <!-- チェックボックス、ボタン -->
                                 <div class="d-flex align-items-start justify-content-end col-1 mt-3">
-                                    <input type="checkbox" class="large-checkbox">
+                                    <input type="checkbox" class="large-checkbox" name="selected_items" value="{{ image.item.item_id }}">
                                 </div>
                                 <style>
                                     .large-checkbox {
@@ -285,7 +293,6 @@
                                 やめる
                             </button>
 
-                            <!-- idを入れると機能を実装できる -->
                             <button type="submit" name="action" value="change_location" class="btn btn-outline-secondary custom-green fw-bold" style="width: 100px; color: #06343D; border-color: #06343D; border-width: 2px; border-radius: 10px;">
                                 はい
                             </button>
@@ -316,6 +323,29 @@
     </div>
 </form>
 
+<!-- JavaScript: 経過日数を計算するスクリプト -->
+<script>
+    // 経過日数を計算する関数
+    function calculateElapsedDays(createdAt) {
+        const createdDate = new Date(createdAt);
+        const currentDate = new Date();
+        const timeDifference = currentDate - createdDate;
+        const daysElapsed = Math.floor(timeDifference / (1000 * 3600 * 24)); // ミリ秒を日数に変換
+        return daysElapsed;
+    }
+
+    // ページ読み込み時に経過日数を計算して表示
+    document.addEventListener('DOMContentLoaded', function() {
+        // 各画像に対応する経過日数を計算
+        const elapsedDaysElements = document.querySelectorAll('.elapsed-days');
+        elapsedDaysElements.forEach(function(element) {
+            const createdAt = element.getAttribute('data-created-at');
+            const daysElapsed = calculateElapsedDays(createdAt);
+            element.textContent = daysElapsed + " 日"; // 経過日数を表示
+        });
+    });
+</script>
+
 <script>
     document.addEventListener("DOMContentLoaded", function () {
         const modal = document.getElementById("MovingMdl"); // モーダル
@@ -343,6 +373,7 @@
 
 <script>
     document.getElementById("toggle-btn").addEventListener("click", function() {
+        event.preventDefault(); // デフォルト動作を防ぐ
         const sidebar = document.getElementById("sidebar");
         const sidebtn = document.getElementById("toggle-btn");
         const contentMobile = document.getElementById("main-content");
