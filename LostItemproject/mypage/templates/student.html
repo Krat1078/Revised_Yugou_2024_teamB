@@ -17,7 +17,7 @@
             </div>
             <style>        
                 /* 画面狭いとき */
-                @media (max-width: 599px) {
+                @media (max-width: 1199px) {
                     #list-image {
                         transform: rotate(90deg);
                         transition: transform 0.3s ease;
@@ -44,7 +44,7 @@
         </div>
         <style>
             #sidebar.closed {
-                transform: translateX(-106%); /* 横に隠す */
+                transform: translateX(-25vw); /* 横に隠す */
             }
 
             #sidebar {
@@ -53,7 +53,7 @@
             }
 
             #toggle-btn.closed {
-                transform: translateX(-820%); /* 横に隠す */
+                transform: translateX(-25vw); /* 横に隠す */
             }
 
             #toggle-btn {
@@ -62,9 +62,9 @@
             }      
 
             /* 小さい画面のとき */
-            @media (max-width: 599px) {
+            @media (max-width: 1199px) {
                 #sidebar.closed {
-                    transform: translateY(-100%); /* 上に隠す */
+                    transform: translateY(-56vh); /* 上に隠す */
                 }
                 #sidebar {
                     transform: translateY(0); /* 上に表示 */
@@ -72,7 +72,7 @@
                 }
 
                 #toggle-btn.closed {
-                    transform: translateY(-865%); /* 上に隠す */
+                    transform: translateY(-56vh); /* 上に隠す */
                 }
                 #toggle-btn {
                     transform: translateY(0); /* 上に表示 */
@@ -80,18 +80,39 @@
                 }
 
                 #main-content.closed {
-                    transform: translateY
-                    (
-                        height =
-                        #sidebar.closed {
-                            transform: translateY(-100%); /* 上に隠す */
-                        }
-                    ); /* 上に行く */
+                    transform: translateY(-56vh); /* 上に行く */
                 }
 
                 #main-content {
                     transform: translateY(0); /* 上に表示 */
                     transition: transform 0.3s ease;
+                }
+            }
+
+            @media (max-width: 990px) {
+                #sidebar.closed {
+                    transform: translateY(-60vh); /* 上に隠す */
+                }
+                #sidebar {
+                    transform: translateY(0); /* 上に表示 */
+                    transition: transform 0.5s ease;
+                }
+
+                #toggle-btn.closed {
+                    transform: translateY(-60vh); /* 上に隠す */
+                }
+                #toggle-btn {
+                    transform: translateY(0); /* 上に表示 */
+                    transition: transform 0.5s ease;
+                }
+
+                #main-content.closed {
+                    transform: translateY(-60vh); /* 上に行く */
+                }
+
+                #main-content {
+                    transform: translateY(0); /* 上に表示 */
+                    transition: transform 0.5s ease;
                 }
             }
         </style>
@@ -314,7 +335,7 @@
         const mobileContent = document.getElementById("content-mobile");
         const desktopContent = document.getElementById("content-desktop");
 
-        if (window.innerWidth <= 600) {
+        if (window.innerWidth <= 990) {
             // モバイルビュー
             mobileContent.style.display = "block";
             desktopContent.style.display = "none";
