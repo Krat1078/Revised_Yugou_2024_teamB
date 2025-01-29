@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 
 def student_mypage(request): # 表示用ビュー
     username = request.user.username # ユーザー名の取得
-    useritems = Item.objects.filter(contact_email__startswith=username, item_type=1) 
+    useritems = Item.objects.filter(contact_email=request.user.email, item_type=1) 
     if request.method == "POST":
         selected_ids = request.POST.getlist("selected_items") # チェックボックスで選択されたitem一覧
         print(selected_ids)
@@ -95,7 +95,7 @@ def admin_mypage(request):
             search_ID = request.POST.get("IDsearch")
 
         elif action == "delete": # データ削除機能
-            print(request.__dict__)
+            print(selected_ids)
             if len(selected_ids) == 0:
                 pass
             else:
