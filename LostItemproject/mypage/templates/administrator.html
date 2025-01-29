@@ -87,15 +87,25 @@
 
                 <div class="container-fluid">
                 <!-- 検索欄、全体の削除・場所変更ボタン -->
-                <div class="d-flex flex-wrap justify-content-between my-3 mb-3 mb-md-0">
-                    <div class="d-flex align-items-center">
+                <div class="d-flex flex-column flex-md-row justify-content-between my-3 mb-3 mb-md-0 gap-3 ">
+                    <div class="d-flex justify-content-center align-items-center">
                         <img src="{% static 'imgs\icons\SEARCH I.png' %}" class="me-3" width="22" height="22">
-                        <input type="text" id="searchBox" name="IDsearch"class="form-control me-3" placeholder="落とし物IDを入力" style="width: 200px;" onkeyup="searchButtons()">
-                        <button type="submit" class="top-seach-btn col-4 my-2 p-2" name="action" value="search" style="white-space: nowrap;">ID検索</button>
+                        <input type="number" id="searchBox" name="IDsearch" class="form-control me-3" placeholder="落とし物IDを入力" style="width: 100px;" onkeyup="searchButtons()">
+                        <button type="submit" class="top-seach-btn p-2" name="action" value="search" style="white-space: nowrap; ;">ID検索</button>
+                    </div>
+
+                    <div class="d-flex justify-content-center align-items-center">
+                        <select id="location" style="width: 150px; background-color: #53C3D233; color: #06343D;" name="search_location" class="form-select me-3">
+                            <option value="">------</option>  <!-- 空欄 -->
+                            {% for storage in storagetags %}
+                                <option value="{{ storage }}">{{ storage.storage_location_name }}</option>
+                            {% endfor %}
+                        </select>
+                        <button type="submit" class="top-seach-btn p-2" name="action" value="search_location" style="white-space: nowrap;">場所検索</button>
                     </div>
                     
 
-                    <div class="d-flex justify-content-end align-items-center">
+                    <div class="d-flex justify-content-center align-items-start">
                         <button type="button" class="btn btn-outline-secondary custom-red fw-bold me-3" 
                                 style="width: 100px; height: 40px; color: #ff0000; border-color: #06343D; border-width: 2px; border-radius: 10px;" 
                                 data-bs-toggle="modal" data-bs-target="#deleteModal">
@@ -110,10 +120,13 @@
                         .custom-red:hover {
                             background-color: #53C3D250; 
                         }
-                    </style>
-                    <style>
                         .custom-green:hover {
                             background-color: #53C3D250; 
+                        }
+                        #searchBox::placeholder {
+                            font-size: 8px; /* フォントサイズを設定 */
+                            color: gray;     /* 文字色を設定（任意） */
+                            /* white-space: pre-line; */
                         }
                     </style>        
                 </div>
@@ -212,8 +225,8 @@
                                 <!-- 落とした場所のリスト -->
                                 <div class="col my-2">
                                     <ul class="list-group list-group-flush no-underline">
-                                        <li class="list-group-item fw-bold" style="color: #06343D90; font-size: 10px">落とした場所</li>
-                                        <li class="list-group-item fw-bold" style="color: #06343D; font-size: 15px">{{ image.item.PorD_location }}</li>
+                                        <li class="list-group-item fw-bold" style="color: #06343D90; font-size: 10px">保管場所</li>
+                                        <li class="list-group-item fw-bold" style="color: #06343D; font-size: 15px">{{ image.item.storage_location }}</li>
                                     </ul>
                                 </div>
 
@@ -244,6 +257,7 @@
                     </div>
                 
                 {% else %}
+                    <br><br>
                     <p>そのような落とし物は登録されていません</p>
                 {% endif %}
                 

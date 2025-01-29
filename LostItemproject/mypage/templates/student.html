@@ -254,6 +254,7 @@
 
 <script>
     document.getElementById("toggle-btn").addEventListener("click", function() {
+        event.preventDefault(); // デフォルト動作を防ぐ
         const sidebar = document.getElementById("sidebar");
         const sidebtn = document.getElementById("toggle-btn");
         const contentMobile = document.getElementById("main-content");
