@@ -32,9 +32,10 @@
 </div>
 
 <div class="container">
-<div class="top-forms collapse col-12 row pt-4 gap-4 justify-content-center align-items-center" id="collapseSearch">
-  <div class="search_pulldown col-lg-4 col-sm-12 px-5">
-    <form method="POST">
+<div class="top-forms collapse col-12 row pt-4 px-5 gap-4 justify-content-center align-items-center" id="collapseSearch">
+  <form method="GET" action="{% url 'top:index'%}">
+  <div class=" d-flex flex-wrap justify-content-between align-items-center">
+  <div class="search_pulldown col-lg-5 col-sm-12 px-5 d-flex flex-column">
       {% csrf_token %}
       <div class="top-droppeditemTag col-12">
         <div class="top-itemTagnames py-1 col-lg-12 col-sm-12">
@@ -43,8 +44,8 @@
         <div class="top-droppedlocationTag-dropdownmenu col-lg-12 col-sm-12">
           <select name="item" class="form-select" id="tag">
             <option value="">------</option>  <!-- 空欄 -->
-            {% for itemname in itemnametags %}
-              <option value="{{ itemname.item_name_id }}">{{ itemname.item_name }}</option>
+            {% for tag in itemnametags %}
+              <option value="{{ tag.item_name }}" {% if tag.item_name == itemname_tag %}selected{% endif %}>{{ tag.item_name }}</option>
             {% endfor %}
           </select>
         </div>
@@ -66,8 +67,8 @@
         <div class="top-droppedlocationTag-dropdownmenu col-lg-12 col-sm-12">
           <select name="location" class="form-select" id="tag">
             <option value="">------</option>  <!-- 空欄 -->
-            {% for location in locationtags %}
-              <option value="{{ location.PorD_location_id }}">{{ location.picked_or_dropped_location_name }}</option>
+            {% for tag in locationtags %}
+            <option value="{{ tag.picked_or_dropped_location_name }}" {% if tag.picked_or_dropped_location_name == location_tag %}selected{% endif %}>{{ tag.picked_or_dropped_location_name }}</option>
             {% endfor %}
           </select>
         </div>
@@ -79,28 +80,28 @@
         <div class="top-droppedlocationTag-dropdownmenu col-lg-12 col-sm-12">
           <select name="storage" class="form-select" id="tag">
             <option value="">------</option>  <!-- 空欄 -->
-            {% for storage in storagetags %}
-            <option value="{{ storage.storage_location_id }}">{{ storage.storage_location_name }}</option>
+            {% for tag in storagetags %}
+              <option value="{{ tag.storage_location_name }}" {% if tag.storage_location_name == storage_tag %}selected{% endif %}>{{ tag.storage_location_name }}</option>
             {% endfor %}
           </select>
         </div>
       </div>
       
       <!-- Button to Trigger Modal -->
-      <button type="submit" class="top-seach-btn col-12 my-2 p-2" name="action" value="search">検索</button>
-    </form>
+      <button type="submit" class="top-seach-btn col-12 my-2 p-2">検索</button>
+  
   </div>
 
-  <div class="search_date col-lg-4 col-sm-12 px-5">
+  <div class="search_date col-lg-5 col-sm-12 px-5">
     <div class="top-itemTagnames py-1 col-lg-12 col-sm-12">
       落とした日（選択した月日以降を表示）
     </div>
-    <form method="post">
-      {% csrf_token %}
       {{ date_form.as_p }}
       <button type="submit" class="top-seach-btn col-12 my-2 p-2">日付検索</button>
-    </form>
+    
   </div>
+  </div>
+  </form>
 </div>
 </div>
 <link
@@ -268,7 +269,61 @@
     <p>選択されたタグを持つ落とし物情報は見つかりませんでした</p>
   {% endif %}
 
-  {% comment %}以下、ページネーションの実装{% endcomment %}
+  <div class="d-flex justify-content-center mt-3">
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        {% if page_obj.has_previous %}
+          <li class="page-item PreviousAndNext">
+            <a class="page-link" href="?page=1&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}" aria-label="First">First</a>
+          </li>
+          <li class="page-item PreviousAndNext">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}" aria-label="Previous">
+              <span aria-hidden="true">&laquo;</span>
+            </a>
+          </li>
+        {% endif %}
+        
+        {% for num in page_obj.paginator.page_range %}
+          {% if num == page_obj.number %}
+            <li class="page-item active" aria-current="page"><span class="page-link">{{ num }}</span></li>
+          {% elif num >= page_obj.number|add:'-2' and num <= page_obj.number|add:'2' %}
+            <li class="page-item"><a class="page-link" href="?page={{ num }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}">{{ num }}</a></li>
+          {% endif %}
+        {% endfor %}
+        
+        {% if page_obj.has_next %}
+          <li class="page-item PreviousAndNext">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}" aria-label="Next">
+              <span aria-hidden="true">&raquo;</span>
+            </a>
+          </li>
+          <li class="page-item PreviousAndNext">
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}" aria-label="Last">Last</a>
+          </li>
+        {% endif %}
+      </ul>
+    </nav>
+  </div>
+  {% comment %}
+  <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}">First</a>
+            <a href="?page={{ page_obj.previous_page_number }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}">Previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}">Next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}">Last</a>
+        {% endif %}
+    </span>
+  </div>
+
+  以下、ページネーションの実装
   <div class="d-flex justify-content-center mt-3">
     <nav aria-label="Page navigation example">
       <ul class="pagination">
@@ -296,6 +351,8 @@
       </ul>
     </nav>
   </div>
+  {% endcomment %}
+
 </section>
 
 

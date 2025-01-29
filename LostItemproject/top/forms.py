@@ -36,7 +36,7 @@ class TagFilterForm(forms.Form):
 """
 
 class DateFilterForm(forms.Form):
-    date = forms.DateField(
+    date = forms.DateTimeField(
         required=False,
         widget=forms.DateInput(attrs={"type": "date",'class': 'form-date form-control'}),
         label=""
