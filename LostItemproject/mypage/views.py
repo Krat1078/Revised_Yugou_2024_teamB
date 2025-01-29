@@ -37,8 +37,10 @@ def admin_mypage(request): # 未完成
                 founditemimages = founditemimages.filter(item__item_id=search_ID)
 
         elif action == "delete": # データ削除機能
-            print(selected_ids)
-            Item.objects.filter(item_id__in=selected_ids).delete() # チェックボックスで選択したitemを削除
+            if len(selected_ids) == 0:
+                pass
+            else:
+                Item.objects.filter(item_id__in=selected_ids).delete() # チェックボックスで選択したitemを削除
             
             return redirect("mypage:admin_mypage")
         
@@ -51,16 +53,17 @@ def admin_mypage(request): # 未完成
             
         
         elif action == "change_location": # 保管場所変更機能
-            before_location = StorageLocationsTag.objects.get(storage_location_name=request.POST.get("before_location"))
-            after_location = StorageLocationsTag.objects.get(storage_location_name=request.POST.get("after_location"))
-            # before_storageID = before_location.storage_location_id
-            # after_storageID = after_location.storage_location_id
-            change_items = founditemimages.filter(item__storage_location=before_location)
-            for change_item in change_items:
-                change_item.item.storage_location = after_location
-                change_item.item.save()
+            if request.POST.get("before_location") == "":
+                pass
+            else:
+                before_location = StorageLocationsTag.objects.get(storage_location_name=request.POST.get("before_location"))
+                after_location = StorageLocationsTag.objects.get(storage_location_name=request.POST.get("after_location"))
+                change_items = founditemimages.filter(item__storage_location=before_location)
+                for change_item in change_items:
+                    change_item.item.storage_location = after_location
+                    change_item.item.save()
 
-            return redirect("mypage:admin_mypage")
+                return redirect("mypage:admin_mypage")
         
         """
         修正箇所
