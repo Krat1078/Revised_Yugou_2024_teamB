@@ -112,6 +112,7 @@ def admin_mypage(request):
             else:
                 before_location = StorageLocationsTag.objects.get(storage_location_name=request.POST.get("before_location"))
                 after_location = StorageLocationsTag.objects.get(storage_location_name=request.POST.get("after_location"))
+                founditemimages = ItemImage.objects.select_related("item").order_by("item__created_at")
                 change_items = founditemimages.filter(item__storage_location=before_location)
                 for change_item in change_items:
                     change_item.item.storage_location = after_location
@@ -153,7 +154,7 @@ def admin_mypage(request):
     print(selected_location)
 
         # ページネーション処理
-    paginator = Paginator(founditemimages, 20)  # 1ページに10件表示
+    paginator = Paginator(founditemimages, 4)  # 1ページに10件表示
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
        
