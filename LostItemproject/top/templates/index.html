@@ -34,7 +34,7 @@
 <div class="container">
 <div class="top-forms collapse col-12 row pt-4 gap-4 justify-content-center align-items-center" id="collapseSearch">
   <div class="search_pulldown col-lg-4 col-sm-12 px-5">
-    <form method="post">
+    <form method="POST">
       {% csrf_token %}
       <div class="top-droppeditemTag col-12">
         <div class="top-itemTagnames py-1 col-lg-12 col-sm-12">
@@ -80,14 +80,14 @@
           <select name="storage" class="form-select" id="tag">
             <option value="">------</option>  <!-- 空欄 -->
             {% for storage in storagetags %}
-            <option value="{{ storage.storage_location_id }}">{{ storage.storage_location_name}}</option>
+            <option value="{{ storage.storage_location_id }}">{{ storage.storage_location_name }}</option>
             {% endfor %}
           </select>
         </div>
       </div>
       
       <!-- Button to Trigger Modal -->
-      <button type="submit" class="top-seach-btn col-12 my-2 p-2">検索</button>
+      <button type="submit" class="top-seach-btn col-12 my-2 p-2" name="action" value="search">検索</button>
     </form>
   </div>
 
@@ -161,6 +161,16 @@
 <section id="cardlists">
   {% if images %}
   <div class="container">
+    <!--
+    <form method="POST">
+      {% csrf_token %}
+      <div class="justify-content-end">
+        <button type="submit" style="height:30px; border: none; background: transparent;" name="action" value="change_order">
+          <img src="{% static 'imgs\icons\arrow.png' %}" alt="Change Order" style="height: 100%;">
+        </button>
+      </div>
+    </form>
+    -->
     <div class="row g-8 py-3">
       {% for image in images %}
       <div class="col-lg-3 col-sm-6 g-5">

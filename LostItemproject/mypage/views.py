@@ -23,6 +23,7 @@ def admin_mypage(request): # 未完成
     founditemimages = founditemimages.filter(item__status=0) # status = 0の物品だけ表示
     # founditem_ids = founditemimages.values_list("item__item_id", flat=True) # 拾得物のID取得
     storage_tags = StorageLocationsTag.objects.all()
+    order = request.session.get("order", "asc") # セッションから現在のorderを取得。デフォルトは'asc'
     if request.method == "POST":
 
         action = request.POST.get("action") # 機能によってPOSTリクエストの遷移を変えるためのaction
@@ -64,10 +65,22 @@ def admin_mypage(request): # 未完成
                     change_item.item.save()
 
                 return redirect("mypage:admin_mypage")
+
+        elif action == "change_order":
+            if order == "asc":
+                founditemimages = founditemimages.order_by("-item__created_at")
+                next_order = "des"
+                print(order)
+            elif order == "des":
+                founditemimages = founditemimages.order_by("item__created_at")
+                next_order = "asc"
+                print(order)
+
+            # 次回の順序をセッションに保存
+            request.session['order'] = next_order
         
         """
         修正箇所
-        登録日時によって降順、昇順を選択できるようにする
         ページネーションの実装
         画面サイズを変えるとチェックボックスの選択内容が保持されない -> 各画面サイズによってチェックボックスの値を保持している状態である
         画像の大きさによってセルの大きさが変化してしまっているので、モーダル表示などで対応したい
