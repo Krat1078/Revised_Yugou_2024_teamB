@@ -156,29 +156,25 @@ ul.detail-content{
 } */
 
 .pagination{
-    background-color: #ffffff !important; /* 背景色 */
-    border-radius: 50px !important; /* アクティブボタンも丸く */
+    background-color: #ffffff !important;
+    border-radius: 50px !important; 
     padding: 3px !important;/*上右下左*/
     box-shadow:2px 2px 4px rgba(128, 128, 128, 0.371) ;
 }
 .pagination .page-item .page-link {
     color: var(--textcolor) !important; /* リンクの文字色 */
     border: none !important; /* 境界線の色 */
-    border-radius: 50px !important; /* アクティブボタンも丸く */
+    border-radius: 50px !important; 
 }
-/* .pagenation .Previous-icon{
-    transform:rotate(180deg);
-} */
 
 .pagination .page-item.active .page-link {
-    background-color:#b0e6fd7b !important; /* アクティブページの背景色 */
+    background-color:#b0e6fd7b !important; 
     
-    border-radius: 50px !important; /* アクティブボタンも丸く */
+    border-radius: 50px !important; 
     box-shadow:2px 2px 4px rgba(128, 128, 128, 0.371) ;
 }
 .pagination .page-item.PreviousAndNext .page-link{
-    background-color:#e8e8e8!important; /* アクティブページの背景色 */
-    border-radius: 50px !important; /* アクティブボタンも丸く */
+    background-color:#e8e8e8!important;
 }
 .rotate-icon {
     transition: transform 0.4s ease; /* スムーズな回転 */

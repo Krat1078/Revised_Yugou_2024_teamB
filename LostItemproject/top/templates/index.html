@@ -274,11 +274,11 @@
       <ul class="pagination">
         {% if page_obj.has_previous %}
           <li class="page-item PreviousAndNext">
-            <a class="page-link" href="?page=1&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}" aria-label="First">First</a>
+            <a class="page-link" href="?page=1&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}" aria-label="First">&laquo;</a>
           </li>
           <li class="page-item PreviousAndNext">
             <a class="page-link" href="?page={{ page_obj.previous_page_number }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}" aria-label="Previous">
-              <span aria-hidden="true">&laquo;</span>
+              <span aria-hidden="true">	&lsaquo;</span>
             </a>
           </li>
         {% endif %}
@@ -294,11 +294,11 @@
         {% if page_obj.has_next %}
           <li class="page-item PreviousAndNext">
             <a class="page-link" href="?page={{ page_obj.next_page_number }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}" aria-label="Next">
-              <span aria-hidden="true">&raquo;</span>
+              <span aria-hidden="true">&rsaquo;</span>
             </a>
           </li>
           <li class="page-item PreviousAndNext">
-            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}" aria-label="Last">Last</a>
+            <a class="page-link" href="?page={{ page_obj.paginator.num_pages }}&item={{ itemname_tag }}&location={{ location_tag }}&storage={{ storage_tag }}&date={{ date_form.data.date }}" aria-label="Last">&raquo;</a>
           </li>
         {% endif %}
       </ul>
