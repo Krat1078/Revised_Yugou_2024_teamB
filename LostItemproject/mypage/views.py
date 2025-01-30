@@ -108,7 +108,7 @@ def admin_mypage(request):
     print(selected_location)
 
         # ページネーション処理
-    paginator = Paginator(founditemimages, 4)  # 1ページに10件表示
+    paginator = Paginator(founditemimages, 6)  # 1ページに10件表示
     page_number = request.GET.get('page', 1)
     page_obj = paginator.get_page(page_number)
        
